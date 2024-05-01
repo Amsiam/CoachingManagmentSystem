@@ -1,0 +1,250 @@
+
+.id-card{
+    border: 1px solid #ddd;
+    width: 2.1in;
+    height: 3.4in;
+  }
+  
+  .id-header{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    background-color: #02283D;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+  .id-header h1{
+    color: rgb(205, 196, 11);
+    position: absolute;
+    margin-top: 8%;
+    text-align: center;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-family:sans-serif;
+  }
+  
+  
+  .id-photo{
+    border-radius: 50%;
+    margin-top:3rem;
+    margin-bottom: -2rem;
+    border: 8px solid #ddd;
+    width: 100px;
+  }
+  
+  .id-details{
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    margin-bottom: -10px;
+  }
+  
+  .id-details h1{
+    text-align: center;
+    font-size: 1rem; 
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    font-family:sans-serif;
+  }
+
+
+  .id-details .m-info-group{
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  
+  .id-details .m-info-group .info-value{
+    font-family: sans-serif;
+    font-weight: 500;
+  }
+  
+  .id-details .m-info-group .info-batch{
+    text-transform: uppercase;
+    color: #ff0000;
+    font-size: .7rem;
+    font-family: sans-serif;
+    font-weight: 800;
+  }
+  
+  
+  .id-details .m-info-group h4{
+    margin-bottom: -5px;
+    margin-top: 0.2rem;
+    text-transform:none ;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: .8rem;
+  }
+  
+  .id-details .m-qrcode{
+    display: flex;
+    justify-content: center;
+    align-items: center
+  }
+  
+  .id-details .m-qrcode img{
+    width: 100%;
+    height: 60px;
+  }
+  
+  .id-footer{
+    background-color: #02283D;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 0.3rem;
+  }
+
+  /* font end */
+
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.background{
+min-height:20vh;
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+
+}
+.id-card{
+    border: 1px solid #ddd;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+
+}
+.details{
+    text-align: center;
+}
+.top-img{ 
+  margin-top: 10px;
+    position: relative; 
+}
+.top-img img{
+    align-items: center;
+    justify-content: center;
+}
+.background::before{
+    content: '';
+    background-image: url(image/tusharcare.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: 90px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: .12;
+
+}
+h1{
+    font-family: sans-serif;
+    position: relative;
+}
+
+ .info-label{
+    font-family:sans-serif;
+    margin-top: -5px;
+    text-align: center;
+    font-weight: 700;
+    font-size: .7rem;
+}
+.info-value{
+    font-size: .7rem;
+    font-weight: 500;
+    text-align: center;
+}
+.m-name{
+    font-size:1.2rem; 
+    text-transform: uppercase;
+    margin-bottom: -2px;
+    font-family: sans-serif;
+    color: #045682;
+}
+.m-info-group{
+    text-align: center;
+}
+.bbinfo-value{
+    font-size: .6rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+
+}
+.info-valuedate{
+    font-family:  Helvetica;
+    font-size: .6rem;
+    
+  }
+   .info-valuedate span{
+    color: #045682;
+  }
+  .border{
+    background-color: #1b1d20;
+     width: 50%;
+     height: .5px;
+     margin:-5px auto 0px auto;
+     border:  0 none;
+   
+   }
+   .athr img{
+    margin: 5px 0;
+   }
+   .author h4{
+     font-family:sans-serif;
+     font-size: .7rem;
+     font-weight: 600;
+     margin-top: 2px;
+     margin-bottom: 15px;
+   
+   }
+
+   .id-footer{
+    background-color: #02283D;
+    padding: .5rem;
+    text-align: center;
+    display: flex;
+column-gap: .5rem;
+  }
+  .logo{
+    margin:2px 0 0 10px;
+  }
+
+  .logo img{
+    width: 30px;
+    height: 32px;
+    border: .5px solid rgb(136, 136, 32);
+    border-top-left-radius: 45%;
+    border-top-right-radius: 45%;
+    background-color: #FFFFFF;
+  }
+  .text{
+    text-align: right;
+  }
+  .text h1{
+    font-size: 1.2rem;
+    color:  rgb(226, 215, 7);
+    font-family: Helvetica;
+  }
+  .text h4{
+    font-size:.3rem;
+    color:#FFFFFF;
+    font-weight: 100;
+  }
+  .text h3{
+    font-size: .4rem;
+    color: #FFFFFF;
+    font-weight: 300;
+  }
+
+  .container{
+    position: relative;
+    display: flex;
+    margin: 5rem;
+    column-gap: 2rem;
+  }
+
