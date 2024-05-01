@@ -153,7 +153,7 @@ class extends Component {
 
             <x-input label="Name" wire:model="user.name" />
 
-            <x-input label="Email" wire:model="user.email" />
+            <x-input label="Email" :readonly="$isEdit" wire:model="user.email" />
 
             <x-input label="Password" wire:model="password" />
 
