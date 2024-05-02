@@ -71,6 +71,28 @@ class extends Component {
 
     }
 
+     #[Computed]
+     public function paymentsTotal()
+    {
+        return  Payment::with(["student"])
+        ->when($this->from,function($q){
+            return $q->whereDate("created_at",">=",$this->from);
+        })
+        ->when($this->to,function($q){
+            return $q->whereDate("created_at","<=",$this->to);
+        })
+        ->when($this->filterRecievedBy,function($q){
+            return $q->where("recieved_by",$this->filterRecievedBy);
+        })
+        ->when($this->filterPayType,function($q){
+            return $q->where("payType",$this->filterPayType);
+        })
+        ->when($this->filterPaymentType,function($q){
+            return $q->where("paymentType",$this->filterPaymentType);
+        })->sum("paid");
+
+    }
+
 
     public function export(){
 
@@ -161,14 +183,14 @@ class extends Component {
 
     @scope("cell_paymentType",$payment)
 
-    @if ($payment->paymentType==0)
-    Montly({{date("F",strtotime($payment->month))}})
-    @elseif($payment->paymentType==1)
-    Due Payment
-    @elseif($payment->paymentType==2)
-    Admission
+        @if ($payment->paymentType==0)
+        Montly({{date("F",strtotime($payment->month))}})
+        @elseif($payment->paymentType==1)
+        Due Payment
+        @elseif($payment->paymentType==2)
+        Admission
 
-    @endif
+        @endif
 
     @endscope
 
@@ -177,4 +199,11 @@ class extends Component {
 
     @endscope
     </x-table>
+
+    <table class="table table-zebra">
+    <tr>
+        <td colspan="2">Total</td>
+        <td colspan="5">{{$this->paymentsTotal}}</td>
+    </tr>
+    </table>
 </x-card>

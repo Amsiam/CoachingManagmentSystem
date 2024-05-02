@@ -249,7 +249,7 @@ class extends Component {
 
             AdmissionSms::sendMessage($this->personal->smobile,$this->student->name,$roll,"12345678",$this->payment,"DMC Scholar");
 
-            return $this->redirect("/admission/admission");
+            return $this->redirect("/student"."/".$this->student->id);
 
         } catch (\Exception $err) {
             DB::rollback();

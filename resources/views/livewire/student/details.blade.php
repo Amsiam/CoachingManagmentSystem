@@ -29,6 +29,8 @@ class extends Component {
     public $student;
     public $payment;
 
+    public $isEdit=0;
+
     public bool $modal = false;
     public bool $paymodal = false;
 
@@ -73,6 +75,13 @@ class extends Component {
 
         $this->modal=false;
 
+    }
+
+    public function getListeners()
+    {
+        return [
+            "refresh" => '$refresh',
+        ];
     }
 
     public function statusChange() {
@@ -130,8 +139,10 @@ class extends Component {
                 $from = "DMC Scholar";
             }
 
-
-            PaymentSMS::sendMessage($student->personalDetails->gmobile,$this->payment,$student->payments_sum_due,$from);
+            if(!$this->isEdit){
+                PaymentSMS::sendMessage($student->personalDetails->gmobile,$this->payment,$student->payments_sum_due,$from);
+            }
+            $this->dispatch("refresh")->self();
         } catch (\Exception $err) {
             dd($err);
 
@@ -141,6 +152,7 @@ class extends Component {
     }
 
     public function modalOpen($id,$package){
+        $this->isEdit=0;
 
         $this->payment = new Payment();
         $this->payment->student_roll = $id;
@@ -166,6 +178,22 @@ class extends Component {
         $this->payment->recieved_by=auth()->user()->email;
 
         $this->paymodal=true;
+    }
+
+    public function openEditModal($id){
+
+        $this->payment = Payment::findOrFail($id);
+        $this->paymodal=true;
+        $this->isEdit=1;
+
+    }
+
+    public function deletePayment($id){
+
+        $payment = Payment::findOrFail($id);
+
+        $payment->delete();
+        $this->dispatch("refresh")->self();
     }
 
 
@@ -414,7 +442,14 @@ class extends Component {
                                             <td>{{$payment->created_at}}</td>
                                             <td>
                                                 <x-button external icon="o-printer" class="btn-primary btn-xs" link="/print/invoice/{{$payment->id}}"/>
-                                            </td>
+                                                @can("payment.edit")
+                                                    <x-button icon="o-pencil" class="btn-success btn-xs" @click="$wire.openEditModal({{$payment->id}})" />
+                                                @endcan
+
+                                                @can("payment.delete")
+                                                    <x-button wire:confirm="Are you sure to delete payment?" wire:click="deletePayment({{$payment->id}})" icon="o-trash" class="btn-error btn-xs" />
+                                                @endcan
+                                               </td>
                                         </tr>
                                     @empty
                                         <tr>

@@ -69,6 +69,8 @@ class DatabaseSeeder extends Seeder
             array('name' => 'student.delete','guard_name' => 'web'),
             array('name' => 'student.dmc','guard_name' => 'web'),
             array('name' => 'student.edit','guard_name' => 'web'),
+            array('name' => 'payment.edit','guard_name' => 'web'),
+            array('name' => 'payment.delete','guard_name' => 'web'),
             array('name' => 'student.list','guard_name' => 'web')
           );
 

@@ -243,4 +243,6 @@ class extends Component {
 
 
     </x-table>
+
+
 </x-card>
