@@ -47,17 +47,7 @@ class extends Component {
     }
 
 
-    public function rules()
-    {
-        return [
-            "payment.paymentType"=>"required",
-            "payment.payType"=>"required",
-            "payment.paid"=>"required",
-            "payment.discount"=>"required",
-            "payment.month"=>"",
-            "payment.student_roll"=>"required",
-        ];
-    }
+
 
     public function save()
     {
