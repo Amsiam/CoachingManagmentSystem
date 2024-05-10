@@ -17,6 +17,11 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             Volt::route("/salary","expense.salarylist")->middleware("can:expense.salary.list");
         });
 
+        Route::prefix("/book")->group(function() {
+            Volt::route("/list","book.list")->middleware("can:book.list");
+            Volt::route("/sell","book.sell")->middleware("can:book.sell");
+        });
+
         Route::prefix("/admission")->group(function() {
             Volt::route("/academics","admission.academics")->middleware("can:student.academics");
             Volt::route("/admission","admission.admission")->middleware("can:student.admission");

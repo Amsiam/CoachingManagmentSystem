@@ -74,6 +74,27 @@ state([
             ],
         ],
         [
+            'title' => 'Book',
+            'icon' => 'o-currency-dollar',
+            'hasMore' => true,
+            'children' => [
+                [
+                    'title' => 'Book List',
+                    'icon' => 'o-home',
+                    'link' => '/book/list',
+                    'hasMore' => false,
+                    "permission"=>"book.list"
+                ],[
+                    'title' => 'Book Sell',
+                    'icon' => 'o-home',
+                    'link' => '/book/sell',
+                    'hasMore' => false,
+                    "permission"=>"book.sell"
+                ],
+
+            ],
+        ],
+        [
             'title' => 'Report',
             'icon' => 'o-presentation-chart-bar',
             'hasMore' => true,

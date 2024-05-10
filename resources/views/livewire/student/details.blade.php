@@ -41,9 +41,6 @@ class extends Component {
 
         $this->payment = new Payment();
 
-
-
-
     }
 
 
