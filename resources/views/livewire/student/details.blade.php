@@ -197,7 +197,7 @@ class extends Component {
 
     <x-modal wire:model="modal" title="Photo Upload" separator>
 
-        <x-file wire:model.live="file" label="Photo" hint="Only Image" accept="image/png, image/jpeg" />
+        <x-file wire:model.live="file"  label="Photo" hint="Only Image" accept="image/*" capture="user" />
         @if ($file)
             <img src="{{ $file->temporaryUrl() }}">
         @endif
