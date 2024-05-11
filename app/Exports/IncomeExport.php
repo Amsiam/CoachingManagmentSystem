@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\BookSell;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Payment;
@@ -138,6 +139,16 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
         })
         ->latest()->get();
 
-        return view('exports.income', compact("payments"));
+        $bookSells = BookSell::when($this->from,function($q){
+            return $q->whereDate("created_at",">=",$this->from);
+        })
+        ->when($this->to,function($q){
+            return $q->whereDate("created_at","<=",$this->to);
+        })
+        ->when($this->filterRecievedBy,function($q){
+            return $q->where("added_by",$this->filterRecievedBy);
+        })->get();
+
+        return view('exports.income', compact("payments","bookSells"));
     }
 }

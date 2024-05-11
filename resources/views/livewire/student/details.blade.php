@@ -44,6 +44,7 @@ class extends Component {
             "payment.discount"=>"required",
             "payment.month"=>"",
             "payment.student_roll"=>"required",
+            "payment.recieved_by"=>"",
 
     ];
     }
@@ -120,8 +121,10 @@ class extends Component {
             "payment.month"=>"",
             "payment.total"=>"",
             "payment.student_roll"=>"required",
+            "payment.recieved_by"=>"",
 
         ]);
+
 
         try {
             DB::transaction(function () {
