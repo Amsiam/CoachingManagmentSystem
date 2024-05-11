@@ -258,7 +258,8 @@ class extends Component {
                         <div class="flex flex-col items-center">
                             @if ($this->student->image)
 
-                            <img src="{{asset('storage/'.$this->student->image)}}" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"/>
+                            <img src="{{asset('storage/'.$this->student->image)}}"
+                             class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"/>
 
                             @endif
                             <h1 class="text-xl font-bold">{{$student->name}}</h1>

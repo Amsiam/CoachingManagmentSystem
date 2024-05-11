@@ -274,7 +274,7 @@ span{
          </h3>
     </div>
     <div class="details-right">
-        <h3>Roll No <span>:</span> {{$payment->student_roll}}</h3>
+        <h3>Roll No <span>:</span> {{$payment->student->roll}}</h3>
     </div>
 
    </div>

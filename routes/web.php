@@ -62,7 +62,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             $student = Student::with(["personalDetails", "batches"])->findOrFail($id);
 
             $generator = new BarcodeGeneratorPNG();
-            $barCode = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($student->roll, $generator::TYPE_CODE_128)) . '">';
+            $barCode = base64_encode($generator->getBarcode($student->roll, $generator::TYPE_CODE_128));
 
             return view("pdf.idcard", compact("student", "barCode"));
         })->name("pdf.id");
