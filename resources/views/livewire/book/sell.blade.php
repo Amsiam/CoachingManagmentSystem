@@ -11,6 +11,7 @@ use Mary\Traits\Toast;
 use App\Models\BookSell;
 
 use App\Models\Book;
+use App\Models\User;
 
 use App\Exports\BookSellExport;
 
@@ -19,6 +20,8 @@ new
 #[Title("Groups")]
 class extends Component {
     use Toast,WithPagination;
+
+    public $addedBy;
 
     public $bookSell;
     public $price=0;
@@ -45,10 +48,18 @@ class extends Component {
             ->merge($selectedOption);
     }
 
+     #[Computed]
+     public function users()
+    {
+        return  User::all();
+
+    }
+
 
     public function rules()
     {
         return [
+            'bookSell.description' => '',
             'bookSell.totalBook' => 'required',
             'bookSell.price' => 'required',
             'bookSell.date' => 'required',
@@ -63,6 +74,8 @@ class extends Component {
         $this->from = date("Y-m-d");
         $this->to = date("Y-m-d");
 
+        $this->addedBy = auth()->user()->email;
+
         $this->search();
 
     }
@@ -72,6 +85,7 @@ class extends Component {
      public function bookSells()
     {
         return  BookSell::whereBetween("date",[$this->from,$this->to])
+        ->where("added_by",$this->addedBy)
         ->paginate($this->perPage);
     }
 
@@ -102,6 +116,8 @@ class extends Component {
 
         $this->bookSell->totalBook = count($this->books_selected);
         $this->bookSell->price = $this->price;
+
+        $this->bookSell->added_by = auth()->user()->email;
 
         $this->validate();
 
@@ -152,8 +168,9 @@ class extends Component {
 
             <x-form wire:submit.prevent="save">
 
+
+                <x-input label="Description" wire:model="bookSell.description" />
                 <x-choices
-                @change-selection="console.log($event.detail.value)"
                 label="Books"
                 wire:model.live="books_selected"
                 :options="$bookSearchable"
@@ -188,6 +205,10 @@ class extends Component {
             ["id"=>100,"name"=>100],
         ]' option-value="name" />
 
+        <div class="w-80">
+            <x-choices label="Added By" :options="$this->users" option-value="email" single searchable wire:model.live="addedBy"  />
+        </div>
+
         <div class="flex justify-end">
 
             <x-datetime label="From" wire:model.live="from" />
@@ -196,9 +217,11 @@ class extends Component {
     </div>
     <x-table :headers='[
         ["key"=>"id","label"=>"#"],
+        ["key"=>"description","label"=>"Description"],
         ["key"=>"totalBook","label"=>"Total Book"],
         ["key"=>"price","label"=>"Price"],
         ["key"=>"date","label"=>"Date"],
+        ["key"=>"added_by","label"=>"Added By"],
     ]' :rows="$this->bookSells" with-pagination >
 
     @scope("cell_id",$bookSell)

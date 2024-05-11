@@ -17,10 +17,9 @@ class AdmissionSms
                 . $roll .
                 "\nYour Password: "
                 . $password . "\nTotal: "
-                . $payment->total . "\nPaid: "
-                . $payment->paid .
-                "\nDiscount: " . $payment->discount . "\nDue: "
-                . $payment->due
+                . $payment->total . "\nDiscount: " . $payment->discount .
+                "\nPaid: " . $payment->paid .
+                 "\nDue: " . $payment->due
         );
     }
 }

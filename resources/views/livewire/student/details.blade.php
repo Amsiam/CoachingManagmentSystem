@@ -29,10 +29,24 @@ class extends Component {
     public $student;
     public $payment;
 
+    public $total;
+
     public $isEdit=0;
 
     public bool $modal = false;
     public bool $paymodal = false;
+
+    public function rules(){
+        return [
+            "payment.paymentType"=>"required",
+            "payment.payType"=>"required",
+            "payment.paid"=>"required",
+            "payment.discount"=>"required",
+            "payment.month"=>"",
+            "payment.student_roll"=>"required",
+
+    ];
+    }
 
     public function mount($id) {
         $this->student = Student::with(["personalDetails","academicDetails","hscSubs",
@@ -48,7 +62,9 @@ class extends Component {
 
     public function save()
     {
-        $this->validate();
+        $this->validate([
+            "file" => "required"
+        ]);
         $path = $this->file->store(path: 'public');
 
         $path = explode("public/",$path)[1];
@@ -102,7 +118,9 @@ class extends Component {
             "payment.paid"=>"required",
             "payment.discount"=>"required",
             "payment.month"=>"",
+            "payment.total"=>"",
             "payment.student_roll"=>"required",
+
         ]);
 
         try {
@@ -150,6 +168,7 @@ class extends Component {
 
            $due = Payment::where("student_roll",$id)->sum("due");
 
+
             if($due>0){
                 $this->total = $due;
             }
@@ -172,6 +191,10 @@ class extends Component {
         $this->payment = Payment::findOrFail($id);
         $this->paymodal=true;
         $this->isEdit=1;
+
+        $this->payment->recieved_by=auth()->user()->email;
+
+        // dd($this->payment);
 
     }
 
@@ -212,7 +235,8 @@ class extends Component {
         <x-form wire:submit="paySave">
             <x-choices label="Payment Type" single wire:model.live="payment.paymentType" :options='
             [["id"=>0,"name"=>"Monthly"],
-            ["id"=>1,"name"=>"Due Payment"]]' />
+            ["id"=>1,"name"=>"Due Payment"]
+            ]' />
 
             @if($payment->paymentType==1)
                 <x-input label="Due" readonly wire:model="total" />

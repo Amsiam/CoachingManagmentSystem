@@ -1,7 +1,7 @@
 <table>
     <thead style="text-align: center;">
         <tr>
-            <td rowspan="2" colspan="{{iterator_count($periods)+3}}"><h1>Tusher's Care</h1></td>
+            <td rowspan="2" colspan="{{iterator_count($periods)+6}}"><h1>Tusher's Care</h1></td>
         </tr>
         <tr></tr>
         <tr>
@@ -26,6 +26,10 @@
             <td>{{$loop->iteration}}</td>
             <td>{{$student->roll}}</td>
             <td>{{$student->name}}</td>
+
+            <td>{{$student->personalDetails->smobile}}</td>
+            <td>{{$student->personalDetails->smobile}}</td>
+            <td>{{$student->created_at}}</td>
 
             @foreach ($periods as $date)
 

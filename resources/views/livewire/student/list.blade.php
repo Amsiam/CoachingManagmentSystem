@@ -245,7 +245,8 @@ class extends Component {
         <x-form wire:submit="save">
             <x-choices label="Payment Type" single wire:model.live="payment.paymentType" :options='
             [["id"=>0,"name"=>"Monthly"],
-            ["id"=>1,"name"=>"Due Payment"]]' />
+            ["id"=>1,"name"=>"Due Payment"]
+            ]' />
 
             @if($payment->paymentType==1)
                 <x-input label="Due" readonly wire:model="total" />

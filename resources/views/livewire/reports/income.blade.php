@@ -35,7 +35,7 @@ class extends Component {
         $this->from = date("Y-m-d");
         $this->to = date("Y-m-d");
 
-        // $this->filterRecievedBy = auth()->user()->email;
+        $this->filterRecievedBy = auth()->user()->email;
     }
 
     #[Computed]
