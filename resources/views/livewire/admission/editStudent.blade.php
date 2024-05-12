@@ -61,6 +61,9 @@ class extends Component {
             'student.package_id' => 'required',
             "student.bn_name"=>"required",
 
+
+            "student.batch_id"=>"required",
+
             "course_ids" =>"",
             "other_batchs" =>"",
 
@@ -154,11 +157,44 @@ class extends Component {
 
         $this->validate();
 
+        $currentStudent = Student::find($this->student->id);
+
+        $roll = $currentStudent->roll;
+        $Cbatch = $currentStudent->batch_id;
+        if($currentStudent->batch_id!=$this->student->batch_id){
+            $roll = Student::where("package_id",$this->student->package_id)
+            ->where("batch_id",$this->student->batch_id)
+            ->where("year",$this->student->year)
+            ->max("roll");
+
+            if(!$roll){
+                $batch = Batch::find($this->student->batch_id);
+
+                if(!$batch){
+                    $this->error("Batch Not found");
+
+                    return;
+                }
+
+                $roll = ($this->student->year%1000).$batch->roll_current;
+
+            }else{
+
+            $roll = $roll + 1;
+            }
+        }
+
+
         try {
 
-            DB::transaction(function () {
+            DB::transaction(function () use($roll,$Cbatch){
+
+                $this->student->roll = $roll;
 
                 $this->student->save();
+                $this->student->batches()->detach($Cbatch);
+
+                $this->other_batchs = array_diff($this->other_batchs, [$Cbatch]);
 
                 array_push($this->other_batchs, $this->student->batch_id);
                 $this->student->batches()->sync($this->other_batchs);
@@ -243,6 +279,9 @@ $payTypes=[
                 <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups" wire:model.live="personal.group" />
 
             @endif
+
+            <x-choices label="Main Batch" wire:model="student.batch_id" :options="$this->batches" single />
+
 
         @if (count($other_batchs)>1)
                 <x-choices label="Other's Batch" wire:model="other_batchs" :options="$this->batches" />
