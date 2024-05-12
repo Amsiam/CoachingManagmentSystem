@@ -93,7 +93,7 @@
                 {{$bookSell->description}}
             </td>
 
-            <td>{{$payment->created_at}}</td>
+            <td>{{$bookSell->created_at}}</td>
             <td>{{$bookSell->added_by}}</td>
 
         </tr>
