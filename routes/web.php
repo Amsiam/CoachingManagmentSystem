@@ -7,7 +7,7 @@ use Livewire\Volt\Volt;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
     Route::prefix("/")->middleware("auth")->group(function(){
-        Route::view('/dashboard', 'dashboard')
+        Volt::route('/dashboard', 'dashboard')
         ->name('dashboard');
 
 
