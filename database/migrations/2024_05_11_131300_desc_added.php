@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->after("id",function($t) {
 
-                $t->string("description")->default("");
+                $t->string("description")->default("")->nullable();
 
             });
 

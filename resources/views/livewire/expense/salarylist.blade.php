@@ -45,9 +45,16 @@ class extends Component {
     }
 
      #[Computed]
-     public function expenses()
+     public function salaries()
     {
         return  Salary::whereBetween("date",[$this->from,$this->to])->paginate($this->perPage);
+    }
+
+    #[Computed]
+    public function totalSalary()
+    {
+        return  Salary::whereBetween("date",[$this->from,$this->to])
+        ->sum("amount");
     }
 
     public function modalClose(){
@@ -132,18 +139,25 @@ class extends Component {
         ["key"=>"desc","label"=>"Description"],
         ["key"=>"amount","label"=>"Amount"],
         ["key"=>"date","label"=>"Date"],
-    ]' :rows="$this->expenses" with-pagination >
+    ]' :rows="$this->salaries" with-pagination >
 
-    @scope("cell_id",$category)
+    @scope("cell_id",$salary)
     {{$this->loop->index+1}}
     @endscope
 
-    @scope('actions', $category)
+    @scope('actions', $salary)
     <div class="flex">
 
-        <x-button icon="o-pencil-square" @click="$wire.modalEditOpen({{ $category->id }})" spinner class="btn-sm btn-primary text-white" />
-        <x-button wire:confirm="Are you sure?" icon="o-trash" wire:click="delete({{ $category->id }})" spinner class="btn-sm btn-error text-white" />
+        <x-button icon="o-pencil-square" @click="$wire.modalEditOpen({{ $salary->id }})" spinner class="btn-sm btn-primary text-white" />
+        <x-button wire:confirm="Are you sure?" icon="o-trash" wire:click="delete({{ $salary->id }})" spinner class="btn-sm btn-error text-white" />
     </div>
     @endscope
     </x-table>
+
+    <table class="table table-zebra bold">
+        <tr>
+            <td colspan="2">Total</td>
+            <td colspan="2">{{$this->totalSalary}}</td>
+        </tr>
+    </table>
 </x-card>

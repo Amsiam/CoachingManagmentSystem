@@ -89,6 +89,14 @@ class extends Component {
         ->paginate($this->perPage);
     }
 
+     #[Computed]
+     public function totalSell()
+    {
+        return  BookSell::whereBetween("date",[$this->from,$this->to])
+        ->where("added_by",$this->addedBy)
+        ->sum("price");
+    }
+
 
     public function updated($property)
     {
@@ -107,6 +115,7 @@ class extends Component {
 
 
         $this->bookSell->date=date("Y-m-d");
+        $this->bookSell->description="";
         $this->books_selected=[];
         $this->modal=true;
     }
@@ -235,4 +244,11 @@ class extends Component {
     </div>
     @endscope
     </x-table>
+
+    <table class="table table-zebra bold">
+        <tr>
+            <td colspan="2">Total</td>
+            <td colspan="4">{{$this->totalSell}}</td>
+        </tr>
+    </table>
 </x-card>

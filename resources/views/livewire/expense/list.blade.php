@@ -59,6 +59,17 @@ class extends Component {
         )->whereBetween("date",[$this->from,$this->to])->paginate($this->perPage);
     }
 
+
+      #[Computed]
+      public function totalExpense()
+    {
+        return  Expense::when(
+            $this->type!=[],function($q) {
+                return $q->whereIn("type",$this->type);
+            }
+        )->whereBetween("date",[$this->from,$this->to])->sum("amount");
+    }
+
     public function modalClose(){
         $this->modal=false;
     }
@@ -173,4 +184,11 @@ class extends Component {
     </div>
     @endscope
     </x-table>
+
+    <table class="table table-zebra bold">
+        <tr>
+            <td colspan="2">Total</td>
+            <td class="bold" colspan="3">{{$this->totalExpense}}</td>
+        </tr>
+    </table>
 </x-card>
