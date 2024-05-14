@@ -283,7 +283,7 @@ $payTypes=[
             <x-choices label="Main Batch" wire:model="student.batch_id" :options="$this->batches" single />
 
 
-        @if (count($other_batchs)>1)
+        @if (count($other_batchs)>1 || count($course_ids)>1)
                 <x-choices label="Other's Batch" wire:model="other_batchs" :options="$this->batches" />
         @endif
 

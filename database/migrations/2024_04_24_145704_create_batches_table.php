@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string("time");
-            $table->integer("roll_start");
-            $table->integer("roll_current");
+            $table->string("roll_start")->max(11);
+            $table->string("roll_current")->max(11);
             $table->foreignId("group_id")->nullable()->constrained()->nullOnDelete();
             $table->foreignId("course_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
