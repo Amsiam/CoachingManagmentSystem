@@ -142,7 +142,7 @@ class extends Component {
                 <x-input label="Time" wire:model="batch.time" />
                 <x-input label="Roll Start" wire:model="batch.roll_start" />
 
-                <x-choices label="Course" wire:model.live="batch.course_id" single :options="$this->courses" />
+                <x-choices class="select-gray" label="Course" wire:model.live="batch.course_id" single :options="$this->courses" />
 
                 @if($groups)
                 <x-choices label="Group" wire:model="batch.group_id" single :options="$groups" />

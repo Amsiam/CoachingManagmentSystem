@@ -307,7 +307,7 @@ $payTypes=[
 
             @if($page==1)
             <div>
-        <x-choices class="input-sm" label="Academic Year" wire:model="student.year" :options="$academics_year" option-value="name" single />
+        <x-choices label="Academic Year" wire:model="student.year" :options="$academics_year" option-value="name" single />
 
         <div class="grid grid-cols-4 gap-4 justify-around p-4">
             @foreach ($this->courses as $course)

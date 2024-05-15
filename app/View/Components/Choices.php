@@ -225,7 +225,7 @@ class Choices extends Component
 
                             {{
                                 $attributes->except(['wire:model', 'wire:model.live'])->class([
-                                    "select select-bordered select-primary w-full h-fit pr-16 pb-1 pt-1.5 inline-block cursor-pointer relative flex-1",
+                                    "select select-bordered select-gray w-full h-fit pr-16 pb-1 pt-1.5 inline-block cursor-pointer relative flex-1",
                                     'border border-dashed' => $isReadonly(),
                                     'select-error' => $errors->has($errorFieldName()),
                                     'rounded-l-none' => $prepend,
