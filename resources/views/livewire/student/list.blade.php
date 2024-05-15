@@ -104,7 +104,15 @@ class extends Component {
         ->withSum("payments","due")
         ->when($this->search,function($q) {
             return $q->where("roll","like","%".$this->search."%")
-            ->orWhere("name","like","%".$this->search."%");
+            ->orWhere("name","like","%".$this->search."%")
+            ->orWhere(function ($qq) {
+                        return $qq->whereHas("personalDetails", function ($qqq) {
+                            return
+                                $qqq
+                                ->where("smobile", "like", "%" . $this->search . "%")
+                                ->orWhere("gmobile", "like", "%" . $this->search . "%");
+                        });
+        });
         })
         ->when($this->filterPackage,function($q) {
             return $q->where("package_id",$this->filterPackage);
