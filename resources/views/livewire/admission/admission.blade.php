@@ -103,7 +103,7 @@ class extends Component {
             "payment.paid"=>"required",
             "payment.payType"=>"required",
             "payment.paymentType"=>"",
-            "payment.discount"=>"",
+            "payment.discount"=>"required",
             "payment.due_date"=>"",
             "payment.remarks"=>"",
         ];
@@ -176,6 +176,10 @@ class extends Component {
 
 
     public function save() {
+
+        if($this->payment->discount==""){
+            $this->payment->discount = 0;
+        }
 
         $this->validate();
 
@@ -473,7 +477,7 @@ $payTypes=[
 
                     <tr>
                         <th class="text-right" colspan="2">বকেয়া</th>
-                        <td>{{$total - $payment->discount - $payment->paid}}</td>
+                        <td>{{$total - ($payment->discount==""?0:$payment->discount) - $payment->paid}}</td>
                     </tr>
 
                     <tr>

@@ -103,7 +103,7 @@ class extends Component {
             "payment.paid"=>"required",
             "payment.payType"=>"required",
             "payment.paymentType"=>"",
-            "payment.discount"=>"",
+            "payment.discount"=>"required",
             "payment.due_date"=>"",
             "payment.remarks"=>"",
         ];
@@ -134,7 +134,6 @@ class extends Component {
         $this->payment->payType="Hand";
         $this->payment->paymentType=2;
         $this->payment->paid=0;
-        $this->payment->discount=0;
     }
 
     public function next(){
@@ -154,6 +153,9 @@ class extends Component {
     public function prev(){
         $this->page--;
     }
+
+
+
 
     #[Computed]
     public function selectedCourses(){
@@ -176,6 +178,11 @@ class extends Component {
 
 
     public function save() {
+
+
+        if($this->payment->discount==""){
+            $this->payment->discount = 0;
+        }
 
         $this->validate();
 
@@ -453,7 +460,7 @@ $payTypes=[
                     <tr>
                         <th class="text-right" colspan="2">ছাড়</th>
                         <td>
-                            <x-input  class="input-sm" wire:model.live="payment.discount" />
+                            <x-input  class="input-sm"  wire:model.live="payment.discount" />
                         </td>
                     </tr>
                     <tr>
@@ -470,7 +477,7 @@ $payTypes=[
 
                     <tr>
                         <th class="text-right" colspan="2">বকেয়া</th>
-                        <td>{{$total - $payment->discount - $payment->paid}}</td>
+                        <td>{{$total - ($payment->discount?0:$payment->discount) - $payment->paid}}</td>
                     </tr>
 
                     <tr>

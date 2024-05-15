@@ -166,7 +166,10 @@ class extends Component {
     }
 
     public function save(){
+
+
         $this->validate();
+
 
         try {
             DB::transaction(function () {
