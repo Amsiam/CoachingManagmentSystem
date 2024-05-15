@@ -59,7 +59,7 @@ class extends Component {
             'student.year' => 'required',
             'student.name' => 'required',
             'student.package_id' => 'required',
-            "student.bn_name"=>"required",
+            "student.bn_name"=>"",
 
 
             "student.batch_id"=>"required",

@@ -58,7 +58,7 @@ class extends Component {
             'student.name' => 'required',
             'student.batch_id' => 'required',
             'student.package_id' => 'required',
-            "student.bn_name"=>"required",
+            "student.bn_name"=>"",
 
             "personal.student_id"=>"",
             "personal.fname"=>"",
@@ -143,7 +143,7 @@ class extends Component {
             'student.name' => 'required',
             'student.batch_id' => 'required',
             'student.package_id' => 'required',
-            "student.bn_name"=>"required",
+            "student.bn_name"=>"",
             "personal.smobile"=>"required",
             "personal.gmobile"=>"required",
             "course_ids" =>"required"
