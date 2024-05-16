@@ -490,7 +490,7 @@ $payTypes=[
 
                     <tr>
                         <th class="text-right" colspan="2">বকেয়া</th>
-                        <td>{{$total - ($payment->discount==""?0:$payment->discount) - $payment->paid}}</td>
+                        <td>{{$total - ($payment->discount==""?0:$payment->discount) - ($payment->paid==""?0:$payment->paid)}}</td>
                     </tr>
 
                     <tr>
