@@ -184,6 +184,10 @@ class extends Component {
             $this->payment->discount = 0;
         }
 
+        if($this->payment->paid==""){
+            $this->payment->paid = 0;
+        }
+
         $this->validate();
 
         $roll = Student::where("package_id",$this->student->package_id)

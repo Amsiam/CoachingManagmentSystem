@@ -190,6 +190,9 @@ class extends Component {
         if($this->payment->discount==""){
             $this->payment->discount = 0;
         }
+        if($this->payment->paid==""){
+            $this->payment->paid = 0;
+        }
 
         $this->validate();
 
