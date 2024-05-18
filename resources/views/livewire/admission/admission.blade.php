@@ -249,6 +249,9 @@ class extends Component {
 
                 $total = Course::whereIn("id",$this->course_ids)->sum("price");
 
+                if (count($this->course_ids)==2) {
+                        $total = 25000;
+                    }
                 $this->payment->total = $total;
                 $this->payment->recieved_by = auth()->user()->email;
 
@@ -455,6 +458,12 @@ $payTypes=[
                     $total += $course->price;
                 @endphp
                 @endforeach
+
+                @php
+                    if (count($this->course_ids)==2) {
+                        $total = 25000;
+                    }
+                @endphp
 
                     <tr>
                         <th class="text-right" colspan="2">মোট টাকা</th>
