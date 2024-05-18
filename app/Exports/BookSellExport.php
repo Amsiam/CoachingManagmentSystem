@@ -22,13 +22,16 @@ class BookSellExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultSt
     protected $from;
     protected $to ;
 
+    protected $addedBy=[] ;
+
 
     public function __construct(
-       $from,$to
+       $from,$to,$addedBy
         )
     {
         $this->from = $from;
         $this->to=$to;
+        $this->addedBy=$addedBy;
     }
 
 
@@ -96,6 +99,9 @@ class BookSellExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultSt
     {
 
         $sells = BookSell::whereBetween("date",[$this->from,$this->to])
+        ->when($this->addedBy!=[],function($q){
+            return $q->whereIn("added_by",$this->addedBy);
+        })
         ->get();
 
 

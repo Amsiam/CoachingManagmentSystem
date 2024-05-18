@@ -21,7 +21,7 @@ new
 class extends Component {
     use Toast,WithPagination;
 
-    public $addedBy;
+    public $addedBy=[];
 
     public $bookSell;
     public $price=0;
@@ -74,7 +74,9 @@ class extends Component {
         $this->from = date("Y-m-d");
         $this->to = date("Y-m-d");
 
-        $this->addedBy = auth()->user()->email;
+        if(!auth()->user()->can("report.excel")){
+            $this->addedBy = [auth()->user()->email];
+        }
 
         $this->search();
 
@@ -85,7 +87,9 @@ class extends Component {
      public function bookSells()
     {
         return  BookSell::whereBetween("date",[$this->from,$this->to])
-        ->where("added_by",$this->addedBy)
+        ->when($this->addedBy!=[],function($q){
+            return $q->whereIn("added_by",$this->addedBy);
+        })
         ->paginate($this->perPage);
     }
 
@@ -93,7 +97,9 @@ class extends Component {
      public function totalSell()
     {
         return  BookSell::whereBetween("date",[$this->from,$this->to])
-        ->where("added_by",$this->addedBy)
+        ->when($this->addedBy!=[],function($q){
+            return $q->whereIn("added_by",$this->addedBy);
+        })
         ->sum("price");
     }
 
@@ -101,6 +107,7 @@ class extends Component {
     public function updated($property)
     {
         $this->price =   Book::whereIn("id",$this->books_selected)->sum("price");
+        $this->bookSell->description = Book::whereIn("id",$this->books_selected)->get()->pluck("name")->implode(",");
     }
 
     public function modalClose(){
@@ -150,7 +157,8 @@ class extends Component {
     public function export(){
         return Excel::download(new BookSellExport(
             $this->from,
-            $this->to
+            $this->to,
+            $this->addedBy
         ),date("Y-m-d H:s a")."-book-sell-export.xlsx");
     }
 
@@ -159,7 +167,8 @@ class extends Component {
     public function pdf(){
         return Excel::download(new BookSellExport(
             $this->from,
-            $this->to
+            $this->to,
+            $this->addedBy
         ),date("Y-m-d H:s a")."-book-sell-export.pdf",\Maatwebsite\Excel\Excel::MPDF);
     }
 
@@ -215,7 +224,7 @@ class extends Component {
         ]' option-value="name" />
 
         <div class="w-80">
-            <x-choices label="Added By" :options="$this->users" option-value="email" single searchable wire:model.live="addedBy"  />
+            <x-choices label="Added By" :options="$this->users" option-value="email" searchable wire:model.live="addedBy"  />
         </div>
 
         <div class="flex justify-end">
