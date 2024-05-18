@@ -99,6 +99,7 @@ class extends Component {
 
         try {
             Student::find($id)->delete();
+            Payment::where("student_roll",$id)->delete();
         } catch (\Exception $err) {
             $this->error("Something error Happed");
         }
