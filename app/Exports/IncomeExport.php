@@ -78,16 +78,7 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
                                      ]
                                  ],
                              ],
-                'fill' => [
-                    'fillType' =>Fill::FILL_GRADIENT_LINEAR,
-                    'rotation' => 90,
-                    'startColor' => [
-                        'argb' => 'FFFFFF00',
-                    ],
-                    'endColor' => [
-                        'argb' => 'FFFFFF00',
-                    ],
-                ],
+
             ],
 
             3    => [
@@ -103,16 +94,7 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
                      ],
                  ],
                 'font' => ['bold' => true],
-                'fill' => [
-                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
-                    'rotation' => 90,
-                    'startColor' => [
-                        'argb' => 'FFADFF2F',
-                    ],
-                    'endColor' => [
-                        'argb' => 'FFADFF2F',
-                    ],
-                ],
+
             ],
 
         ];

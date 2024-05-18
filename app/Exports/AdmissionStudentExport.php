@@ -61,16 +61,7 @@ class AdmissionStudentExport implements FromView,ShouldAutoSize,WithStyles,WithD
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
                 'font' => ['bold' => true,"size"=>18],
-                'fill' => [
-                    'fillType' =>Fill::FILL_GRADIENT_LINEAR,
-                    'rotation' => 90,
-                    'startColor' => [
-                        'argb' => 'FFFFFF00',
-                    ],
-                    'endColor' => [
-                        'argb' => 'FFFFFF00',
-                    ],
-                ],
+
             ],
 
             3    => [
@@ -78,16 +69,7 @@ class AdmissionStudentExport implements FromView,ShouldAutoSize,WithStyles,WithD
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
                 'font' => ['bold' => true],
-                'fill' => [
-                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
-                    'rotation' => 90,
-                    'startColor' => [
-                        'argb' => 'FFADFF2F',
-                    ],
-                    'endColor' => [
-                        'argb' => 'FFADFF2F',
-                    ],
-                ],
+
             ],
 
         ];

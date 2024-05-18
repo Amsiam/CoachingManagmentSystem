@@ -64,7 +64,7 @@
         </tr>
 
         <tr>
-            <td bgcolor="#ADFF2F" colspan="8">Book sell Report</td>
+            <td  colspan="8">Book sell Report</td>
         </tr>
         <tr>
             <th></th>
@@ -107,8 +107,8 @@
             <td colspan="8">--</td>
         </tr>
         <tr >
-            <td bgcolor="#1ffdf0" colspan="3">Total</td>
-            <td bgcolor="#1ffdf0" colspan="5">{{$bookTotal + $total}}</td>
+            <td  colspan="3">Total</td>
+            <td  colspan="5">{{$bookTotal + $total}}</td>
          </tr>
 
     </tbody>
