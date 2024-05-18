@@ -27,7 +27,7 @@ class extends Component {
     public $from;
     public $to;
 
-    public $filterRecievedBy ;
+    public $filterRecievedBy=[] ;
     public $filterPaymentType ;
     public $filterPayType ;
 
@@ -35,7 +35,9 @@ class extends Component {
         $this->from = date("Y-m-d");
         $this->to = date("Y-m-d");
 
-        $this->filterRecievedBy = auth()->user()->email;
+        if(!auth()->user()->can("report.excel")){
+            $this->filterRecievedBy = [auth()->user()->email];
+        }
     }
 
     #[Computed]
@@ -57,8 +59,8 @@ class extends Component {
         ->when($this->to,function($q){
             return $q->whereDate("created_at","<=",$this->to);
         })
-        ->when($this->filterRecievedBy,function($q){
-            return $q->where("recieved_by",$this->filterRecievedBy);
+        ->when($this->filterRecievedBy!=[],function($q){
+            return $q->whereIn("recieved_by",$this->filterRecievedBy);
         })
         ->when($this->filterPayType,function($q){
             return $q->where("payType",$this->filterPayType);
@@ -146,7 +148,7 @@ class extends Component {
 
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
-                <x-choices label="Recieved By" :options="$this->users" option-value="email" single searchable wire:model.live="filterRecievedBy"  />
+                <x-choices label="Recieved By" :options="$this->users" option-value="email" searchable wire:model.live="filterRecievedBy"  />
             </div>
         </div>
     </div>

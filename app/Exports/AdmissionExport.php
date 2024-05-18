@@ -160,8 +160,8 @@ class AdmissionExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultS
             });
         })->when($this->filterAcademicYear,function($q) {
             return $q->where("year",$this->filterAcademicYear);
-        })->when($this->filterAddedBy,function($q) {
-            return $q->where("user_id",$this->filterAddedBy);
+        })->when($this->filterAddedBy!=[],function($q) {
+            return $q->whereIn("user_id",$this->filterAddedBy);
         })
         ->latest()->get();
 

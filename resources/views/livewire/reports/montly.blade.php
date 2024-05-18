@@ -30,7 +30,7 @@ class extends Component {
     public $filterCourse ;
     public $filterBatch ;
     public $filterAcademicYear;
-    public $filterAddedBy;
+    public $filterAddedBy=[];
 
 
     public function mount(){

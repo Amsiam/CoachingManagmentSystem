@@ -128,8 +128,8 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
         ->when($this->to,function($q){
             return $q->whereDate("created_at","<=",$this->to);
         })
-        ->when($this->filterRecievedBy,function($q){
-            return $q->where("recieved_by",$this->filterRecievedBy);
+        ->when($this->filterRecievedBy!=[],function($q){
+            return $q->whereIn("recieved_by",$this->filterRecievedBy);
         })
         ->when($this->filterPayType,function($q){
             return $q->where("payType",$this->filterPayType);
@@ -145,8 +145,8 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
         ->when($this->to,function($q){
             return $q->whereDate("created_at","<=",$this->to);
         })
-        ->when($this->filterRecievedBy,function($q){
-            return $q->where("added_by",$this->filterRecievedBy);
+        ->when($this->filterRecievedBy!=[],function($q){
+            return $q->whereIn("added_by",$this->filterRecievedBy);
         })->get();
 
         return view('exports.income', compact("payments","bookSells"));

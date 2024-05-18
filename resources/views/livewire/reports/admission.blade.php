@@ -41,13 +41,17 @@ class extends Component {
     public $filterCourse ;
     public $filterBatch ;
     public $filterAcademicYear;
-    public $filterAddedBy;
+    public $filterAddedBy=[];
 
 
 
     public function mount(){
         $this->from = date("Y-m-d");
         $this->to = date("Y-m-d");
+
+        if(!auth()->user()->can("report.excel")){
+            $this->filterAddedBy = [auth()->user()->email];
+        }
     }
 
     #[Computed]
@@ -116,8 +120,8 @@ class extends Component {
             });
         })->when($this->filterAcademicYear,function($q) {
             return $q->where("year",$this->filterAcademicYear);
-        })->when($this->filterAddedBy,function($q) {
-            return $q->where("user_id",$this->filterAddedBy);
+        })->when($this->filterAddedBy!=[],function($q) {
+            return $q->whereIn("user_id",$this->filterAddedBy);
         })
         ->latest()
         ->paginate($this->perPage);
@@ -190,7 +194,7 @@ class extends Component {
                 <x-choices label="Academic Year" :options="$academics_year" single wire:model.live="filterAcademicYear" option-value="name"  />
             </div>
             <div class="lg:w-1/2">
-                <x-choices label="Added By" :options="$this->users" single wire:model.live="filterAddedBy" option-value="email"  />
+                <x-choices label="Added By" :options="$this->users" wire:model.live="filterAddedBy" option-value="email"  />
             </div>
         </div>
     </div>
