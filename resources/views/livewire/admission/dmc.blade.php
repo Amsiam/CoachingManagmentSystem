@@ -134,6 +134,7 @@ class extends Component {
         $this->payment->payType="Hand";
         $this->payment->paymentType=2;
         $this->payment->paid=0;
+        $this->payment->discount=0;
     }
 
     public function next(){
@@ -491,7 +492,7 @@ $payTypes=[
 
                     <tr>
                         <th class="text-right" colspan="2">বকেয়া</th>
-                        <td>{{$total - ($payment->discount?0:$payment->discount) - ($payment->paid==""?0:$payment->paid)}}</td>
+                        <td>{{$total - ($payment->discount=="" ? 0:$payment->discount) - ($payment->paid==""?0:$payment->paid)}}</td>
                     </tr>
 
                     <tr>

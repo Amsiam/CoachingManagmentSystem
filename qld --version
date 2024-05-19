@@ -1,0 +1,22 @@
+[0;1;31m×[0m mysqld.service - MySQL Server
+     Loaded: loaded (]8;;file://nightmar3/usr/lib/systemd/system/mysqld.service/usr/lib/systemd/system/mysqld.service]8;;; [0;1;32menabled[0m; preset: [0;1;38;5;185mdisabled[0m)
+     Active: [0;1;31mfailed[0m (Result: exit-code) since Sun 2024-05-19 04:07:34 +06; 20s ago
+       Docs: ]8;;man:mysqld(8)man:mysqld(8)]8;;
+             ]8;;http://dev.mysql.com/doc/refman/en/using-systemd.htmlhttp://dev.mysql.com/doc/refman/en/using-systemd.html]8;;
+    Process: 28106 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+    Process: 28128 ExecStart=/usr/bin/mysqld $MYSQLD_OPTS [0;1;31m(code=exited, status=1/FAILURE)[0m
+   Main PID: 28128 (code=exited, status=1/FAILURE)
+     Status: "[0;1;36mServer shutdown complete (with return value = 1)[0m"
+      Error: 22 (Invalid argument)
+        CPU: 1.132s
+
+May 19 04:07:32 nightmar3 mysqld[28128]: 2024-05-18T22:07:32.380296Z 0 [Warning] [MY-013129] [Server] A message intended for a client cannot be sent there as no client-session is attached. Therefore, we're sending the information to the error-log instead: MY-003543 - The mysql.component table is missing or has an incorrect definition.
+May 19 04:07:32 nightmar3 mysqld[28128]: 2024-05-18T22:07:32.382886Z 0 [ERROR] [MY-010326] [Server] Fatal error: Can't open and lock privilege tables: Table 'mysql.user' doesn't exist
+May 19 04:07:32 nightmar3 mysqld[28128]: 2024-05-18T22:07:32.382968Z 0 [ERROR] [MY-010952] [Server] The privilege system failed to initialize correctly. For complete instructions on how to upgrade MySQL to a new version please see the 'Upgrading MySQL' section from the MySQL manual.
+May 19 04:07:32 nightmar3 mysqld[28128]: 2024-05-18T22:07:32.383159Z 0 [ERROR] [MY-010119] [Server] Aborting
+May 19 04:07:34 nightmar3 mysqld[28128]: 2024-05-18T22:07:34.199866Z 0 [System] [MY-010910] [Server] /usr/bin/mysqld: Shutdown complete (mysqld 8.2.0)  Source distribution.
+May 19 04:07:34 nightmar3 mysqld[28128]: 2024-05-18T22:07:34.201229Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+May 19 04:07:34 nightmar3 systemd[1]: [0;1;39m[0;1;31m[0;1;39mmysqld.service: Main process exited, code=exited, status=1/FAILURE[0m
+May 19 04:07:34 nightmar3 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mmysqld.service: Failed with result 'exit-code'.[0m
+May 19 04:07:34 nightmar3 systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start MySQL Server.[0m
+May 19 04:07:34 nightmar3 systemd[1]: mysqld.service: Consumed 1.132s CPU time.
