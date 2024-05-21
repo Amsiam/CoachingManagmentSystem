@@ -146,11 +146,14 @@ class extends Component {
         </div>
 
 
+        @can("report.excel")
+
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
                 <x-choices label="Recieved By" :options="$this->users" option-value="email" searchable wire:model.live="filterRecievedBy"  />
             </div>
         </div>
+        @endcan
     </div>
     @can("report.excel")
     <x-button class="btn-primary btn-sm" wire:click="export" >Export</x-button>

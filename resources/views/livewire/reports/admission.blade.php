@@ -189,6 +189,7 @@ class extends Component {
             </div>
         </div>
 
+        @can("report.excel")
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
                 <x-choices label="Academic Year" :options="$academics_year" single wire:model.live="filterAcademicYear" option-value="name"  />
@@ -197,6 +198,7 @@ class extends Component {
                 <x-choices label="Added By" :options="$this->users" wire:model.live="filterAddedBy" option-value="email"  />
             </div>
         </div>
+        @endcan
     </div>
 
     @can("report.excel")
