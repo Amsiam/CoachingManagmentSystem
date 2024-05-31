@@ -1,4 +1,4 @@
-<table>
+<table border="1" style="width:100%;border-collapse: collapse;text-align:center">
     <thead style="text-align: center;">
         <tr>
             <td rowspan="2" colspan="8"><h1>Tusher's Care</h1></td>

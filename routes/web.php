@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\BookSell;
 use App\Models\Payment;
 use App\Models\Student;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Picqer\Barcode\BarcodeGeneratorPNG;
@@ -77,6 +79,40 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
             return view("pdf.invoice", compact("payment", "barCode"));
         })->name("print.invoice");
+
+        Route::get("/report-income-pdf",function(Request $request){
+
+            $payments = Payment::with("student")
+            ->when($request->from,function($q)use($request){
+                return $q->whereDate("created_at",">=",$request->from);
+            })
+            ->when($request->to,function($q)use($request){
+                return $q->whereDate("created_at","<=",$request->to);
+            })
+            ->when($request->filterRecievedBy!="all",function($q)use($request){
+                return $q->whereIn("recieved_by",$request->filterRecievedBy);
+            })
+            ->when($request->filterPayType,function($q)use($request){
+                return $q->where("payType",$request->filterPayType);
+            })
+            ->when($request->filterPaymentType,function($q)use($request){
+                return $q->where("paymentType",$request->filterPaymentType);
+            })
+            ->latest()->get();
+
+            $bookSells = BookSell::when($request->from,function($q)use($request){
+                return $q->whereDate("created_at",">=",$request->from);
+            })
+            ->when($request->to,function($q)use($request){
+                return $q->whereDate("created_at","<=",$request->to);
+            })
+            ->when($request->filterRecievedBy!="all",function($q) use($request){
+                return $q->whereIn("added_by",$request->filterRecievedBy);
+            })->get();
+
+            return view("exports.income",compact("payments","bookSells"));
+
+        });
 
 
 

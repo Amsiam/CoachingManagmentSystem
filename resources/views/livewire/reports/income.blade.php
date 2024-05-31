@@ -109,13 +109,18 @@ class extends Component {
 
     public function exportPdf(){
 
-        return Excel::download(new IncomeExport(
-            $this->from,
-            $this->to ,
-            $this->filterRecievedBy ,
-            $this->filterPayType ,
-            $this->filterPaymentType
-        ),date("Y-m-d H:s a")."-Income-Export.pdf",\Maatwebsite\Excel\Excel::MPDF);
+        $recievedBy = "all";
+
+        if($this->filterRecievedBy){
+            $recievedBy = "";
+            foreach ($this->filterRecievedBy as $val) {
+                $recievedBy .=$val.",";
+            }
+        }
+
+        return redirect("/report-income-pdf?from=".$this->from."&to=".$this->to."&filterRecievedBy=".$recievedBy."&filterPayType=".$this->filterPayType."&filterPaymentType=".$this->filterPaymentType
+    );
+
     }
 
 };
