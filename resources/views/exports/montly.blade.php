@@ -8,6 +8,9 @@
             <th>#</th>
             <th>Roll</th>
             <th>Name</th>
+            <th>Student Mobile</th>
+            <th>Guardian Mobile</th>
+            <th>Admission Date</th>
 
             @foreach ($periods as $date)
                 <th>{{$date->format("F")}}</th>
@@ -28,7 +31,7 @@
             <td>{{$student->name}}</td>
 
             <td>{{$student->personalDetails->smobile}}</td>
-            <td>{{$student->personalDetails->smobile}}</td>
+            <td>{{$student->personalDetails->gmobile}}</td>
             <td>{{$student->created_at}}</td>
 
             @foreach ($periods as $date)
