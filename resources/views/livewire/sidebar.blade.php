@@ -37,6 +37,14 @@ state([
                     'hasMore' => false,
                     'permission'=>"student.dmc"
                 ],
+                [
+                    'title' => 'Admission Request',
+                    'icon' => 'o-home',
+                    'link' => '/admission/request',
+                    'hasMore' => false,
+                    'permission'=>"student.admissionRequest"
+                ],
+
             ],
         ],
         [

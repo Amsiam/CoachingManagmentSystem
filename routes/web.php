@@ -28,6 +28,9 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             Volt::route("/academics","admission.academics")->middleware("can:student.academics");
             Volt::route("/admission","admission.admission")->middleware("can:student.admission");
             Volt::route("/dmc","admission.dmc")->middleware("can:student.dmc");
+
+            Volt::route("/request","admission.admissionRequest")->middleware("can:student.admissionRequest");
+
         });
 
 
