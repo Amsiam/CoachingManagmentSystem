@@ -198,7 +198,7 @@ state([
             'icon' => 'o-home',
             'link' => '/slider',
             'hasMore' => false,
-            "permission"=>null
+            "permission"=>"slider"
         ],
     ],
 ]);
