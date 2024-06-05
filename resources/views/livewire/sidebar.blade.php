@@ -184,7 +184,14 @@ state([
                     "permission"=>"permission.list"
                 ]
             ],
-        ]
+],
+[
+            'title' => 'Slider',
+            'icon' => 'o-home',
+            'link' => '/slider',
+            'hasMore' => false,
+            "permission"=>null
+        ],
     ],
 ]);
 

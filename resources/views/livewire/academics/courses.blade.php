@@ -11,17 +11,24 @@ use App\Models\Classs;
 use App\Models\Course;
 use App\Models\Package;
 
+
+use Livewire\WithFileUploads;
+
+
 new
 #[Layout('layouts.app')]
 #[Title('Classes')]
 class extends Component {
-    use Toast, WithPagination;
+    use Toast, WithPagination,WithFileUploads;
 
      #[Locked]
      public $id;
 
     #[Validate('required')]
     public $course;
+
+    public $file;
+
 
 
     public bool $modal = false;
@@ -33,6 +40,9 @@ class extends Component {
             'course.price' => 'required',
             'course.package_id' => 'required',
             'course.classs_id' => '',
+            'course.longDesc' => '',
+            'course.shortDesc' => '',
+            "file"=>""
         ];
     }
 
@@ -47,6 +57,7 @@ class extends Component {
     public function createModalOpen(){
         $this->course = new Course();
         $this->course->package_id = 1;
+        $this->file = "";
 
         $this->modal = true;
     }
@@ -72,13 +83,14 @@ class extends Component {
     public function modalClose()
     {
         $this->modal = false;
+
     }
 
     public function editModalOpen($id)
     {
         $course = Course::find($id);
 
-
+        $this->file = "";
 
         if(!$course){
             $this->error("Course Not Found");
@@ -92,7 +104,17 @@ class extends Component {
     {
         $this->validate();
 
+        if($this->file){
+            $path = $this->file->store(path: 'public');
+
+            $path = explode("public/",$path)[1];
+
+
+            $this->course->image = $path;
+        }
+
         $course = $this->course->save();
+
 
 
         $this->success(title: 'Added successfully');
@@ -112,6 +134,7 @@ class extends Component {
 ?>
 
 
+<div>
 
 <x-card title="Courses" separator progress-indicator>
     <div class="flex justify-end">
@@ -125,8 +148,21 @@ class extends Component {
                 <x-choices label="Class" wire:model="course.classs_id" single :options="$this->classses" />
                 <x-choices label="Package" wire:model="course.package_id" single :options="$this->packages" />
 
+                    <x-textarea
+                    label="Short Description"
+                    wire:model="course.shortDesc"
+                    rows="5"
+                    inline />
+                    <x-textarea
+                    label="Long Description"
+                    wire:model="course.longDesc"
+                    rows="5"
+                    inline />
 
-
+                    <x-file wire:model.live="file"  label="Photo" accept="image/*"/>
+                    @if ($file)
+                        <img src="{{ $file->temporaryUrl() }}">
+                    @endif
 
                 <x-slot:actions>
                     {{-- Notice `onclick` is HTML --}}
@@ -160,3 +196,5 @@ class extends Component {
         @endscope
     </x-table>
 </x-card>
+
+</div>

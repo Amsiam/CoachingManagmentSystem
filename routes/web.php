@@ -58,6 +58,8 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         });
 
 
+        Volt::route("/slider","slider")->middleware("can:admin.list");
+
 
         Route::get('/print/idcard/{id}', function ($id) {
 
