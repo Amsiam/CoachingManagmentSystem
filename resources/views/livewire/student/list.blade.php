@@ -40,6 +40,9 @@ class extends Component {
     public $filterDue;
     public $filterAcademicYear;
 
+    public $paymentMonth;
+    public $paymentYear;
+
 
     public $type=[];
     public bool $modal = false;
@@ -56,6 +59,7 @@ class extends Component {
             "payment.discount"=>"required",
             "payment.month"=>"",
             "payment.student_roll"=>"required",
+            "payment.recieved_by"=>"required",
         ];
     }
 
@@ -168,6 +172,8 @@ class extends Component {
     public function save(){
 
 
+        $this->payment->month = $this->paymentYear."-".$this->paymentMonth."-02";
+
         $this->validate();
 
 
@@ -219,9 +225,8 @@ class extends Component {
 
         }else{
             $this->payment->paymentType = 0;
-
-            $this->payment->month = date("Y-m-d");
-
+            $this->paymentMonth = date("m");
+            $this->paymentYear = date("Y");
 
         }
         $this->payment->discount=0;
@@ -240,6 +245,21 @@ class extends Component {
 
 @php
     $academics_year =[["name"=>2024],["name"=>2025],["name"=>2026]];
+
+    $month = [
+        ["id"=>1,"name"=>date("F",strtotime("01-01-2024"))],
+        ["id"=>2,"name"=>date("F",strtotime("01-02-2024"))],
+        ["id"=>3,"name"=>date("F",strtotime("01-03-2024"))],
+        ["id"=>4,"name"=>date("F",strtotime("01-04-2024"))],
+        ["id"=>5,"name"=>date("F",strtotime("01-05-2024"))],
+        ["id"=>6,"name"=>date("F",strtotime("01-06-2024"))],
+        ["id"=>7,"name"=>date("F",strtotime("01-07-2024"))],
+        ["id"=>8,"name"=>date("F",strtotime("01-08-2024"))],
+        ["id"=>9,"name"=>date("F",strtotime("01-09-2024"))],
+        ["id"=>10,"name"=>date("F",strtotime("01-10-2024"))],
+        ["id"=>11,"name"=>date("F",strtotime("01-11-2024"))],
+        ["id"=>12,"name"=>date("F",strtotime("01-12-2024"))],
+];
 
 
     $row_dec = [
@@ -262,7 +282,10 @@ class extends Component {
             @if($payment->paymentType==1)
                 <x-input label="Due" readonly wire:model="total" />
             @else
-                <x-datetime label="Payment Month" wire:model="payment.month"  />
+            <x-choices label="Payment Year" :options="$academics_year" single wire:model.live="paymentYear" option-value="name"  />
+
+            <x-choices label="Payment Month" :options="$month" single wire:model.live="paymentMonth" option-value="id"  />
+
             @endif
             <x-input label="Discount" wire:model="payment.discount" />
             <x-input label="Amount" wire:model="payment.paid" />

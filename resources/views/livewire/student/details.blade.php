@@ -36,6 +36,10 @@ class extends Component {
     public bool $modal = false;
     public bool $paymodal = false;
 
+
+    public $paymentMonth;
+    public $paymentYear;
+
     public function rules(){
         return [
             "payment.paymentType"=>"required",
@@ -45,6 +49,7 @@ class extends Component {
             "payment.month"=>"",
             "payment.student_roll"=>"required",
             "payment.recieved_by"=>"",
+            "payment.edited_by"=>"",
 
     ];
     }
@@ -114,12 +119,14 @@ class extends Component {
     }
 
     public function paySave(){
+        $this->payment->month = $this->paymentYear."-".$this->paymentMonth."-02";
+
         $this->validate([
             "payment.paymentType"=>"required",
             "payment.payType"=>"required",
             "payment.paid"=>"required",
             "payment.discount"=>"required",
-            "payment.month"=>"",
+            "payment.month"=>"required",
             "payment.total"=>"",
             "payment.student_roll"=>"required",
             "payment.recieved_by"=>"",
@@ -180,7 +187,8 @@ class extends Component {
         }else{
             $this->payment->paymentType = 0;
 
-            $this->payment->month = date("Y-m-d");
+            $this->paymentMonth = date("m");
+            $this->paymentYear = date("Y");
 
         }
         $this->payment->discount=0;
@@ -196,7 +204,10 @@ class extends Component {
         $this->paymodal=true;
         $this->isEdit=1;
 
-        $this->payment->recieved_by=auth()->user()->email;
+        $this->paymentMonth = date("m",strtotime($this->payment->month));
+        $this->paymentYear = date("Y",strtotime($this->payment->month));
+
+        $this->payment->edited_by=auth()->user()->email;
 
         // dd($this->payment);
 
@@ -217,7 +228,25 @@ class extends Component {
 ?>
 
 
+@php
+        $academics_year =[["name"=>2024],["name"=>2025],["name"=>2026]];
 
+$month = [
+    ["id"=>1,"name"=>date("F",strtotime("01-01-2024"))],
+    ["id"=>2,"name"=>date("F",strtotime("01-02-2024"))],
+    ["id"=>3,"name"=>date("F",strtotime("01-03-2024"))],
+    ["id"=>4,"name"=>date("F",strtotime("01-04-2024"))],
+    ["id"=>5,"name"=>date("F",strtotime("01-05-2024"))],
+    ["id"=>6,"name"=>date("F",strtotime("01-06-2024"))],
+    ["id"=>7,"name"=>date("F",strtotime("01-07-2024"))],
+    ["id"=>8,"name"=>date("F",strtotime("01-08-2024"))],
+    ["id"=>9,"name"=>date("F",strtotime("01-09-2024"))],
+    ["id"=>10,"name"=>date("F",strtotime("01-10-2024"))],
+    ["id"=>11,"name"=>date("F",strtotime("01-11-2024"))],
+    ["id"=>12,"name"=>date("F",strtotime("01-12-2024"))],
+];
+
+@endphp
 
 
 <x-card title="Student Details" separator progress-indicator>
@@ -245,7 +274,9 @@ class extends Component {
             @if($payment->paymentType==1)
                 <x-input label="Due" readonly wire:model="total" />
             @else
-                <x-datetime label="Payment Month" wire:model="payment.month"  />
+                <x-choices label="Payment Year" :options="$academics_year" single wire:model.live="paymentYear" option-value="name"  />
+                <x-choices label="Payment Month" :options="$month" single wire:model.live="paymentMonth" option-value="id"  />
+
             @endif
             <x-input label="Discount" wire:model="payment.discount" />
             <x-input label="Amount" wire:model="payment.paid" />
