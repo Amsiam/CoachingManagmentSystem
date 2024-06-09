@@ -87,6 +87,11 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
         Route::get("/report-income-pdf",function(Request $request){
 
+            $recievedBy = $request->filterRecievedBy;
+            if($request->filterRecievedBy!="all"){
+                $recievedBy =  explode(",", $recievedBy);
+            }
+
             $payments = Payment::with("student")
             ->when($request->from,function($q)use($request){
                 return $q->whereDate("created_at",">=",$request->from);
@@ -94,8 +99,8 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             ->when($request->to,function($q)use($request){
                 return $q->whereDate("created_at","<=",$request->to);
             })
-            ->when($request->filterRecievedBy!="all",function($q)use($request){
-                return $q->whereIn("recieved_by",$request->filterRecievedBy);
+            ->when($request->filterRecievedBy!="all",function($q)use($request,$recievedBy){
+                return $q->whereIn("recieved_by",$recievedBy);
             })
             ->when($request->filterPayType,function($q)use($request){
                 return $q->where("payType",$request->filterPayType);
@@ -111,8 +116,8 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             ->when($request->to,function($q)use($request){
                 return $q->whereDate("created_at","<=",$request->to);
             })
-            ->when($request->filterRecievedBy!="all",function($q) use($request){
-                return $q->whereIn("added_by",$request->filterRecievedBy);
+            ->when($request->filterRecievedBy!="all",function($q) use($request,$recievedBy){
+                return $q->whereIn("added_by",$recievedBy);
             })->get();
 
             return view("exports.income",compact("payments","bookSells"));
