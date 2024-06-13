@@ -129,6 +129,7 @@ class MonlyExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyle
 
 
         $students = Student::with(["personalDetails","payments"=>fn($q)=>$q->where("month",">=",$this->start->format("Y-m-d"))->where("month","<",$this->end->format("Y-m-d"))])
+        ->where("active",1)
         ->when($this->package_id,function($q) {
             return $q->where("package_id",$this->package_id);
         })
