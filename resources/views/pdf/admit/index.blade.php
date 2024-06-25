@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admit Card Form</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
-            margin: 0px;
-            padding: 0px;
+            margin:1px;
             box-sizing: border-box;
             font-family: 'Source Sans Pro', sans-serif;
             text-decoration: none;
@@ -23,20 +23,24 @@
 
         .container {
             //background: rgba(246, 247, 248, 0.8);
-            width: 5.1in;
-            height: 7.3in;
             position: relative;
+
+            width: 200mm;
+            height: 289mm;
+
+            margin-left:auto;
+            margin-right:auto;
+            text-align:center;
+
 
 
         }
 
         .form {
-            border: 2px solid var(--textback);
-            height: 7.3in;
         }
 
         .contain {
-            padding: 20px;
+            padding: 30px;
         }
 
         .logo-part,
@@ -47,7 +51,7 @@
         }
 
         .admit {
-            margin-top: 15px;
+            margin-top: 30px;
         }
 
         .admit h3 {
@@ -60,8 +64,8 @@
         }
 
         .logo img {
-            width: 60px;
-            height: 62px;
+            width: 100px;
+            height: 72px;
             border: 1px solid var(--textback);
             border-top-left-radius: 45%;
             border-top-right-radius: 45%;
@@ -98,8 +102,8 @@
             float: right;
             display: grid;
             place-items: center;
-            width: 70px;
-            height: 90px;
+            width: 120px;
+            height: 130px;
             border: 1px solid var(--textback);
         }
 
@@ -137,7 +141,7 @@
         .table {
             text-align: center;
             align-items: center;
-            margin-top: -20px;
+            margin-top: -30px;
             width: 100%;
             border: 2px solid var(--textback);
             border-collapse: collapse;
@@ -148,7 +152,7 @@
         }
 
         .table th {
-            height: 20px;
+            height: 17px;
             padding: 5px;
         }
 
@@ -158,7 +162,7 @@
         }
 
         .table td {
-            height: 40px;
+            height: 28px;
         }
 
         .detail {
@@ -202,10 +206,23 @@
             margin-right:20px;
         }
     </style>
+
+    <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    @media print {
+      html, body {
+        width: 200mm;
+        height: 292mm;
+      }
+    }
+    </style>
 </head>
 
 <body>
-<div style="display: flex;flex-wrap: wrap;">
+<div style="width:210px;height:297px" style="display: block;flex-wrap: wrap;">
 
    @php
        $routines = "";
@@ -223,7 +240,7 @@
 
     @foreach ($exam->batch->students as $student)
 
-    <div style="flex: 45%;" class="container">
+    <div class="container">
 
         <div class="form">
 
@@ -244,12 +261,13 @@
                             @else
                             <img src="{{asset('assets/pdf/form/images/l.png')}}" width="225" alt="" >
                             @endif</div>
+                           <div align="center"><h2> <font color="blue"> FINAL MODEL TEST [ HSC-24 ] </font></h2></div>
                         <div class="admit">
                             <h3>Admit Card</h3>
                         </div>
 
                         <div class="box">
-                            @if($student->image) <img width="70" height="90" alt="photo" src=" {{ asset('storage/' . $student->image) }}"/>
+                            @if($student->image) <img width="115" height="125" alt="photo" src=" {{ asset('storage/' . $student->image) }}"/>
                             @else
                         Photo
                             @endif
@@ -269,18 +287,37 @@
             <div class="contain">
                 <div class="details-upper">
                     <div class="detail-left">
-                        <h3>Admit Card No <span>:</span>{{$exam->id."-".$student->roll}}</h3>
-
+                    <table>
+                        <tr>
+                            <th style="border:0;text-align:right">Admit Card No</th>
+                            <td>:</td>
+                            <td align="left">{{$exam->id."-".$student->roll}}</td>
+                        </tr>
+                         <tr>
+                            <th style="border:0;text-align:right">Roll</th>
+                            <td>:</td>
+                            <td align="left">{{$student->roll}}</td>
+                        </tr>
+                         <tr>
+                            <th style="border:0;text-align:right">Admit Issue Date</th>
+                            <td>:</td>
+                            <td align="left">{{$exam->created_at}}</td>
+                        </tr>
+                         <tr>
+                            <th style="border:0;text-align:right">Candidate's Name</th>
+                            <td>:</td>
+                            <td align="left">{{$student->name}}</td>
+                        </tr>
+                         <tr>
+                            <th style="border:0;text-align:right">Mobile No</th>
+                            <td>:</td>
+                            <td align="left">{{$student->personalDetails->smobile}}</td>
+                        </tr>
+                    </table>
                     </div>
                     <div class="details-right">
-                        <h3>Batch<span>:</span>{{$exam->batch->batch_name}}</h3>
+                        <h3> <font color="red">BATCH </font> <span>:</span>{{$exam->batch->name}}</h3>
                     </div>
-                </div>
-                <div class="details-bottom">
-
-                    <h3>Admit Issue Date<span>:</span>{{$exam->created_at}}</h3>
-                        <h3>Candidate's Name <span>:</span> {{$student->personal_details->name}}</h3>
-                        <h3>Mobile No<span>:</span>{{$student->personal_details->smobile}}</h3>
                 </div>
             </div>
 
@@ -301,18 +338,18 @@
             </div>
 
 
-            <div style="position: absolute;bottom:10px;" class="contain">
+            <div style="position: absolute;bottom:20px;" class="contain">
 
                 <div class="note">
                     <div class="nb">
-                        <h3>NB:</h3>
+                        <h2> <font color="red">NB:</font></font></h2>
                     </div>
-                    <div class="note-details">
+                    <div class="note-details" align="left">
                         <h3>* You must carry this admit card during the examination.</h3>
                         <h3>* This Admit card is not trasferable</h3>
                         <h3>* Admit card will be required for the above examination.</h3>
                     </div>
-                    <div style="margin-left:100px" class="signature">
+                    <div style="margin-left:200px" class="signature" align="right">
 
                         <hr class="border">
                         <h4>Exam Controller</h4>
@@ -325,109 +362,6 @@
     </div>
     @endforeach
 
-    @if(count($exam->batch->students)%2)
-
-    <div style="flex: 45%;" class="container">
-
-        <div class="form">
-
-            <div class="contain">
-
-                <div class="header">
-                    <div class="center">
-                        <div class="logo-part">
-                            {{-- <div class="logo">
-                                <img src="images/tusharcare.png" alt="">
-                            </div>
-                            <div class="text">
-                                <h1>তুষার'স কেয়ার</h1>
-                                <h3>একাডেমি এন্ড এডমিশন কেয়ার</h3>
-                            </div> --}}
-                            @if ($exam->package_id==3)
-                            <img src="{{asset('assets/pdf/form/images/d.png')}}" width="225" alt="" >
-                            @else
-                            <img src="{{asset('assets/pdf/form/images/l.png')}}" width="225" alt="" >
-                            @endif</div>
-                        <div class="admit">
-                            <h3>Admit Card</h3>
-                        </div>
-
-                        <div class="box">
-                            @if($student->image) <img width="70" height="90" alt="photo" src=" {{ asset('storage/' . $student->image) }}"/>
-                            @else
-                        Photo
-                            @endif
-                        </div>
-
-                    </div>
-                </div>
-
-
-            </div>
-
-            <!-- header end -->
-
-
-            <!-- horizontal end -->
-
-            <div class="contain">
-                <div class="details-upper">
-                    <div class="detail-left">
-                        <h3>Admit Card No :</h3>
-
-                    </div>
-                    <div class="details-right">
-                        <h3>Batch<span>:</span></h3>
-                    </div>
-                </div>
-                <div class="details-bottom">
-
-                    <h3>Admit Issue Date<span>:</span>{{$exam->created_at}}</h3>
-                        <h3>Candidate's Name <span>:</span> </h3>
-                        <h3>Mobile No<span>:</span></h3>
-                </div>
-            </div>
-
-            <!-- table star -->
-
-            <div class="contain">
-                <table class="table">
-                    <tr>
-                        <th width="10%">SL No</th>
-                        <th width="60%">Exam Name</th>
-                        <th width="30%">Exam Date</th>
-                    </tr>
-
-                    {!!$routines!!}
-
-
-                </table>
-            </div>
-
-
-            <div style="position: absolute;bottom:10px;" class="contain">
-
-                <div class="note">
-                    <div class="nb">
-                        <h3>NB:</h3>
-                    </div>
-                    <div class="note-details">
-                        <h3>* You must carry this admit card during the examination.</h3>
-                        <h3>* This Admit card is not trasferable</h3>
-                        <h3>* Admit card will be required for the above examination.</h3>
-                    </div>
-                    <div style="margin-left:100px" class="signature">
-
-                        <hr class="border">
-                        <h4>Exam Controller</h4>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-    @endif
 
 
 </div>

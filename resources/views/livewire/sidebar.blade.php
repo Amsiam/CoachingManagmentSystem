@@ -128,6 +128,28 @@ state([
                 ]
             ],
         ],
+
+        [
+            'title' => 'Exam',
+            'icon' => 'o-presentation-chart-bar',
+            'hasMore' => true,
+            'children' => [
+                [
+                    'title' => 'List',
+                    'icon' => 'o-home',
+                    'link' => '/exam',
+                    'hasMore' => false,
+                    "permission"=>"exam.list"
+                ],[
+                    'title' => 'Result',
+                    'icon' => 'o-home',
+                    'link' => '/result',
+                    'hasMore' => false,
+                    "permission"=>"exam.result"
+                ],
+            ],
+        ],
+
         [
             'title' => 'Academics Esentials',
             'icon' => 'o-cog-6-tooth',

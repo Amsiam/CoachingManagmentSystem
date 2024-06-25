@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\BookSell;
+use App\Models\Exam;
 use App\Models\Payment;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -47,6 +48,10 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Volt::route("/batches","academics.batches")->middleware("can:academics.batch");
 
 
+
+        Volt::route("/exam","exam.list")->middleware("can:exam.list");
+
+
         Route::prefix("/report")->group(function(){
             Volt::route("/income","reports.income")->middleware("can:report.income");
             Volt::route("/admission","reports.admission")->middleware("can:report.admission");
@@ -74,6 +79,8 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             return view("pdf.idcard", compact("student", "barCode"));
         })->name("pdf.id");
 
+
+
         Route::get('/print/invoice/{id}', function ($id) {
 
             $payment = Payment::with(["student", "student.batches", "student.courses", "student.personalDetails"])->findOrFail($id);
@@ -84,6 +91,18 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
             return view("pdf.invoice", compact("payment", "barCode"));
         })->name("print.invoice");
+
+
+        Volt::route("/exam/single/{id}","exam.single")->name("exam.single");
+
+        Route::get('/print/admit_card/{id}/{student?}', function ($id,$student=null) {
+            $exam = Exam::with(["exam_routines", "batch.students"=>fn($q)=>$q->when($student!="all",function($qq)use($student){
+                $qq->where("id",$student);
+            }), "batch:id,name", "batch.students.personalDetails:id,student_id,smobile"])
+            ->findOrFail($id);
+            // return $exam;
+            return view("pdf.admit.index", compact("exam"));
+        })->name("print.admit_card");
 
         Route::get("/report-income-pdf",function(Request $request){
 
