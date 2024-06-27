@@ -238,7 +238,7 @@
 
    @endphp
 
-    @foreach ($exam->batch->students as $student)
+    @foreach ($exam->batch->students->where("year",$exam->year) as $student)
 
     <div class="container">
 

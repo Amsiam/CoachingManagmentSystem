@@ -39,6 +39,7 @@ class extends Component {
             "routines.*.name" => "required",
             "routines.*.date" => "required",
             "routines.*.time" => "required",
+            "routines.*.mark" => "required",
         ];
     }
 
@@ -110,7 +111,8 @@ class extends Component {
 
     public function modalEditOpen($id){
         $this->exam = Exam::find($id);
-        $this->rountines = ExamRoutine::where("id",$this->exam->id)->select("name","id","date","time")->get()->toArray();
+        $this->routines = ExamRoutine::where("exam_id",$this->exam->id)->select("name","id","date","time","mark","exam_id")->get()->toArray();
+
         $this->modal=true;
     }
 
@@ -160,7 +162,7 @@ class extends Component {
 
 <x-card title="Exam" separator progress-indicator>
     <div class="flex justify-end">
-        <x-modal wire:model="modal" title="Add Exam" class="backdrop-blur">
+        <x-modal wire:model="modal" title="Add Exam" class="backdrop-blur" box-class="w-3/4 max-w-full">
 
             <x-form wire:submit.prevent="save">
 
@@ -198,12 +200,15 @@ class extends Component {
                 <x-input label="Year" wire:model="exam.year" />
 
                 <hr>
+                <div class="font-bold">Subjects</div>
 
                 @foreach ($routines as $key=>$value)
-                <div class="flex justify-center item-center">
+                <div class="flex justify-center item-center w-full gap-2">
                     <x-input label="Name" wire:model="routines.{{$key}}.name" />
                     <x-datetime label="Date" wire:model="routines.{{$key}}.date" />
                     <x-datetime type="time" label="Time" wire:model="routines.{{$key}}.time" />
+
+                    <x-input type="number" label="Mark" wire:model="routines.{{$key}}.mark" />
                     <div wire:confirm wire:click="deleteRoutine({{$key}})" class="btn btn-xs btn-error">X</div>
                 </div>
                 @endforeach

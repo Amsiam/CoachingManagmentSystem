@@ -21,21 +21,14 @@ class extends Component {
 
 
     public function mount($id) {
-        $this->exam =  Exam::with("batch.students")->findOrFail($id);
+        $this->exam =  Exam::findOrFail($id);
+
+        $this->exam->load(["batch.students"=>fn($q)=>$q->where("year",$this->exam->year)]);
+
     }
 
 
 
-     #[Computed]
-     public function students()
-    {
-        return  Student::where("package_id",$this->exam->package_id)
-        ->when($this->search,function($q) {
-            return $q->where("name","like","%".$this->search."%")
-            ->orWhere("roll","like","%".$this->search."%");
-        })
-        ->paginate($this->perPage);
-    }
 
 
 
@@ -53,12 +46,11 @@ class extends Component {
         <a href="{{route("print.admit_card",[$exam->id,"all"])}}" class="btn btn-primary btn-sm">Print All</a>
     </div>
 
-
     <x-table :headers='[
         ["key"=>"id","label"=>"#"],
         ["key"=>"name","label"=>"Name"],
         ["key"=>"roll","label"=>"Roll"],
-    ]' :rows="$exam->batch->students" >
+    ]' :rows="$exam->batch->students->where('year',$exam->year)" >
 
     @scope("cell_id",$student)
     {{$this->loop->index+1}}

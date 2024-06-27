@@ -31,4 +31,10 @@ class Exam extends Model
     public function exam_routines(){
         return $this->hasMany(ExamRoutine::class);
     }
+
+    public function result(){
+        return $this->hasOne(Result::class);
+    }
+
+
 }

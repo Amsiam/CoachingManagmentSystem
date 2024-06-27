@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_routines', function (Blueprint $table) {
+        Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->foreignId("exam_id")->constrained()->cascadeOnDelete();
-            $table->string("name");
-            $table->date("date");
-            $table->time("time");
-            $table->string("mark")->default(0);
+            $table->integer("status")->default(0)->comment("1:published,0:not published");
             $table->boolean("active")->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_routines');
+        Schema::dropIfExists('results');
     }
 };

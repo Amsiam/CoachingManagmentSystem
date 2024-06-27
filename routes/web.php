@@ -50,6 +50,8 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
 
         Volt::route("/exam","exam.list")->middleware("can:exam.list");
+        Volt::route("/result","exam.result")->middleware("can:exam.result");
+        Volt::route("/result/mark/{id}","exam.mark")->middleware("can:exam.result")->name("exam.result.mark");
 
 
         Route::prefix("/report")->group(function(){
@@ -96,11 +98,15 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Volt::route("/exam/single/{id}","exam.single")->name("exam.single");
 
         Route::get('/print/admit_card/{id}/{student?}', function ($id,$student=null) {
-            $exam = Exam::with(["exam_routines", "batch.students"=>fn($q)=>$q->when($student!="all",function($qq)use($student){
-                $qq->where("id",$student);
-            }), "batch:id,name", "batch.students.personalDetails:id,student_id,smobile"])
+            $exam = Exam::with(["exam_routines", "batch:id,name"])
             ->findOrFail($id);
-            // return $exam;
+
+            $exam->load(["batch.students"=>fn($q)=>$q->when($student!="all",function($qq)use($student){
+                return $qq->where("id",$student);
+            })->where("year",$exam->year),"batch.students.personalDetails:id,student_id,smobile"]);
+
+
+
             return view("pdf.admit.index", compact("exam"));
         })->name("print.admit_card");
 
