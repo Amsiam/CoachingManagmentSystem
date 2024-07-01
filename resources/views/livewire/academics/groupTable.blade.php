@@ -14,9 +14,15 @@ new
 class extends Component {
     use Toast,WithPagination;
 
-     #[Validate('required')]
-    public $name="";
+    public $group = [];
     public bool $modal = false;
+
+    public function rules()
+    {
+        return [
+            'group.name' => 'required',
+        ];
+    }
 
      #[Computed]
     public function groups()
@@ -28,14 +34,24 @@ class extends Component {
         $this->modal=false;
     }
 
+    public function modalOpen($id=null){
+
+        if(isset($id)){
+            $this->group = Group::find($id);
+        }else{
+            $this->group = new Group();
+        }
+
+        $this->modal=true;
+    }
+
     public function save(){
 
         $this->validate();
 
-        Group::create(["name"=>$this->name]);
+        $this->group->save();
 
         $this->success(title:"Added successfully");
-        $this->name="";
 
         $this->modalClose();
 
@@ -62,7 +78,7 @@ class extends Component {
 
             <x-form wire:submit.prevent="save">
 
-            <x-input label="Name" wire:model="name" />
+            <x-input label="Name" wire:model="group.name" />
 
 
 
@@ -76,7 +92,7 @@ class extends Component {
         </x-modal>
 
         {{-- Notice `onclick` is HTML --}}
-        <x-button label="Add Group" class="btn-primary btn-sm" @click="$wire.modal = true" />
+        <x-button label="Add Group" class="btn-primary btn-sm" wire:click="modalOpen()" />
     </div>
     <x-table :headers='[
         ["key"=>"id","label"=>"#"],
@@ -88,7 +104,11 @@ class extends Component {
     @endscope
 
     @scope('actions', $group)
-        <x-button wire:confirm="Are you sure?" icon="o-trash" wire:click="delete({{ $group->id }})" spinner class="btn-sm btn-error text-white" />
+    <div class="flex gap-1">
+        <x-button icon="o-pencil-square" class="btn-primary btn-xs" wire:click="modalOpen({{$group->id}})" />
+            <x-button wire:confirm="Are you sure?" icon="o-trash" wire:click="delete({{ $group->id }})" spinner class="btn-xs btn-error text-white" />
+
+    </div>
     @endscope
     </x-table>
 </x-card>

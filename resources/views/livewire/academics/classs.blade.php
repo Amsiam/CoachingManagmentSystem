@@ -15,11 +15,17 @@ new
 class extends Component {
     use Toast, WithPagination;
 
-    #[Validate('required')]
-    public $name = '';
+    public $classs = [];
 
     public $group_ids = [];
     public bool $modal = false;
+
+    public function rules()
+    {
+        return [
+            'classs.name' => 'required',
+        ];
+    }
 
     #[Computed]
     public function groups()
@@ -38,17 +44,30 @@ class extends Component {
         $this->modal = false;
     }
 
+    public function modalOpen($id=null)
+    {
+
+        if($id){
+            $this->classs = Classs::with("groups")->find($id);
+            $this->group_ids = $this->classs->groups->pluck("id");
+        }else{
+            $this->classs = new Classs();
+            $this->group_ids =[];
+        }
+
+
+        $this->modal = true;
+    }
+
     public function save()
     {
         $this->validate();
 
-        $class = Classs::create(['name' => $this->name]);
+        $this->classs->save();
 
-        $class->groups()->sync($this->group_ids);
+        $this->classs->groups()->sync($this->group_ids);
 
         $this->success(title: 'Added successfully');
-        $this->name = '';
-        $this->group_ids = [];
 
         $this->modalClose();
     }
@@ -71,7 +90,7 @@ class extends Component {
 
             <x-form wire:submit.prevent="save">
 
-                <x-input label="Name" wire:model="name" />
+                <x-input label="Name" wire:model="classs.name" />
 
                 <x-choices label="Groups" wire:model="group_ids" :options="$this->groups" allow-all />
 
@@ -87,7 +106,7 @@ class extends Component {
         </x-modal>
 
         {{-- Notice `onclick` is HTML --}}
-        <x-button label="Add Class" class="btn-primary btn-sm" @click="$wire.modal = true" />
+        <x-button label="Add Class" class="btn-primary btn-sm" wire:click="modalOpen" />
     </div>
     <x-table :headers="[
         ['key' => 'id', 'label' => '#'],
@@ -107,9 +126,12 @@ class extends Component {
             @endforeach
         @endscope
 
-        @scope('actions', $class)
+        @scope('actions', $class)<div class="flex gap-1">
+            <x-button icon="o-pencil-square" class="btn-primary btn-xs" wire:click="modalOpen({{$class->id}})" />
+
             <x-button wire:confirm="Are you sure?" icon="o-trash" wire:click="delete({{ $class->id }})" spinner
-                class="btn-sm btn-error text-white" />
+                class="btn-xs btn-error text-white" />
+                </div>
         @endscope
     </x-table>
 </x-card>
