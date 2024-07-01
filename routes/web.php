@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Volt\Volt;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
@@ -38,6 +39,43 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Volt::route("/student/list","student.list")->middleware("can:student.list");
 
         Volt::route("/student/{id}","student.details")->middleware("can:student.list");
+
+        Route::get("/student/image/{id}",function(Request $request, $id) {
+
+            $student = Student::findOrFail($id);
+            return view("student.image",compact("student"));
+        })->middleware("can:student.list")->name("student.image");
+
+        Route::post("/student/image/{id}",function(Request $request, $id) {
+
+            $student = Student::findOrFail($id);
+
+            $img = $request->image;
+            $folderPath = "public/";
+
+            $image_parts = explode(";base64,", $img);
+
+
+
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+
+            $image_base64 = base64_decode($image_parts[1]);
+            $fileName = uniqid().$student->roll . '.png';
+
+            $file = $folderPath . $fileName;
+            Storage::put($file, $image_base64);
+
+            $student->image = $fileName;
+
+            $student->save();
+
+
+            return redirect("student/".$student->id);
+
+        })->middleware("can:student.list")->name("student.image");
+
+
 
         Volt::route("/student/edit/{id}","admission.editStudent")->middleware("can:student.edit");
 

@@ -257,6 +257,7 @@ $month = [
         @if ($file)
             <img src="{{ $file->temporaryUrl() }}">
         @endif
+        <a class="btn btn-primary" href="{{route("student.image",$this->student->id)}}" >Webcam</a>
         <x-slot:actions>
             <x-button label="Cancel" @click="$wire.modal = false" />
             <x-button label="Confirm" wire:click="save" class="btn-primary" />
