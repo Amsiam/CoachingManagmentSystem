@@ -37,10 +37,12 @@
     <script>
         $(document).ready(function() {
             Webcam.set({
-                width: 490,
+                width: 350,
                 height: 350,
                 image_format: 'jpeg',
-                jpeg_quality: 90
+                jpeg_quality: 90,
+                crop_width:350,
+crop_height:350,
             });
             Webcam.attach('#my_camera');
         });
