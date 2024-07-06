@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AcademicYear;
 use App\Models\ExpenseCategory;
 use App\Models\Group;
 use App\Models\Package;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@admin.com',
         ]);
+
+        AcademicYear::create(["year"=>date("Y")]);
 
         Group::create(["name"=>"Science"]);
         Group::create(["name"=>"Arts"]);
@@ -78,6 +81,7 @@ class DatabaseSeeder extends Seeder
   array('name' => 'student.list','guard_name' => 'web'),
   array('name' => 'exam.list','guard_name' => 'web'),
   array('name' => 'exam.result','guard_name' => 'web'),
+  array('name' => 'academics.academic_year','guard_name' => 'web'),
           );
 
         foreach ($permissions as $pp) {

@@ -84,6 +84,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Volt::route("/classes","academics.classs")->middleware("can:academics.class");
         Volt::route("/courses","academics.courses")->middleware("can:academics.course");
         Volt::route("/batches","academics.batches")->middleware("can:academics.batch");
+        Volt::route("/academic_year","academics.academic_year")->middleware("can:academics.academic_year");
 
 
 

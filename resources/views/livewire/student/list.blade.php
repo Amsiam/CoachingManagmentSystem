@@ -12,6 +12,7 @@ use App\Models\Package;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\Batch;
+use App\Models\AcademicYear;
 
 use App\Models\Payment;
 
@@ -238,14 +239,15 @@ class extends Component {
 
 
 
-
+#[Computed]
+public function academics_years(){
+        return AcademicYear::where("active",true)->latest()->get();
+    }
 };
 
 ?>
 
 @php
-    $academics_year =[["name"=>2024],["name"=>2025],["name"=>2026]];
-
     $month = [
         ["id"=>1,"name"=>date("F",strtotime("01-01-2024"))],
         ["id"=>2,"name"=>date("F",strtotime("01-02-2024"))],
@@ -282,7 +284,7 @@ class extends Component {
             @if($payment->paymentType==1)
                 <x-input label="Due" readonly wire:model="total" />
             @else
-            <x-choices label="Payment Year" :options="$academics_year" single wire:model.live="paymentYear" option-value="name"  />
+            <x-choices label="Payment Year" :options="$this->academics_years" single wire:model.live="paymentYear" option-value="year" option-label="year" />
 
             <x-choices label="Payment Month" :options="$month" single wire:model.live="paymentMonth" option-value="id"  />
 
@@ -330,7 +332,7 @@ class extends Component {
                 <x-choices label="Due" :options="[['name'=>'Yes',],['name'=>'No']]" single wire:model.live="filterDue" option-value="name"  />
             </div>
             <div class="lg:w-1/2">
-                <x-choices label="Academic Year" :options="$academics_year" single wire:model.live="filterAcademicYear" option-value="name"  />
+                <x-choices label="Academic Year" :options="$this->academics_years" single wire:model.live="filterAcademicYear" option-value="year" option-label="year"  />
             </div>
         </div>
     </div>

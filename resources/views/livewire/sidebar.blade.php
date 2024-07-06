@@ -156,6 +156,13 @@ state([
             'hasMore' => true,
             'children' => [
                 [
+                    'title' => 'Academic Year',
+                    'icon' => 'o-home',
+                    'link' => '/academic_year',
+                    'hasMore' => false,
+                    "permission"=>"academics.academic_year"
+                ],
+                [
                     'title' => 'Group',
                     'icon' => 'o-home',
                     'link' => '/groups',

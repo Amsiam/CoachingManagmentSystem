@@ -9,6 +9,7 @@ use App\Models\Package;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\Batch;
+use App\Models\AcademicYear;
 
 
 use App\Exports\MonlyExport;
@@ -91,6 +92,12 @@ class extends Component {
         ),date("Y-m-d H:s a")."-monthly-export.pdf",\Maatwebsite\Excel\Excel::MPDF);
     }
 
+    #[Computed]
+    public function academics_years(){
+            return AcademicYear::where("active",true)->latest()->get();
+        }
+
+
 };
 
 ?>
@@ -98,16 +105,11 @@ class extends Component {
 
 
 <x-card title="Montly Report" separator progress-indicator>
-    @php
-    $academics_year =[["name"=>2024],["name"=>2025],["name"=>2026]];
-
-    @endphp
-
 
     <div>
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
-                <x-choices label="Academic Year" :options="$academics_year" single wire:model.live="filterAcademicYear" option-value="name"  />
+                <x-choices label="Academic Year" :options="$this->academics_years" single wire:model.live="filterAcademicYear" option-value="year" option-label="year" />
             </div>
             <div class="lg:w-1/2">
                 <x-choices label="Group" :options="$this->groups" single searchable wire:model.live="filterGroup"  />

@@ -15,6 +15,7 @@ use App\Models\AcademicDetail;
 use App\Models\PersonalDetail;
 use App\Models\HscSub;
 use App\Models\Payment;
+use App\Models\AcademicYear;
 
 
 use App\SMS\AdmissionSms;
@@ -274,14 +275,15 @@ class extends Component {
 
     }
 
-
+#[Computed]
+public function academics_years(){
+        return AcademicYear::where("active",true)->latest()->get();
+    }
 
 };
 ?>
 
 @php
-
-$academics_year =[["name"=>2024],["name"=>2025],["name"=>2026]];
 
 
     $blood_groups = [
@@ -314,7 +316,7 @@ $payTypes=[
 
             @if($page==1)
             <div>
-        <x-choices label="Academic Year" wire:model="student.year" :options="$academics_year" option-value="name" single />
+                <x-choices class="select-sm" label="Academic Year" wire:model="student.year" :options="$this->academics_years" option-value="year" option-label="year" single />
 
         <div class="grid grid-cols-4 gap-4 justify-around p-4">
             @foreach ($this->courses as $course)

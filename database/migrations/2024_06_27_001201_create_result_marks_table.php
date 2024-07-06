@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('result_marks', function (Blueprint $table) {
             $table->foreignId("result_id")->constrained()->cascadeOnDelete();
-            $table->foreignId("subject_id")->constrained("exam_routines")->cascadeOnDelete();
+            $table->foreignId("subject_id")->constrained("result_subjects")->cascadeOnDelete();
             $table->foreignId("student_id")->constrained()->cascadeOnDelete();
             $table->integer("cq")->default(0);
             $table->integer("mcq")->default(0);
+            $table->integer("practical")->default(0);
+            $table->boolean("is_optional")->default(false);
             $table->timestamps();
 
             $table->primary(["result_id","subject_id","student_id"]);

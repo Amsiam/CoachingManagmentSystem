@@ -12,6 +12,7 @@ use App\Models\Package;
 use App\Models\Batch;
 use App\Models\Course;
 use App\Models\Group;
+use App\Models\AcademicYear;
 
 new
 #[Layout('layouts.app')]
@@ -39,7 +40,10 @@ class extends Component {
             "routines.*.name" => "required",
             "routines.*.date" => "required",
             "routines.*.time" => "required",
-            "routines.*.mark" => "required",
+            "routines.*.cq_mark" => "required",
+            "routines.*.mcq_mark" => "required",
+            "routines.*.practical_mark" => "required",
+            "routines.*.code" => "required",
         ];
     }
 
@@ -111,7 +115,7 @@ class extends Component {
 
     public function modalEditOpen($id){
         $this->exam = Exam::find($id);
-        $this->routines = ExamRoutine::where("exam_id",$this->exam->id)->select("name","id","date","time","mark","exam_id")->get()->toArray();
+        $this->routines = ExamRoutine::where("exam_id",$this->exam->id)->select("name","id","date","time","cq_mark","mcq_mark","practical_mark","code","exam_id")->get()->toArray();
 
         $this->modal=true;
     }
@@ -153,7 +157,10 @@ class extends Component {
     }
 
 
-
+#[Computed]
+public function academics_years(){
+        return AcademicYear::where("active",true)->latest()->get();
+    }
 };
 
 ?>
@@ -197,18 +204,22 @@ class extends Component {
                 single
                 searchable />
                 <x-input label="Name" wire:model="exam.name" />
-                <x-input label="Year" wire:model="exam.year" />
+                <x-choices class="select-sm" label="Academic Year" wire:model="exam.year" :options="$this->academics_years" option-value="year" option-label="year" single />
+
 
                 <hr>
                 <div class="font-bold">Subjects</div>
 
                 @foreach ($routines as $key=>$value)
                 <div class="flex justify-center item-center w-full gap-2">
+                    <x-input type="number" label="Code" wire:model="routines.{{$key}}.code" />
                     <x-input label="Name" wire:model="routines.{{$key}}.name" />
                     <x-datetime label="Date" wire:model="routines.{{$key}}.date" />
                     <x-datetime type="time" label="Time" wire:model="routines.{{$key}}.time" />
 
-                    <x-input type="number" label="Mark" wire:model="routines.{{$key}}.mark" />
+                    <x-input type="number" label="Full Mark(CQ)" wire:model="routines.{{$key}}.cq_mark" />
+                    <x-input type="number" label="Full Mark(MCQ)" wire:model="routines.{{$key}}.mcq_mark" />
+                    <x-input type="number" label="Practical" wire:model="routines.{{$key}}.practical_mark" />
                     <div wire:confirm wire:click="deleteRoutine({{$key}})" class="btn btn-xs btn-error">X</div>
                 </div>
                 @endforeach

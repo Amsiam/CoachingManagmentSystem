@@ -29,6 +29,8 @@ class extends Component {
         return [
             "subjects.*.cq" => "required",
             "subjects.*.mcq" => "required",
+            "subjects.*.practical" => "required",
+            "subjects.*.is_optional" => "",
         ];
     }
 
@@ -76,7 +78,7 @@ class extends Component {
         $this->modal=false;
     }
     public function modalEditOpen($id){
-        $this->subjects = ResultMark::with("subject:id,name")
+        $this->subjects = ResultMark::with(["subject"=>fn($q)=>$q->select("id","name","code")->orderBy("code")])
         ->where("result_id",$this->resultId)
         ->where("student_id",$id)->get()->toArray();
 
@@ -91,7 +93,7 @@ class extends Component {
 
 <x-card title="Mark Entry" separator progress-indicator>
 
-    <x-modal wire:model="modal" title="Add Exam" class="backdrop-blur">
+    <x-modal wire:model="modal" title="Add Exam" class="backdrop-blur" box-class="w-3/4 max-w-full">
 
         <x-form wire:submit.prevent="save">
             <div class="font-bold">Subjects</div>
@@ -99,9 +101,12 @@ class extends Component {
             @foreach ($subjects as $key=>$subject)
 
             <div class="flex justify-center item-center w-full gap-2">
+                <x-input label="Code" wire:model="subjects.{{$key}}.subject.code" readonly />
                 <x-input label="Name" wire:model="subjects.{{$key}}.subject.name" readonly />
                 <x-input type="number" label="CQ Mark" wire:model="subjects.{{$key}}.cq" />
                 <x-input type="number" label="MCQ Mark" wire:model="subjects.{{$key}}.mcq" />
+                <x-input type="number" label="Practical" wire:model="subjects.{{$key}}.practical" />
+                <x-checkbox label="Optional?" wire:model="subjects.{{$key}}.is_optional" />
             </div>
             @endforeach
 

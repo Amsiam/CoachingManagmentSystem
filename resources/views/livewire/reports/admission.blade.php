@@ -15,6 +15,7 @@ use App\Models\Batch;
 use App\Models\User;
 
 use App\Models\Payment;
+use App\Models\AcademicYear;
 
 
 use App\SMS\PaymentSMS;
@@ -154,16 +155,17 @@ class extends Component {
         ),date("Y-m-d H:s a")."-admission-export.pdf",\Maatwebsite\Excel\Excel::MPDF);
     }
 
-
-
+#[Computed]
+public function academics_years(){
+        return AcademicYear::where("active",true)->latest()->get();
+    }
 };
+
+
 
 ?>
 
-@php
-    $academics_year =[["name"=>2024],["name"=>2025],["name"=>2026]];
 
-@endphp
 
 
 <x-card title="Student List" separator progress-indicator>
@@ -192,7 +194,7 @@ class extends Component {
         @can("report.excel")
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
-                <x-choices label="Academic Year" :options="$academics_year" single wire:model.live="filterAcademicYear" option-value="name"  />
+                <x-choices label="Academic Year" :options="$this->academics_years" single wire:model.live="filterAcademicYear" option-value="year" option-label="year"  />
             </div>
             <div class="lg:w-1/2">
                 <x-choices label="Added By" :options="$this->users" wire:model.live="filterAddedBy" option-value="email"  />
