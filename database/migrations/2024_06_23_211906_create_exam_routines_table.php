@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string("name");
             $table->date("date");
             $table->time("time");
-            $table->string("cq_mark")->default(0);
-            $table->string("mcq_mark")->default(0);
-            $table->string("practical_mark")->default(0);
             $table->boolean("active")->default(1);
             $table->timestamps();
             $table->softDeletes();

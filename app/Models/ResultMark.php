@@ -17,6 +17,6 @@ class ResultMark extends Model
     }
 
     public function subject(){
-        return $this->belongsTo(ExamRoutine::class,"subject_id");
+        return $this->belongsTo(ResultSubject::class,"subject_id");
     }
 }

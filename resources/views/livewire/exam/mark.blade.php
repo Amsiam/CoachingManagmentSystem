@@ -92,8 +92,13 @@ class extends Component {
 
 
 <x-card title="Mark Entry" separator progress-indicator>
+    <div class="flex justify-end">
 
-    <x-modal wire:model="modal" title="Add Exam" class="backdrop-blur" box-class="w-3/4 max-w-full">
+
+        <a href="{{route("print.result_sheet",[$resultId,"all"])}}" class="btn btn-primary btn-sm">Print All</a>
+    </div>
+
+    <x-modal wire:model="modal" title="Add Result" class="backdrop-blur" box-class="w-3/4 max-w-full">
 
         <x-form wire:submit.prevent="save">
             <div class="font-bold">Subjects</div>

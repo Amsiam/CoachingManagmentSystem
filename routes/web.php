@@ -3,6 +3,8 @@
 use App\Models\BookSell;
 use App\Models\Exam;
 use App\Models\Payment;
+use App\Models\Result;
+use App\Models\ResultMark;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -148,6 +150,17 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
             return view("pdf.admit.index", compact("exam"));
         })->name("print.admit_card");
+
+    Route::get('/print/result_sheet/{id}/{student_id?}', function ($id, $student_id = null) {
+        $result = Result::with(["exam", "resultSubjects" => fn ($q) => $q->where("first_part_id", null), "resultSubjects.has2ndPart", "resultSubjects.marks", "resultSubjects.has2ndPart.marks"])->findOrFail($id);
+        $resultStudents = Student::with(["personalDetails", "package"])->whereHas("result_marks", function ($q) use ($id) {
+            return $q->where("result_id", $id);
+        })->when($student_id != "all", function ($q) use ($student_id) {
+            return $q->where("id", $student_id);
+        })->get();
+
+        return view("pdf.result.index", compact("result", "resultStudents"));
+    })->name("print.result_sheet");
 
         Route::get("/report-income-pdf",function(Request $request){
 

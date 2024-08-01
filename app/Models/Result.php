@@ -19,4 +19,7 @@ class Result extends Model
     public function marks(){
         return $this->hasMany(ResultMark::class);
     }
+    public function resultSubjects(){
+        return $this->hasMany(ResultSubject::class);
+    }
 }

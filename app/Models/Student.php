@@ -75,4 +75,9 @@ class Student extends Authenticatable
     public function package(){
         return $this->belongsTo(Package::class);
     }
+
+    public function result_marks()
+    {
+        return $this->hasMany(ResultMark::class);
+    }
 }
