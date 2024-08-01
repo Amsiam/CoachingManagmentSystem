@@ -9,7 +9,7 @@ state([
             'icon' => 'o-home',
             'link' => '/dashboard',
             'hasMore' => false,
-            "permission"=>null
+            'permission' => null,
         ],
 
         [
@@ -22,29 +22,29 @@ state([
                     'icon' => 'o-home',
                     'link' => '/admission/academics',
                     'hasMore' => false,
-                    'permission'=>"student.academics"
-                ],[
+                    'permission' => 'student.academics',
+                ],
+                [
                     'title' => 'Admission',
                     'icon' => 'o-home',
                     'link' => '/admission/admission',
                     'hasMore' => false,
-                    'permission'=>"student.admission"
+                    'permission' => 'student.admission',
                 ],
                 [
                     'title' => 'Medical Admission',
                     'icon' => 'o-home',
                     'link' => '/admission/dmc',
                     'hasMore' => false,
-                    'permission'=>"student.dmc"
+                    'permission' => 'student.dmc',
                 ],
                 [
                     'title' => 'Admission Request',
                     'icon' => 'o-home',
                     'link' => '/admission/request',
                     'hasMore' => false,
-                    'permission'=>"student.admissionRequest"
+                    'permission' => 'student.admissionRequest',
                 ],
-
             ],
         ],
         [
@@ -52,7 +52,7 @@ state([
             'icon' => 'o-user-group',
             'link' => '/student/list',
             'hasMore' => false,
-            "permission"=>"student.list"
+            'permission' => 'student.list',
         ],
         [
             'title' => 'Expense',
@@ -64,20 +64,21 @@ state([
                     'icon' => 'o-home',
                     'link' => '/expense/list',
                     'hasMore' => false,
-                    "permission"=>"expense.list"
-                ],[
+                    'permission' => 'expense.list',
+                ],
+                [
                     'title' => 'Salary List',
                     'icon' => 'o-home',
                     'link' => '/expense/salary',
                     'hasMore' => false,
-                    "permission"=>"expense.salary.list"
+                    'permission' => 'expense.salary.list',
                 ],
                 [
                     'title' => 'Categories',
                     'icon' => 'o-home',
                     'link' => '/expense/categories',
                     'hasMore' => false,
-                    "permission"=>"expense.category.list"
+                    'permission' => 'expense.category.list',
                 ],
             ],
         ],
@@ -91,15 +92,15 @@ state([
                     'icon' => 'o-home',
                     'link' => '/book/list',
                     'hasMore' => false,
-                    "permission"=>"book.list"
-                ],[
+                    'permission' => 'book.list',
+                ],
+                [
                     'title' => 'Book Sell',
                     'icon' => 'o-home',
                     'link' => '/book/sell',
                     'hasMore' => false,
-                    "permission"=>"book.sell"
+                    'permission' => 'book.sell',
                 ],
-
             ],
         ],
         [
@@ -112,20 +113,22 @@ state([
                     'icon' => 'o-home',
                     'link' => '/report/admission',
                     'hasMore' => false,
-                    "permission"=>"report.admission"
-                ],[
+                    'permission' => 'report.admission',
+                ],
+                [
                     'title' => 'Income Report',
                     'icon' => 'o-home',
                     'link' => '/report/income',
                     'hasMore' => false,
-                    "permission"=>"report.income"
-                ],[
+                    'permission' => 'report.income',
+                ],
+                [
                     'title' => 'Montly Report',
                     'icon' => 'o-home',
                     'link' => '/report/montly',
                     'hasMore' => false,
-                    "permission"=>"report.monthly"
-                ]
+                    'permission' => 'report.monthly',
+                ],
             ],
         ],
 
@@ -139,13 +142,14 @@ state([
                     'icon' => 'o-home',
                     'link' => '/exam',
                     'hasMore' => false,
-                    "permission"=>"exam.list"
-                ],[
+                    'permission' => 'exam.list',
+                ],
+                [
                     'title' => 'Result',
                     'icon' => 'o-home',
                     'link' => '/result',
                     'hasMore' => false,
-                    "permission"=>"exam.result"
+                    'permission' => 'exam.result',
                 ],
             ],
         ],
@@ -160,38 +164,44 @@ state([
                     'icon' => 'o-home',
                     'link' => '/academic_year',
                     'hasMore' => false,
-                    "permission"=>"academics.academic_year"
+                    'permission' => 'academics.academic_year',
                 ],
                 [
                     'title' => 'Group',
                     'icon' => 'o-home',
                     'link' => '/groups',
                     'hasMore' => false,
-                    "permission"=>"academics.group"
+                    'permission' => 'academics.group',
                 ],
                 [
                     'title' => 'Classes',
                     'icon' => 'o-home',
                     'link' => '/classes',
                     'hasMore' => false,
-                    "permission"=>"academics.class"
+                    'permission' => 'academics.class',
                 ],
                 [
                     'title' => 'Course',
                     'icon' => 'o-home',
                     'link' => '/courses',
                     'hasMore' => false,
-                    "permission"=>"academics.course"
+                    'permission' => 'academics.course',
                 ],
                 [
                     'title' => 'Batch',
                     'icon' => 'o-home',
                     'link' => '/batches',
                     'hasMore' => false,
-                    "permission"=>"academics.batch"
+                    'permission' => 'academics.batch',
                 ],
             ],
-
+        ],
+        [
+            'title' => 'Send SmS',
+            'icon' => 'o-home',
+            'link' => '/sendsms',
+            'hasMore' => false,
+            'permission' => 'sendsms',
         ],
 
         [
@@ -204,30 +214,30 @@ state([
                     'icon' => 'o-home',
                     'link' => '/user/admin',
                     'hasMore' => false,
-                    "permission"=>"admin.list"
+                    'permission' => 'admin.list',
                 ],
                 [
                     'title' => 'Roles',
                     'icon' => 'o-home',
                     'link' => '/user/roles',
                     'hasMore' => false,
-                    "permission"=>"role.list"
+                    'permission' => 'role.list',
                 ],
                 [
                     'title' => 'Permissions',
                     'icon' => 'o-home',
                     'link' => '/user/permission',
                     'hasMore' => false,
-                    "permission"=>"permission.list"
-                ]
+                    'permission' => 'permission.list',
+                ],
             ],
-],
-[
+        ],
+        [
             'title' => 'Slider',
             'icon' => 'o-home',
             'link' => '/slider',
             'hasMore' => false,
-            "permission"=>"slider"
+            'permission' => 'slider',
         ],
     ],
 ]);
@@ -237,9 +247,9 @@ state([
 
 @php
 
-    function getPermissions($permission){
-
-        return $permission["permission"];
+    function getPermissions($permission)
+    {
+        return $permission['permission'];
     }
 
 @endphp
@@ -250,14 +260,12 @@ state([
 
             @foreach ($sidebarItems as $sidebarItem)
                 @if ($sidebarItem['hasMore'])
-
-                @php
-                    $allPermissions = array_map("getPermissions",$sidebarItem['children']);
-                @endphp
+                    @php
+                        $allPermissions = array_map('getPermissions', $sidebarItem['children']);
+                    @endphp
 
                     @canany($allPermissions)
-
-                    <x-menu-sub title="{{ $sidebarItem['title'] }}" icon="{{ $sidebarItem['icon'] }}">
+                        <x-menu-sub title="{{ $sidebarItem['title'] }}" icon="{{ $sidebarItem['icon'] }}">
                             @foreach ($sidebarItem['children'] as $child)
                                 @can($child['permission'])
                                     <x-menu-item title="{{ $child['title'] }}" icon="{{ $child['icon'] }}"
@@ -265,16 +273,12 @@ state([
                                 @endcan
                             @endforeach
                         </x-menu-sub>
-
-
                     @endcanany
-
                 @else
-
-                @can($sidebarItem['permission'])
-                    <x-menu-item title="{{ $sidebarItem['title'] }}" icon="{{ $sidebarItem['icon'] }}"
-                    link="{{ $sidebarItem['link'] }}" />
-                @endcan
+                    @can($sidebarItem['permission'])
+                        <x-menu-item title="{{ $sidebarItem['title'] }}" icon="{{ $sidebarItem['icon'] }}"
+                            link="{{ $sidebarItem['link'] }}" />
+                    @endcan
                 @endif
             @endforeach
         </x-menu>

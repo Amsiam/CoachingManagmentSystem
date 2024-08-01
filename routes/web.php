@@ -108,6 +108,8 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             Volt::route("/admin","user.admin")->middleware("can:admin.list");
         });
 
+    Volt::route("/sendsms", "sendsms")->middleware("can:sendsms");
+
 
         Volt::route("/slider","slider")->middleware("can:slider");
 
