@@ -19,6 +19,8 @@ class extends Component {
 
      #[Validate('required')]
     public $file="";
+
+    public $type=1;
     public bool $modal = false;
 
      #[Computed]
@@ -41,7 +43,7 @@ class extends Component {
         $path = explode("public/",$path)[1];
 
 
-        Slider::create(["image"=>$path]);
+        Slider::create(["image"=>$path,"type"=>$this->type]);
 
         $this->success(title:"Added successfully");
         $this->file="";
@@ -70,6 +72,8 @@ class extends Component {
         <x-modal wire:model="modal" title="Add Slider" class="backdrop-blur">
 
             <x-form wire:submit.prevent="save">
+                <x-select label="Type" :options='[["id"=>1,"name"=>"Slider"],["id"=>2,"name"=>"অবাক করা সাফল্যগাঁথা"]]' wire:model="type" />
+
                 <x-file wire:model.live="file"  label="Photo" accept="image/*"/>
                 @if ($file)
                     <img src="{{ $file->temporaryUrl() }}">
@@ -89,7 +93,8 @@ class extends Component {
     </div>
     <x-table :headers='[
         ["key"=>"id","label"=>"#"],
-        ["key"=>"image","label"=>"Image","class"=>"w-full"],
+        ["key"=>"image","label"=>"Image","class"=>"w-1/2"],
+        ["key"=>"type","label"=>"Type"],
     ]' :rows="$this->sliders" with-pagination >
 
     @scope("cell_id",$group)
@@ -98,6 +103,14 @@ class extends Component {
 
     @scope("cell_image",$slide)
     <img src="{{asset('storage/'.$slide->image)}}" width="100" height="100" />
+    @endscope
+
+    @scope("cell_type",$slide)
+        @if ($slide->type==1)
+            Slider
+        @elseif ($slide->type==2)
+        অবাক করা সাফল্যগাঁথা
+        @endif
     @endscope
 
     @scope('actions', $slide)

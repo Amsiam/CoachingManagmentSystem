@@ -112,6 +112,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
 
         Volt::route("/slider","slider")->middleware("can:slider");
+    Volt::route("/student_review", "student_review")->middleware("can:student_review");
 
 
         Route::get('/print/idcard/{id}', function ($id) {

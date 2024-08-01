@@ -239,6 +239,13 @@ state([
             'hasMore' => false,
             'permission' => 'slider',
         ],
+        [
+            'title' => 'Student Review',
+            'icon' => 'o-home',
+            'link' => '/student_review',
+            'hasMore' => false,
+            'permission' => 'student_review',
+        ],
     ],
 ]);
 
