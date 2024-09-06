@@ -2,11 +2,14 @@
 
 use App\Models\BookSell;
 use App\Models\Exam;
+use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use App\Models\Payment;
 use App\Models\Result;
 use App\Models\ResultMark;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Volt\Volt;
@@ -130,12 +133,23 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Route::get('/print/invoice/{id}', function ($id) {
 
             $payment = Payment::with(["student", "student.batches", "student.courses", "student.personalDetails"])->findOrFail($id);
+        $prevDue = 0;
+
+        if ($payment->paymentType == 1) {
+            $prevDue = Payment::where("id", "<", $payment->id)
+                ->where("student_roll", $payment->student_roll)
+                ->sum("total");
+
+            $prevDue -= Payment::where("id", "<", $payment->id)
+            ->where("student_roll", $payment->student_roll)
+            ->sum("paid");
+        }
 
             $generator = new BarcodeGeneratorPNG();
             $barCode = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($payment->student_roll, $generator::TYPE_CODE_128)) . '">';
 
 
-            return view("pdf.invoice", compact("payment", "barCode"));
+        return view("pdf.invoice", compact("payment", "barCode", "prevDue"));
         })->name("print.invoice");
 
 
@@ -172,7 +186,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
                 $recievedBy =  explode(",", $recievedBy);
             }
 
-            $payments = Payment::with("student")
+        $payments = Payment::with("student", "recievedBy")
             ->when($request->from,function($q)use($request){
                 return $q->whereDate("created_at",">=",$request->from);
             })
@@ -190,7 +204,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             })
             ->latest()->get();
 
-            $bookSells = BookSell::when($request->from,function($q)use($request){
+        $bookSells = BookSell::with("addedBy")->when($request->from, function ($q) use ($request) {
                 return $q->whereDate("created_at",">=",$request->from);
             })
             ->when($request->to,function($q)use($request){
@@ -200,7 +214,24 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
                 return $q->whereIn("added_by",$recievedBy);
             })->get();
 
-            return view("exports.income",compact("payments","bookSells"));
+        $dates = Expense::whereBetween("date", [$request->from, $request->to])
+        ->select("date")
+        ->groupBy("date")
+        ->get();
+
+        $expenses =  Expense::when(
+            $request->types != [],
+            function ($q) use ($request) {
+                return $q->whereIn("type", $request->types);
+            }
+        )->whereBetween("date", [$request->from, $request->to])
+        ->get();
+
+
+        $expenseCategories = ExpenseCategory::where("active", 1)->get();
+
+
+        return view("exports.income", compact("payments", "bookSells", "expenses", "expenseCategories", "dates"));
 
         });
 

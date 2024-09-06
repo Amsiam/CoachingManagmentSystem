@@ -322,9 +322,9 @@ span{
         <tr>
             <td>1</td>
             <td>আগের বকেয়া</td>
-            <td>{{-1*$payment->due}}
+            <td>{{$prevDue}}
                 @php
-                $total += -1*$payment->due;
+                $total += $prevDue;
             @endphp
             </td>
         </tr>
@@ -344,7 +344,7 @@ span{
 
         <br>
             <h1><strong>
-                @if ($payment->due>0)
+                @if ($prevDue - $payment->paid>0)
                     Partially Paid
                     @else
                     Paid
@@ -372,8 +372,8 @@ span{
             <td>Due. Tk.</td>
             <td class="auto">
 
-                @if ($payment->due>0)
-                {{$payment->due}}
+                @if ($prevDue - $payment->paid>0)
+                {{$prevDue - $payment->paid}}
                 @endif
             </td>
 
@@ -388,7 +388,7 @@ span{
 <div style="padding-bottom: 0;" class="contain">
 <div class="sign">
     <div class="name">
-        <h3>Prepared By <span>:</span> {{$payment->recieved_by}}</h3>
+        <h3>Prepared By <span>:</span> {{$payment?->recievedBy?->name}}</h3>
     </div>
     <div class="signature">
         <hr class="border">

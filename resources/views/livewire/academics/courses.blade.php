@@ -42,6 +42,7 @@ class extends Component {
             'course.classs_id' => '',
             'course.longDesc' => '',
             'course.shortDesc' => '',
+            'course.featured' => '',
             "file"=>""
         ];
     }
@@ -57,6 +58,7 @@ class extends Component {
     public function createModalOpen(){
         $this->course = new Course();
         $this->course->package_id = 1;
+        $this->course->featured = 0;
         $this->file = "";
 
         $this->modal = true;
@@ -96,12 +98,28 @@ class extends Component {
             $this->error("Course Not Found");
             return;
         }
+
+
+
         $this->course = $course;
+
+        if($this->course->featured){
+            $this->course->featured=true;
+        }else{
+            $this->course->featured=false;
+        }
         $this->modal = true;
     }
 
     public function save()
     {
+
+        if($this->course->featured){
+            $this->course->featured=1;
+        }else{
+            $this->course->featured=0;
+        }
+
         $this->validate();
 
         if($this->file){
@@ -163,6 +181,9 @@ class extends Component {
                     @if ($file)
                         <img src="{{ $file->temporaryUrl() }}">
                     @endif
+
+
+                <x-checkbox label="Featured Course?" wire:model="course.featured" right />
 
                 <x-slot:actions>
                     {{-- Notice `onclick` is HTML --}}
