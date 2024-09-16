@@ -262,13 +262,14 @@ class extends Component {
 
             $this->success(title:"Student added successfully");
 
+
+
             AdmissionSms::sendMessage($this->personal->smobile,$this->student->name,$roll,"12345678",$this->payment,"DMC Scholar");
 
             return $this->redirect("/student"."/".$this->student->id);
 
         } catch (\Exception $err) {
             DB::rollback();
-            dd($err->getMessage());
             $this->error(title:"Error",description:$err->getMessage());
         }
 
@@ -312,7 +313,7 @@ $payTypes=[
 
         <x-card title="Admission" separator progress-indicator>
 
-        <x-form wire:submit="save">
+        <x-form wire:confirm="Are you sure to save?" wire:submit="save">
 
             @if($page==1)
             <div>
