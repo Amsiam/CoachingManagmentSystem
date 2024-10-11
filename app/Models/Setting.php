@@ -11,4 +11,7 @@ class Setting extends Model
     use HasFactory,SoftDeletes;
 
     protected $guarded=["id"];
+
+
+
 }

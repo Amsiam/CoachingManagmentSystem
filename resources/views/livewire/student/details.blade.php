@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\AcademicYear;
 
 
+use App\Models\ActivityLog;
 use App\Models\Payment;
 
 use App\SMS\PaymentSMS;
@@ -104,6 +105,26 @@ class extends Component {
     public function delete($id) {
 
         try {
+
+            $student = Student::find($id);
+
+            $payments = Payment::where("student_roll",$id)->get();
+            ActivityLog::create(
+                [
+                    "user_id" =>auth()->user()->id,
+                    "performance" => "delete",
+                    "before_data" => $student
+                ]
+            );
+
+            ActivityLog::create(
+                [
+                    "user_id" =>auth()->user()->id,
+                    "performance" => "delete",
+                    "before_data" => $payments
+                ]
+            );
+
             Student::find($id)->delete();
             Payment::where("student_roll",$id)->delete();
         } catch (\Exception $err) {
@@ -141,6 +162,21 @@ class extends Component {
                 if($this->payment->paymentType==0){
                     $this->payment->total = $this->payment->paid;
                 }
+
+
+                if ($this->payment?->id) {
+
+                $old = Payment::find($this->payment->id);
+                    ActivityLog::create(
+                        [
+                            "user_id" =>auth()->user()->id,
+                            "performance" => "edit",
+                            "after_data" => $this->payment,
+                            "before_data" => $old
+                        ]
+                    );
+                }
+
                 $this->payment->save();
 
 
@@ -205,6 +241,8 @@ class extends Component {
         $this->paymodal=true;
         $this->isEdit=1;
 
+
+
         $this->paymentMonth = date("m",strtotime($this->payment->month));
         $this->paymentYear = date("Y",strtotime($this->payment->month));
 
@@ -217,6 +255,14 @@ class extends Component {
     public function deletePayment($id){
 
         $payment = Payment::findOrFail($id);
+
+        ActivityLog::create(
+                [
+                    "user_id" =>auth()->user()->id,
+                    "performance" => "delete",
+                    "before_data" => $payment
+                ]
+            );
 
         $payment->delete();
         $this->dispatch("refresh")->self();
