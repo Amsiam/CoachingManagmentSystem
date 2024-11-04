@@ -96,6 +96,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Volt::route("/exam","exam.list")->middleware("can:exam.list");
         Volt::route("/result","exam.result")->middleware("can:exam.result");
         Volt::route("/result/mark/{id}","exam.mark")->middleware("can:exam.result")->name("exam.result.mark");
+    Volt::route("/result/subject/mark/{id}", "exam.subjectMark")->middleware("can:exam.result")->name("exam.result.subject.mark");
 
     Volt::route("/auto-sms", "autosms")->name("auto.sms");
 
