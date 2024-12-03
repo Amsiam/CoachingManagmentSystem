@@ -45,6 +45,7 @@ class extends Component {
             "user.name"=>"required",
             "user.email"=>"required",
             "password"=>"required_if:isEdit,0",
+            "user.mobile"=>"required",
             "file"=>""
         ];
     }
@@ -164,7 +165,11 @@ class extends Component {
              wire:model="user.email" />
             @endif
 
+
+
             <x-input label="Password" wire:model="password" />
+
+            <x-input label="Mobile" wire:model="user.mobile" />
 
             <x-file wire:model.live="file" label="Photo" hint="Only Image" accept="image/png, image/jpeg" />
             @if ($file)
@@ -204,6 +209,7 @@ class extends Component {
         ["key"=>"image","label"=>"Image"],
         ["key"=>"name","label"=>"Name"],
         ["key"=>"email","label"=>"Email"],
+        ["key"=>"mobile","label"=>"Mobile"],
         ["key"=>"role","label"=>"Roles"],
         ["key"=>"permission","label"=>"Permissions"]
     ]' :rows="$this->users" with-pagination >
