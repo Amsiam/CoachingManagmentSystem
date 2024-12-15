@@ -16,9 +16,13 @@ Artisan::command('inspire', function () {
 Schedule::call(function () {
     $auto_sms_message = Setting::where("key", "auto_sms_message")->first()?->value ?? "";
     $auto_sms = Setting::where("key", "auto_sms")->first()?->value ?? false;
+    $auto_sms_course = explode(",", Setting::where("key", "auto_sms_course")->first()?->value ?? "");
 
     if ($auto_sms) {
         $students = Student::with(["courses", "batches", "personalDetails"])->where("package_id", 1)
+            ->whereHas("courses", function ($query) use ($auto_sms_course) {
+                $query->whereIn("course_id", $auto_sms_course);
+            })
             ->whereDoesntHave("payments", function ($query) {
                 $query->whereBetween("month", [now()->firstOfMonth(), now()->lastOfMonth()]);
             })->get();

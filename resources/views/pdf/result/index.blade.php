@@ -296,7 +296,6 @@
                                             <th>Theory</th>
                                             <th>Practical</th>
                                             <th>MCQ</th>
-                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -407,6 +406,12 @@
                                             <td></td>
                                             <td colspan="4">Result</td>
                                             <td>{{number_format((float)($gradeMark/$totalSub), 2, '.', '')}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="4">Total Marks</td>
+                                            <td>{{number_format(($totalSub), 2, '.', '')}}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
