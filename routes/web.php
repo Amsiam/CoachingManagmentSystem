@@ -2,15 +2,27 @@
 
 use App\Models\BookSell;
 use App\Models\Exam;
+use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use App\Models\Payment;
 use App\Models\Result;
 use App\Models\ResultMark;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Volt\Volt;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+
+
+Route::get('/link', function(){
+    
+    Artisan::call('storage:link');
+    
+});
+
+
 
     Route::prefix("/")->middleware("auth")->group(function(){
         Volt::route('/dashboard', 'dashboard')
@@ -81,6 +93,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
         Volt::route("/student/edit/{id}","admission.editStudent")->middleware("can:student.edit");
 
+        Volt::route("/auto-sms", "autosms")->name("auto.sms");
 
         Volt::route("/groups","academics.groupTable")->middleware("can:academics.group");
         Volt::route("/classes","academics.classs")->middleware("can:academics.class");
@@ -93,12 +106,15 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Volt::route("/exam","exam.list")->middleware("can:exam.list");
         Volt::route("/result","exam.result")->middleware("can:exam.result");
         Volt::route("/result/mark/{id}","exam.mark")->middleware("can:exam.result")->name("exam.result.mark");
+        Volt::route("/result/subject/mark/{id}", "exam.subjectMark")->middleware("can:exam.result")->name("exam.result.subject.mark");
+
 
 
         Route::prefix("/report")->group(function(){
             Volt::route("/income","reports.income")->middleware("can:report.income");
             Volt::route("/admission","reports.admission")->middleware("can:report.admission");
             Volt::route("/montly","reports.montly")->middleware("can:report.monthly");
+            Volt::route("/activity_log", "activity_log");
         });
 
 
@@ -130,19 +146,34 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         Route::get('/print/invoice/{id}', function ($id) {
 
             $payment = Payment::with(["student", "student.batches", "student.courses", "student.personalDetails"])->findOrFail($id);
+        $prevDue = 0;
+
+        if ($payment->paymentType == 1) {
+            $prevDue = Payment::where("id", "<", $payment->id)
+                ->where("student_roll", $payment->student_roll)
+                ->sum("total");
+
+            $prevDue -= Payment::where("id", "<", $payment->id)
+            ->where("student_roll", $payment->student_roll)
+            ->sum("paid");
+            $prevDue -= Payment::where("id", "<", $payment->id)
+            ->where("student_roll", $payment->student_roll)
+            ->sum("discount");
+
+        }
 
             $generator = new BarcodeGeneratorPNG();
             $barCode = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($payment->student_roll, $generator::TYPE_CODE_128)) . '">';
 
 
-            return view("pdf.invoice", compact("payment", "barCode"));
+        return view("pdf.invoice", compact("payment", "barCode", "prevDue"));
         })->name("print.invoice");
 
 
         Volt::route("/exam/single/{id}","exam.single")->name("exam.single");
 
         Route::get('/print/admit_card/{id}/{student?}', function ($id,$student=null) {
-            $exam = Exam::with(["exam_routines", "batch:id,name"])
+            $exam = Exam::with(["exam_routines", "batch:id,name","course:id,name"])
             ->findOrFail($id);
 
             $exam->load(["batch.students"=>fn($q)=>$q->when($student!="all",function($qq)use($student){
@@ -155,7 +186,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         })->name("print.admit_card");
 
     Route::get('/print/result_sheet/{id}/{student_id?}', function ($id, $student_id = null) {
-        $result = Result::with(["exam", "resultSubjects" => fn ($q) => $q->where("first_part_id", null), "resultSubjects.has2ndPart", "resultSubjects.marks", "resultSubjects.has2ndPart.marks"])->findOrFail($id);
+        $result = Result::with(["exam","exam.course", "resultSubjects" => fn ($q) => $q->where("first_part_id", null), "resultSubjects.has2ndPart", "resultSubjects.marks", "resultSubjects.has2ndPart.marks"])->findOrFail($id);
         $resultStudents = Student::with(["personalDetails", "package"])->whereHas("result_marks", function ($q) use ($id) {
             return $q->where("result_id", $id);
         })->when($student_id != "all", function ($q) use ($student_id) {
@@ -172,7 +203,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
                 $recievedBy =  explode(",", $recievedBy);
             }
 
-            $payments = Payment::with("student")
+        $payments = Payment::with("student", "recievedBy")
             ->when($request->from,function($q)use($request){
                 return $q->whereDate("created_at",">=",$request->from);
             })
@@ -190,7 +221,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             })
             ->latest()->get();
 
-            $bookSells = BookSell::when($request->from,function($q)use($request){
+        $bookSells = BookSell::with("addedBy")->when($request->from, function ($q) use ($request) {
                 return $q->whereDate("created_at",">=",$request->from);
             })
             ->when($request->to,function($q)use($request){
@@ -200,7 +231,24 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
                 return $q->whereIn("added_by",$recievedBy);
             })->get();
 
-            return view("exports.income",compact("payments","bookSells"));
+        $dates = Expense::whereBetween("date", [$request->from, $request->to])
+        ->select("date")
+        ->groupBy("date")
+        ->get();
+
+        $expenses =  Expense::when(
+            $request->types != [],
+            function ($q) use ($request) {
+                return $q->whereIn("type", $request->types);
+            }
+        )->whereBetween("date", [$request->from, $request->to])
+        ->get();
+
+
+        $expenseCategories = ExpenseCategory::where("active", 1)->get();
+
+
+        return view("exports.income", compact("payments", "bookSells", "expenses", "expenseCategories", "dates"));
 
         });
 

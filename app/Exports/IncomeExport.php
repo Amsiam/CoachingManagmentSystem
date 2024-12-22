@@ -103,7 +103,7 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
     public function view(): View
     {
 
-        $payments = Payment::with("student")
+        $payments = Payment::with("student", "recievedBy")
         ->when($this->from,function($q){
             return $q->whereDate("created_at",">=",$this->from);
         })
@@ -121,7 +121,7 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
         })
         ->latest()->get();
 
-        $bookSells = BookSell::when($this->from,function($q){
+        $bookSells = BookSell::with("addedBy")->when($this->from, function ($q) {
             return $q->whereDate("created_at",">=",$this->from);
         })
         ->when($this->to,function($q){
@@ -131,6 +131,17 @@ class IncomeExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyl
             return $q->whereIn("added_by",$this->filterRecievedBy);
         })->get();
 
-        return view('exports.income', compact("payments","bookSells"));
+        $dates = Expense::whereBetween("date", [$this->from, $this->to])
+        ->select("date")
+        ->groupBy("date")
+        ->get();
+
+        $expenses =  Expense::whereBetween("date", [$this->from, $this->to])
+        ->get();
+
+
+        $expenseCategories = ExpenseCategory::where("active", 1)->get();
+
+        return view('exports.income', compact("payments", "bookSells", "dates", "expenses", "expenseCategories"));
     }
 }

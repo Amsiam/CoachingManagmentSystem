@@ -106,6 +106,15 @@ class extends Component {
             "hsc_sub.sub2" => "",
             "hsc_sub.sub3" => "",
             "hsc_sub.sub4" => "",
+
+            "payment.student_roll"=>"",
+            "payment.total"=>"",
+            "payment.paid"=>"required",
+            "payment.payType"=>"required",
+            "payment.paymentType"=>"",
+            "payment.discount"=>"required",
+            "payment.due_date"=>"",
+            "payment.remarks"=>"",
         ];
     }
 
@@ -116,6 +125,8 @@ class extends Component {
 
     public function mount($id) {
         $this->student = Student::with(["courses","batches"])->findOrFail($id);
+
+        $this->payment = Payment::where("student_roll",$id)->where("paymentType",2)->first();
 
 
 
@@ -152,6 +163,23 @@ class extends Component {
         return Group::all();
     }
 
+    public function next(){
+        $this->validate([
+            'student.year' => 'required',
+            'student.name' => 'required',
+            'student.batch_id' => 'required',
+            'student.package_id' => 'required',
+            "student.bn_name"=>"",
+            "personal.smobile"=>"required",
+            "personal.gmobile"=>"required",
+            "course_ids" =>"required"
+    ]);
+    array_push($this->other_batchs,$this->student->batch_id);
+        $this->page++;
+    }
+    public function prev(){
+        $this->page--;
+    }
 
 
     public function save() {
@@ -212,6 +240,15 @@ class extends Component {
 
                 $this->hsc_sub->save();
 
+                $total = Course::whereIn("id",$this->course_ids)->sum("price");
+
+                if (count($this->course_ids)==2) {
+                        $total = 26000;
+                    }
+                $this->payment->total = $total;
+
+                $this->payment->save();
+
             });
 
             $this->success(title:"Student Updated successfully");
@@ -220,11 +257,17 @@ class extends Component {
 
         } catch (\Exception $err) {
             DB::rollback();
-            dd($err->getMessage());
             $this->error(title:"Error",description:$err->getMessage());
         }
 
 
+    }
+
+    #[Computed]
+    public function selectedCourses(){
+        return Course::with(["batches"=>fn($q)=>$q->whereIn("id",$this->other_batchs)])
+        ->whereIn("id",$this->course_ids)
+        ->get();
     }
 
 
@@ -264,7 +307,7 @@ $payTypes=[
 
         <x-card title="Student Edit" separator progress-indicator>
 
-        <x-form wire:submit="save">
+        <x-form wire:confirm="Are you sure to save?" wire:submit="save">
 
             @if($page==1)
             <div>
@@ -392,13 +435,94 @@ $payTypes=[
             </div>
         </div>
     </div>
+    @elseif ($page==2)
+
+        <div class="w-full overflow-x-scroll"></div>
+        <table class="table table-zebra border">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Batch Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                $total =0;
+            @endphp
+                @foreach ($this->selectedCourses as $course)
+                <tr>
+                    <th>{{$course->name}}</th>
+                    <td>{{$course->batches->pluck("name")->implode(',')}}</td>
+                    <td>{{$course->price}}</td>
+                </tr>
+                @php
+                    $total += $course->price;
+                @endphp
+                @endforeach
+
+                @php
+                    if (count($this->course_ids)==2) {
+                        $total = 26000;
+                    }
+                @endphp
+
+
+
+                    <tr>
+                        <th class="text-right" colspan="2">মোট টাকা</th>
+                        <td>{{$total}}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right" colspan="2">ছাড়</th>
+                        <td>
+                            <x-input  class="input-sm"  wire:model.live="payment.discount" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" colspan="2">পরিশোধ</th>
+                        <td><x-input  class="input-sm" wire:model.live="payment.paid" /></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right" colspan="2">পরিশোধের ধরণ</th>
+                        <td>
+                            <x-choices-offline class="input-sm" wire:model="payment.payType" :options="$payTypes" option-value="name" single searchable />
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right" colspan="2">বকেয়া</th>
+                        <td>{{$total - ($payment->discount=="" ? 0:$payment->discount) - ($payment->paid==""?0:$payment->paid)}}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right" colspan="2">বকেয়া পরিশোধের তারিখ</th>
+                        <td><x-datetime  class="input-sm" wire:model="payment.due_date" /></td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right" colspan="2">Remarks</th>
+                        <td><x-input  class="input-sm" wire:model="payment.remarks" /></td>
+                    </tr>
+
+
+            </tbody>
+        </table>
 
         @endif
         <x-slot:actions>
-            <div class="flex justify-end w-full">
+            @if ($page==1)
+            <x-button label="Next" @click="$wire.next()"  class="btn-primary" type="button"  />
+            @elseif($page==2)
+            <div class="flex justify-between w-full">
+
+                <x-button label="Prev" @click="$wire.prev()"  class="btn-warning" type="button"  />
 
                 <x-button label="Save"  class="btn-primary" type="submit"  />
             </div>
+            @endif
         </x-slot:actions>
 
         </x-form>

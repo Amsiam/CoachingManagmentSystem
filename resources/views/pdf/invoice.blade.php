@@ -305,9 +305,17 @@ span{
                 @endphp
             </td>
         </tr>
+        
         @endforeach
+        
+        @if(count($payment->student->courses)>=2)
+        @php
+            $total = $payment->total;
+        @endphp
+        @endif
 
         @elseif ($payment->paymentType==0)
+
         <tr>
             <td>1</td>
             <td>মাসিক বেতন ({{date("F",strtotime($payment->month))}})</td>
@@ -315,6 +323,7 @@ span{
                 {{$payment->total}}
                 @php
                     $total += $payment->total;
+
                 @endphp
             </td>
         </tr>
@@ -322,9 +331,9 @@ span{
         <tr>
             <td>1</td>
             <td>আগের বকেয়া</td>
-            <td>{{-1*$payment->due}}
+            <td>{{$prevDue}}
                 @php
-                $total += -1*$payment->due;
+                $total += $prevDue;
             @endphp
             </td>
         </tr>
@@ -344,7 +353,7 @@ span{
 
         <br>
             <h1><strong>
-                @if ($payment->due>0)
+                @if ($total - $payment->paid -$payment->discount>0)
                     Partially Paid
                     @else
                     Paid
@@ -358,7 +367,7 @@ span{
         <table class="table2" >
             <tr>
                 <td>Sub Total Tk.</td>
-                <td class="auto">{{$total}}</td>
+                <td class="auto">{{$total }}</td>
             </tr>
             <tr>
                 <td>Discount Tk.</td>
@@ -372,8 +381,10 @@ span{
             <td>Due. Tk.</td>
             <td class="auto">
 
-                @if ($payment->due>0)
-                {{$payment->due}}
+                @if ($total - $payment->paid -$payment->discount>0)
+                {{$total - $payment->paid -$payment->discount}}
+                @else
+                0
                 @endif
             </td>
 
@@ -388,7 +399,7 @@ span{
 <div style="padding-bottom: 0;" class="contain">
 <div class="sign">
     <div class="name">
-        <h3>Prepared By <span>:</span> {{$payment->recieved_by}}</h3>
+        <h3>Prepared By <span>:</span> {{$payment?->recievedBy?->name}}</h3>
     </div>
     <div class="signature">
         <hr class="border">

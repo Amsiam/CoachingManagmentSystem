@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div style="display: flex; gap: 10px;">
+    <div style="display: flex; gap: 3px;">
         <div
                         style="
                 height: 85mm;
@@ -72,9 +72,9 @@
 
                 <div style="position: relative;
                         top: 75px;
-                        left: 21px;
+                        left: 25px;
                         ">
-                    <img width="80%" src="data:image/png;base64,{{ $barCode }}" />
+                    <img width="75%" src="data:image/png;base64,{{ $barCode }}" />
                 </div>
             </div>
             <div style="z-index: 1;position: relative;
@@ -111,7 +111,7 @@
 
 @if ($student->package_id == 3)
 
-    <img width="100" height="90" src="{{ asset("assets/pdf/idcard/image/dmcscolar.png") }}" alt="">
+    <img width="100" height="100" src="{{ asset("assets/pdf/idcard/image/dmcscolar.png") }}" alt="">
 @else
 
 <img width="100" height="100" src="{{ asset("assets/pdf/idcard/image/tusharcare.png") }}" alt="">
@@ -119,28 +119,28 @@
 </div>
 
 <div style="position: fixed;
-top: 82px;
-left: 265px;">
+top: 90px;
+left: 255px;">
 
 @if ($student->package_id == 3)
 
     <img width="136" height="90" src="{{ asset("assets/img/idcard/DMC.png") }}" alt="">
 @else
 
-<img width="136" height="90" src="{{ asset("assets/img/idcard/TC.png") }}" alt="">
+<img width="136" height="75" src="{{ asset("assets/img/idcard/TC.png") }}" alt="">
 @endif
 </div>
 
 
 
             <div style="position: fixed;
-    top: 265px;
+    top: 270px;
     left: 240px;
 ">
                 @if ($student->package_id == 3)
                     <img width="185" height="60" src="{{ asset('assets/pdf/idcard/image/dmc.png') }}" />
                 @else
-                    <img width="185" height="60" src="{{ asset('assets/pdf/idcard/image/tc-logo.png') }}" />
+                    <img width="185" height="48" src="{{ asset('assets/pdf/idcard/image/tc-logo.png') }}" />
                 @endif
             </div>
         </div>

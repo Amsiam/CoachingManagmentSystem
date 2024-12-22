@@ -12,9 +12,15 @@ class ResultMark extends Model
 
     protected $guarded=["id"];
 
+    //cust is optional to boolean
+    protected $casts = [
+        "is_optional" => "boolean",
+    ];
+
     public function student(){
         return $this->belongsTo(Student::class);
     }
+
 
     public function subject(){
         return $this->belongsTo(ResultSubject::class,"subject_id");

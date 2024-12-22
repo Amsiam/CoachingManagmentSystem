@@ -112,8 +112,13 @@ new
                         });
                     })->when($this->filterAcademicYear, function ($q) {
                         return $q->where("year", $this->filterAcademicYear);
+                    })->when($this->filterDue == "Yes", function ($q) {
+                        return $q->whereDoesntHave("payments", function ($qq) {
+                            return $qq->whereBetween("month", [now()->firstOfMonth(), now()->lastOfMonth()]);
+                        });
                     });
             })
+
 
                 ->pluck("smobile")->implode(",");
 
@@ -174,6 +179,10 @@ new
             <div class="lg:w-1/2">
                 <x-choices label="Academic Year" :options="$this->academics_years" single wire:model.live="filterAcademicYear" option-value="year" option-label="year" />
             </div>
+            <div class="lg:w-1/2">
+                <x-choices label="DUE" :options="[['label'=>'Yes','value'=>'Yes'],['label'=>'No','value'=>'No']]" single wire:model.live="filterDue" option-value="value" option-label="label" />
+            </div>
+
         </div>
 
         <x-button wire:click="setnumber" label="Search" class="btn-primary" />

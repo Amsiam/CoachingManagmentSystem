@@ -6,7 +6,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\{Layout, Title,Computed,Validate};
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
-use App\Models\Book;
+use App\Models\{Book,ActivityLog};
 
 new
 #[Layout('layouts.app')]
@@ -65,8 +65,24 @@ class extends Component {
     public function save(){
 
         $this->validate();
+        $activity = null;
+
+        if ($this->book->id) {
+            $activity = ActivityLog::create(
+                [
+                    "user_id" =>auth()->user()->id,
+                    "performance" => "update",
+                    "before_data" => Book::find($this->book->id)
+                ]
+            );
+        }
 
         $this->book->save();
+
+        if ($activity) {
+            $activity->after_data = $this->book;
+            $activity->save();
+        }
 
         $this->success(title:"Added successfully");
 
@@ -76,7 +92,20 @@ class extends Component {
     }
 
     public function delete($id){
-        Book::find($id)->delete();
+        $book = Book::find($id);
+
+        //save in log
+
+        ActivityLog::create(
+                [
+                    "user_id" =>auth()->user()->id,
+                    "performance" => "delete",
+                    "before_data" => $book
+                ]
+            );
+
+        $book->delete();
+
         $this->success(title:"Deleted successfully");
     }
 

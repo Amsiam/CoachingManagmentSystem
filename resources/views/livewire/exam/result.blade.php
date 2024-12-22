@@ -267,6 +267,7 @@ class extends Component {
     <div class="flex">
 
         <a href="{{route("exam.result.mark",$result->id)}}" class="btn btn-xs btn-primary text-white">Mark Entry</a>
+        <a href="{{route("exam.result.subject.mark",$result->id)}}" class="btn btn-xs btn-primary text-white">Subject Mark Entry</a>
         <x-button wire:confirm="Are you sure?" icon="o-eye" wire:click="updateStatus({{ $result->id }})" spinner class="btn-xs btn-success text-white" />
         <x-button wire:confirm="Are you sure?" icon="o-trash" wire:click="delete({{ $result->id }})" spinner class="btn-xs btn-error text-white" />
     </div>

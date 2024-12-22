@@ -283,7 +283,7 @@ class extends Component {
 
         } catch (\Exception $err) {
             DB::rollback();
-            dd($err->getMessage());
+            // dd($err->getMessage());
             $this->error(title:"Error",description:$err->getMessage());
         }
 
@@ -322,7 +322,7 @@ $payTypes=[
 
         <x-card title="Admission" separator progress-indicator>
 
-        <x-form wire:submit="save">
+        <x-form wire:confirm="Are you sure to save?" wire:submit="save">
 
             @if($page==1)
             <div>
@@ -531,7 +531,7 @@ $payTypes=[
 
                 <x-button label="Prev" @click="$wire.prev()"  class="btn-warning" type="button"  />
 
-                <x-button label="Save"  class="btn-primary" type="submit"  />
+                <x-button  label="Save" type="submit" class="btn-primary"  />
             </div>
             @endif
         </x-slot:actions>

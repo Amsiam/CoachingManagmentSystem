@@ -84,6 +84,17 @@ class extends Component {
 
         $this->modal=true;
     }
+    
+     public function deleteSubject($key){
+
+
+        ResultMark::where("result_id",$this->resultId)
+        ->where("student_id",$this->subjects[$key]["student_id"])
+        ->where("subject_id",$this->subjects[$key]["subject_id"])
+        ->delete();
+
+       unset($this->subjects[$key]);
+    }
 
 };
 
@@ -112,6 +123,8 @@ class extends Component {
                 <x-input type="number" label="MCQ Mark" wire:model="subjects.{{$key}}.mcq" />
                 <x-input type="number" label="Practical" wire:model="subjects.{{$key}}.practical" />
                 <x-checkbox label="Optional?" wire:model="subjects.{{$key}}.is_optional" />
+                <x-button wire:confirm="Are you sure to delete this subject?" icon="o-trash" wire:click="deleteSubject({{$key}})" class="btn-xs btn-error " />
+            
             </div>
             @endforeach
 
@@ -140,9 +153,11 @@ class extends Component {
     {{$this->loop->index+1}}
     @endscope
 
-    @scope('actions', $mark)
+    @scope('actions', $mark,$resultId)
     <div class="flex">
         <x-button icon="o-pencil-square" @click="$wire.modalEditOpen({{ $mark->student_id }})" spinner class="btn-xs btn-primary text-white" />
+        
+        <a href="{{route("print.result_sheet",[$resultId,$mark->student_id])}}" class="btn btn-primary btn-xs">Print</a>
      </div>
     @endscope
     </x-table>

@@ -129,6 +129,13 @@ state([
                     'hasMore' => false,
                     'permission' => 'report.monthly',
                 ],
+                [
+                    'title' => 'Activity Log',
+                    'icon' => 'o-home',
+                    'link' => '/report/activity_log',
+                    'hasMore' => false,
+                    'permission' => 'report.activity_log',
+                ],
             ],
         ],
 
@@ -197,11 +204,25 @@ state([
             ],
         ],
         [
-            'title' => 'Send SmS',
+            'title' => 'SMS',
             'icon' => 'o-home',
-            'link' => '/sendsms',
-            'hasMore' => false,
-            'permission' => 'sendsms',
+            'hasMore' => true,
+            'children' => [
+                [
+                    'title' => 'Send SMS',
+                    'icon' => 'o-home',
+                    'link' => '/sendsms',
+                    'hasMore' => false,
+                    'permission' => 'sendsms',
+                ],
+                [
+                    'title' => 'Auto SMS',
+                    'icon' => 'o-home',
+                    'link' => '/auto-sms',
+                    'hasMore' => false,
+                    'permission' => 'sendsms',
+                ],
+            ],
         ],
 
         [

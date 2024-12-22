@@ -260,8 +260,9 @@
                             <img src="{{asset('assets/pdf/form/images/d.png')}}" width="225" alt="" >
                             @else
                             <img src="{{asset('assets/pdf/form/images/l.png')}}" width="225" alt="" >
-                            @endif</div>
-                           <div align="center"><h2> <font color="blue"> FINAL MODEL TEST [ HSC-24 ] </font></h2></div>
+                            @endif</div> 
+                            <br>
+                           <div align="center"><h2> <font color="blue"> {{$exam->name}}<br> {{$exam->course?->name}}  </font></h2></div>
                         <div class="admit">
                             <h3>Admit Card</h3>
                         </div>
@@ -289,27 +290,27 @@
                     <div class="detail-left">
                     <table>
                         <tr>
-                            <th style="border:0;text-align:right">Admit Card No</th>
+                            <th style="border:0;text-align:left">Admit Card No</th>
                             <td>:</td>
                             <td align="left">{{$exam->id."-".$student->roll}}</td>
                         </tr>
                          <tr>
-                            <th style="border:0;text-align:right">Roll</th>
+                            <th style="border:0;text-align:left">Roll</th>
                             <td>:</td>
                             <td align="left">{{$student->roll}}</td>
                         </tr>
                          <tr>
-                            <th style="border:0;text-align:right">Admit Issue Date</th>
+                            <th style="border:0;text-align:left">Admit Issue Date</th>
                             <td>:</td>
                             <td align="left">{{$exam->created_at}}</td>
                         </tr>
                          <tr>
-                            <th style="border:0;text-align:right">Candidate's Name</th>
+                            <th style="border:0;text-align:left">Candidate's Name</th>
                             <td>:</td>
                             <td align="left">{{$student->name}}</td>
                         </tr>
                          <tr>
-                            <th style="border:0;text-align:right">Mobile No</th>
+                            <th style="border:0;text-align:left">Mobile No</th>
                             <td>:</td>
                             <td align="left">{{$student->personalDetails->smobile}}</td>
                         </tr>
