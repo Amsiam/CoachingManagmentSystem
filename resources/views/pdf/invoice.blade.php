@@ -21,8 +21,7 @@
 
         .container {
             background: rgba(246, 247, 248, 0.8);
-            width: 5.1in;
-            height: 7.3in;
+            min-height: 11.69in;
         }
 
         .form {
@@ -109,11 +108,11 @@
             height: 3px;
             margin: 2px 0;
             border: 0 none;
-            width: 160px;
+            width: 100%;
         }
 
         .money {
-            width: 170px;
+            width: 100%;
             padding: 2px 0;
             border-radius: 10px;
             border: 1px solid var(--textback);
