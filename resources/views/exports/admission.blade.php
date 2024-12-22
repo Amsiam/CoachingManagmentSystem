@@ -1,7 +1,8 @@
 <table>
     <thead style="text-align: center;">
         <tr>
-            <td rowspan="2" colspan="8"><h1>Tusher's Care</h1></td>
+            <td rowspan="2" colspan="8">
+                <h1>Tusher's Care</h1></td>
         </tr>
         <tr></tr>
         <tr>

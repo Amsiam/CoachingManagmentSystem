@@ -65,6 +65,17 @@ class extends Component {
     public function save(){
 
         $this->validate();
+        $activity = null;
+
+        if ($this->book->id) {
+            $activity = ActivityLog::create(
+                [
+                    "user_id" =>auth()->user()->id,
+                    "performance" => "update",
+                    "before_data" => Book::find($this->book->id)
+                ]
+            );
+        }
 
         if ($this->book->id) {
             $activity = ActivityLog::create(

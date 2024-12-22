@@ -1,7 +1,7 @@
 <table>
     <thead style="text-align: center;">
         <tr>
-            <td rowspan="2" colspan="{{iterator_count($periods)+6}}"><h1>Tusher's Care</h1></td>
+            <td rowspan="2" colspan="{{iterator_count($periods)+6}}"><h1> <font face="hind siliguri" size="6"> তুষার’স কেয়ার </font>  <br>   <font face="hind siliguri" size="5"> একাডেমিক এন্ড এডমিশন  </font></h1></td>
         </tr>
         <tr></tr>
         <tr>

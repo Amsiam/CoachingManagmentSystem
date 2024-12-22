@@ -18,6 +18,7 @@ Schedule::call(function () {
     $auto_sms = Setting::where("key", "auto_sms")->first()?->value ?? false;
     $auto_sms_course = explode(",", Setting::where("key", "auto_sms_course")->first()?->value ?? "");
 
+
     if ($auto_sms) {
         $students = Student::with(["courses", "batches", "personalDetails"])->where("package_id", 1)
             ->whereHas("courses", function ($query) use ($auto_sms_course) {
@@ -25,7 +26,9 @@ Schedule::call(function () {
             })
             ->whereDoesntHave("payments", function ($query) {
                 $query->whereBetween("month", [now()->firstOfMonth(), now()->lastOfMonth()]);
-            })->get();
+            })
+            ->where("active", 1)
+            ->get();
 
         foreach ($students as $student) {
             $message = $auto_sms_message;

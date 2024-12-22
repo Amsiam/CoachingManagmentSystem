@@ -352,7 +352,7 @@ public function academics_years(){
         </div>
         <div class="flex justify-end">
 
-            <x-input label="Search" wire:model.live="search" />
+            <x-input label="Search" wire:model.live.debounce.500ms="search" />
         </div>
     </div>
     <x-table :headers='[

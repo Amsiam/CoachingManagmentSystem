@@ -1,12 +1,14 @@
 <table border="1" style="width:100%;border-collapse: collapse;text-align:center">
     <thead style="text-align: center;">
         <tr>
-            <td rowspan="2" colspan="8"><h1>Tusher's Care</h1></td>
+            <td rowspan="2" colspan="8">
+                 <font face="hind siliguri" size="6"> <b> তুষার’স কেয়ার</b> </font>  <br>   <font face="hind siliguri" size="5"> </font></td>
+                </td>
         </tr>
         <tr></tr>
 
         <tr>
-            <td colspan="8"><h1>Pay Report</h1></td>
+            <td colspan="8"><h1>Daily Report</h1></td>
         </tr>
         <tr>
             <th>#</th>

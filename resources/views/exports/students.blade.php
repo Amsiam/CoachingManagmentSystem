@@ -9,6 +9,7 @@
             <th>Name</th>
             <th>Student Number</th>
             <th>Gurdian Number</th>
+            <th>Batch</th>
             <th>Admission Date</th>
             <th>Amount Payable</th>
             <th>Paid</th>
@@ -24,6 +25,7 @@
             <td>{{$student->name}}</td>
             <td>{{$student->personalDetails->smobile}}</td>
             <td>{{$student->personalDetails->gmobile}}</td>
+              <td>{{$student->batches->pluck("name")->implode(",")}}</td>
             <td>{{$student->created_at}}</td>
             <td>{{$student->payments_sum_total - $student->payments_sum_discount}}</td>
             <td>{{$student->payments_sum_paid}}</td>

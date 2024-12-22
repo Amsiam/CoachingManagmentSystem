@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
 Options +FollowSymLinks
-RewriteEngine On
+RewriteEngine on
 
 RewriteCond %{REQUEST_URI} !^/public/
 

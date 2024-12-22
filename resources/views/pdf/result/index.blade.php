@@ -296,13 +296,15 @@
                                             <th>Theory</th>
                                             <th>Practical</th>
                                             <th>MCQ</th>
+                                            <th>Total </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php
                                             $gradeMark = 0;
                                             $totalSub = 0;
-                                            $gotFail=0;
+                                            $totalSubprev = 0;
+                                            $gotFail = 0;
                                         @endphp
                                         @foreach ($result->resultSubjects as $subject)
                                             <tr>
@@ -371,47 +373,48 @@
                                                 </td>
                                                 <td class="cent-align">
                                                     @php
-                                                        $grade = getPoint($subject,$student);
+                                                        $grade = getPoint($subject, $student);
 
-                                                        if(!$gotFail){
-                                                            if($subject->marks
-                                                                ->where('student_id', $student->id)
-                                                                ->first()->is_optional){
-                                                                $gradeMark+= max(0,$grade-2);
-                                                            }else{
-                                                                $gradeMark+=$grade;
-                                                                $totalSub++;
+                                                        if (!$gotFail) {
+                                                            if (
+                                                                $subject->marks
+                                                                    ->where('student_id', $student->id)
+                                                                    ->first()->is_optional
+                                                            ) {
+                                                                $gradeMark += max(0, $grade - 2);
+                                                                $totalSubprev = $totalSub;
+                                                            } else {
+                                                                $gradeMark += $grade;
+                                                                $totalSubprev++;
 
-                                                                if($grade==0){
-                                                                    $gradeMark=0;
+                                                                if ($grade == 0) {
+                                                                    $gradeMark = 0;
                                                                     $gotFail = 1;
                                                                 }
                                                             }
                                                         }
 
-
-
                                                     @endphp
 
 
-                                                {{getGrade($grade)}}
+                                                    {{ getGrade($grade) }}
                                                 </td>
                                             </tr>
                                         @endforeach
 
                                     </tbody>
-                                    <tfoot >
+                                    <tfoot>
                                         <tr>
                                             <td></td>
                                             <td></td>
                                             <td colspan="4">Result</td>
-                                            <td>{{number_format((float)($gradeMark/$totalSub), 2, '.', '')}}</td>
+                                            <td>{{ number_format((float) ($gradeMark / $totalSubprev), 2, '.', '') }}</td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td></td>
                                             <td colspan="4">Total Marks</td>
-                                            <td>{{number_format(($totalSub), 2, '.', '')}}</td>
+                                            <td>{{ $totalSub }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

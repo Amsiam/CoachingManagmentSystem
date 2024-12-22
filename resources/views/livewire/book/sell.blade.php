@@ -42,7 +42,7 @@ class extends Component {
 
         $this->bookSearchable = Book::query()
             ->where('name', 'like', "%$value%")
-            ->take(5)
+            
             ->orderBy('name')
             ->get()
             ->merge($selectedOption);
