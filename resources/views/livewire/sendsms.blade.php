@@ -22,6 +22,7 @@ use App\SMS\PaymentSMS;
 
 use App\Exports\AdmissionStudentExport;
 use App\Models\PersonalDetail;
+use Livewire\WithFileUploads;
 use Xenon\LaravelBDSms\Facades\SMS;
 
 new
@@ -29,7 +30,7 @@ new
     #[Title("Groups")]
     class extends Component
     {
-        use Toast, WithPagination;
+        use Toast, WithPagination, WithFileUploads;
 
         public $filterPackage;
         public $filterGroup;
@@ -38,8 +39,11 @@ new
         public $filterDue;
         public $filterAcademicYear;
 
+        public $filterSendTo = "Student";
         public $number;
         public $message;
+
+        public $excelFile;
 
 
 
@@ -117,14 +121,39 @@ new
                             return $qq->whereBetween("month", [now()->firstOfMonth(), now()->lastOfMonth()]);
                         });
                     });
-            })
+            })->get();
 
+            if ($this->filterSendTo == "Student") {
+                $stud = $stud->pluck("smobile")->implode(",");
+            } else {
 
-                ->pluck("smobile")->implode(",");
-
-
-
+                $stud = $stud->pluck("gmobile")->implode(",");
+            }
             return $stud;
+        }
+
+        public function updatedExcelFile()
+        {
+            if ($this->excelFile) {
+                $this->excelFile = $this->excelFile->store("temp");
+
+                //read excel file
+                $reader  = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $this->excelFile));
+                $sheet    = $reader->getActiveSheet();
+                $rows     = $sheet->toArray();
+
+                $numArray = [];
+
+                foreach ($rows as $row) {
+                    $numArray[] = $row[0];
+                }
+
+                $this->number = implode(",", $numArray);
+
+                if ($this->excelFile) {
+                    unlink(storage_path('app/' . $this->excelFile));
+                }
+            }
         }
 
 
@@ -152,6 +181,7 @@ new
 
 
 <x-card title="Student List" separator progress-indicator>
+
 
 
     <div>
@@ -185,7 +215,18 @@ new
 
         </div>
 
+
+        <div class="lg:w-1/2">
+
+            <x-choices label="SEND TO" :options="[['label'=>'Student','value'=>'Student'],['label'=>'Guardian','value'=>'Guardian']]" single wire:model.live="filterSendTo" option-value="value" option-label="label" />
+        </div>
+
         <x-button wire:click="setnumber" label="Search" class="btn-primary" />
+    </div>
+    <div>
+        <div class="lg:w-1/2">
+            <x-file wire:model="excelFile" label="Upload Excel" hint="Only Excel. Numbers will contain first column of excel & without any header" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+        </div>
     </div>
 
     <div>
