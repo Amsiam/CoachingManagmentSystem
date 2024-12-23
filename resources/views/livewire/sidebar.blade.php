@@ -188,6 +188,13 @@ state([
                     'permission' => 'academics.class',
                 ],
                 [
+                    'title' => 'Subjects',
+                    'icon' => 'o-home',
+                    'link' => '/subject',
+                    'hasMore' => false,
+                    'permission' => 'academics.class',
+                ],
+                [
                     'title' => 'Course',
                     'icon' => 'o-home',
                     'link' => '/courses',

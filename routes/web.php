@@ -9,6 +9,7 @@ use App\Models\Result;
 use App\Models\ResultMark;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,6 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
 
 Route::get('/link', function () {
-
     Artisan::call('storage:link');
 });
 
@@ -97,6 +97,7 @@ Route::prefix("/")->middleware("auth")->group(function () {
     Volt::route("/courses", "academics.courses")->middleware("can:academics.course");
     Volt::route("/batches", "academics.batches")->middleware("can:academics.batch");
     Volt::route("/academic_year", "academics.academic_year")->middleware("can:academics.academic_year");
+    Volt::route("/subject", "academics.subject")->middleware("can:academics.academic_year");
 
 
 
@@ -146,6 +147,10 @@ Route::prefix("/")->middleware("auth")->group(function () {
         $payment = Payment::with(["student", "student.batches", "student.courses", "student.personalDetails"])->findOrFail($id);
         $prevDue = 0;
 
+        $prevPayments = Payment::where("id", "<", $payment->id)
+            ->where("student_roll", $payment->student_roll)
+            ->get();
+
         if ($payment->paymentType == 1) {
             $prevDue = Payment::where("id", "<", $payment->id)
                 ->where("student_roll", $payment->student_roll)
@@ -163,7 +168,7 @@ Route::prefix("/")->middleware("auth")->group(function () {
         $barCode = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($payment->student_roll, $generator::TYPE_CODE_128)) . '">';
 
 
-        return view("pdf.invoice", compact("payment", "barCode", "prevDue"));
+        return view("pdf.invoice", compact("payment", "barCode", "prevDue", "prevPayments"));
     })->name("print.invoice");
 
 

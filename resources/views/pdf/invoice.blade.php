@@ -21,7 +21,7 @@
 
         .container {
             background: rgba(246, 247, 248, 0.8);
-            min-height: 11.69in;
+            /* min-height: 11.69in; */
         }
 
         .form {
@@ -161,7 +161,6 @@
 
         .table {
             font-size: .8rem;
-            height: 165px;
             margin-top: -30px;
             width: 100%;
             border: 2px solid var(--textback);
@@ -355,9 +354,7 @@
                             <td>1</td>
                             <td>আগের বকেয়া</td>
                             <td>{{ $prevDue }}
-                            <td>{{ $prevDue }}
                                 @php
-                                    $total += $prevDue;
                                     $total += $prevDue;
                                 @endphp
                             </td>
@@ -419,12 +416,64 @@
                 </div>
             </div>
 
+
+            @if (!$prevPayments->isEmpty())
+                <div class="contain">
+                    <table class="table">
+                        <tr>
+                            <td colspan="4">Previous Payments</td>
+                        </tr>
+                        <tr>
+                            <th width="10%">SL No</th>
+                            <th width="40%">Description</th>
+                            <th width="25%">Date</th>
+                            <th width="25%">Amount</th>
+                        </tr>
+                        @php
+                            $total = 0;
+                        @endphp
+
+
+
+
+
+                        @foreach ($prevPayments as $payment)
+                            <tr>
+                                <td>{{ 1 }}</td>
+                                @if ($payment->paymentType == 2)
+                                    <td>Admission</td>
+                                @elseif ($payment->paymentType == 0)
+                                    <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
+                                @else
+                                    <td>আগের বকেয়া</td>
+                                @endif
+                                <td>{{ $payment->created_at->format('d-m-Y') }}</td>
+
+                                <td>
+                                    {{ $payment->paid }}
+                                    @php
+                                        $total += $payment->paid;
+                                    @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+
+
+                        <tr>
+                            <td colspan="2"></td>
+                            <td><strong>Total</strong></td>
+                            <td><strong>{{ $total }}</strong></td>
+                        </tr>
+                    </table>
+                </div>
+
+            @endif
+
             <!-- alltable end -->
 
             <div style="padding-bottom: 0;" class="contain">
                 <div class="sign">
                     <div class="name">
-                        <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
                         <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
                     </div>
                     <div class="signature">
@@ -439,11 +488,6 @@
             <div class="footer">
                 <h3>Transaction related to admission are non-refundable.</h3>
             </div>
-
-
-
-
-
         </div>
 
 
