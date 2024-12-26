@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
+            $table->string("code");
             $table->string("name");
             $table->foreignId("group_id")->constrained();
             $table->boolean("auto_selected")->nullable()->default(false);

@@ -35,6 +35,7 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
 
     public $other_batchs = [];
 
+    public $selected_subjects = [];
     public $student;
     public $academics_ssc;
     public $academics_hsc;
@@ -191,10 +192,11 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
             return [];
         }
 
+$subs = Subject::where('group_id', $this->personal->group)
+->get();
 
-        return Subject::where('group_id', $this->personal->group)
-            ->whereNull('auto_selected')
-            ->get();
+$this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArray();
+        return $subs;
     }
 
 
@@ -228,6 +230,7 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
         } else {
             $roll = $roll + 1;
         }
+        // dd($this->selected_subjects);
 
         try {
             DB::transaction(function () use ($roll) {
@@ -254,8 +257,8 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
                 $this->academics_ssc->save();
                 $this->academics_hsc->save();
 
-                $this->hsc_sub->student_id = $this->student->id;
-                $this->hsc_sub->save();
+
+                $this->student->subjects()->sync($this->selected_subjects);
 
                 //payments
 
@@ -418,19 +421,12 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
 
                     <div class="mt-2">
                         <h1 class="font-bold text-sm">HSC Subject</h1>
-                        <div class="lg:flex lg:justify-between lg:items-center lg:gap-2">
-                            <div class="lg:w-1/4">
-                                <x-choices single label="Subject 1" wire:model="hsc_sub.sub1" :options="$this->subjects" />
+                        <div class="lg:grid lg:grid-cols-3 lg:items-center lg:gap-2">
+                            @foreach ($this->subjects as $subject)
+                            <div>
+                                <x-checkbox label="{{ $subject->name }}" wire:model="selected_subjects" value="{{ $subject->id }}" />
                             </div>
-                            <div class="lg:w-1/4">
-                                <x-choices single label="Subject 2" wire:model="hsc_sub.sub2" :options="$this->subjects" />
-                            </div>
-                            <div class="lg:w-1/4">
-                                <x-choices single label="Subject 3" wire:model="hsc_sub.sub3" :options="$this->subjects" />
-                            </div>
-                            <div class="lg:w-1/4">
-                                <x-choices single label="Subject 4(Optional)" wire:model="hsc_sub.sub4" :options="$this->subjects" />
-                            </div>
+                            @endforeach
                         </div>
                     </div>
 

@@ -450,12 +450,20 @@ $month = [
                                 <tr>
                                     <th>HSC SUBS</th>
                                     <td>
-                                    {{$student->hscSubs->subject1->name}},
-                                    {{$student->hscSubs->subject2->name}},
-                                    {{$student->hscSubs->subject3->name}},
-                                    {{$student->hscSubs->subject4->name}},
 
-                                    </th>
+                                        @if ($student->package_id!=1)
+
+
+                                    {{$student->hscSubs->sub1}},
+                                    {{$student->hscSubs->sub2}},
+                                    {{$student->hscSubs->sub3}},
+                                    {{$student->hscSubs->sub4}},
+
+                                    @else
+                                    {{$student->subjects->pluck("name")->implode(",")}},
+                                        @endif
+
+                                    </td>
                                 </tr>
 
                             </table>

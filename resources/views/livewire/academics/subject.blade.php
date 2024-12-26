@@ -21,6 +21,7 @@ class extends Component {
     public function rules()
     {
         return [
+            'subject.code' => 'required',
             'subject.name' => 'required',
             'subject.group_id' => 'required',
             'subject.auto_selected' => '',
@@ -100,6 +101,7 @@ class extends Component {
 
             <x-form wire:submit.prevent="save">
 
+                <x-input label="CODE" wire:model="subject.code" />
                 <x-input label="Name" wire:model="subject.name" />
 
                 <x-choices-offline searchable label="Groups" wire:model="subject.group_id" :options="$this->groups" single />

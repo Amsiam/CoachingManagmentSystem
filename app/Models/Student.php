@@ -80,4 +80,9 @@ class Student extends Authenticatable
     {
         return $this->hasMany(ResultMark::class);
     }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
 }
