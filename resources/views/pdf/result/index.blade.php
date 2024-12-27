@@ -255,7 +255,9 @@
                                     <tbody>
                                         <tr>
                                             <td>Roll No</td>
-                                            <td colspan="3">{{ $student->roll }}</td>
+                                            <td >{{ $student->roll }}</td>
+                                            <td>Registration No</td>
+                                            <td >{{ str_pad($student->id, 6, '0', STR_PAD_LEFT)  }}</td>
 
                                         </tr>
                                         <tr>
@@ -420,7 +422,7 @@
                                             <td></td>
                                             <td></td>
                                             <td colspan="4">Result</td>
-                                            <td>{{ number_format((float) max($gradeMark / $totalSubprev,5.00), 2, '.', '') }}</td>
+                                            <td>{{ number_format((float) min($gradeMark / $totalSubprev,5.00), 2, '.', '') }}</td>
                                         </tr>
                                         <tr>
                                             <td></td>
