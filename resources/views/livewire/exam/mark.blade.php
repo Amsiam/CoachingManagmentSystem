@@ -144,11 +144,11 @@ class extends Component {
     </div>
 
 
-    <x-table :headers='[
+    <x-table :headers="[
         ['key' => 'id', 'label' => '#'],
         ['key' => 'student.name', 'label' => 'Name'],
         ['key' => 'student.roll', 'label' => 'Roll'],
-    ]' :rows="$this->result->marks">
+    ]" :rows="$this->result->marks">
 
         @scope('cell_id', $mark)
             {{ $this->loop->index + 1 }}
