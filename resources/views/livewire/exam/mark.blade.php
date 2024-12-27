@@ -11,7 +11,10 @@ use App\Models\Student;
 use App\Models\ResultMark;
 use App\Models\Exam;
 
-new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {
+new
+#[Layout('layouts.app')]
+#[Title('Mark Entry')]
+class extends Component {
     use Toast, WithPagination;
 
     public $resultId;
