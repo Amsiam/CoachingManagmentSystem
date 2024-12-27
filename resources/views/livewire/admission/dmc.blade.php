@@ -264,7 +264,7 @@ class extends Component {
 
 
 
-            AdmissionSms::sendMessage($this->personal->smobile,$this->student->name,$roll,"12345678",$this->payment,"DMC Scholar");
+            AdmissionSms::sendMessage($this->personal->smobile,$this->student->name, $this->student->id,$roll,"12345678",$this->payment,"DMC Scholar");
 
             return $this->redirect("/student"."/".$this->student->id);
 

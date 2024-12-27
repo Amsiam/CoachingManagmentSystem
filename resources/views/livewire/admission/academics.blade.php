@@ -278,7 +278,7 @@ $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArr
 
             $this->success(title: 'Student added successfully');
 
-            AdmissionSms::sendMessage($this->personal->smobile, $this->student->name, $roll, '12345678', $this->payment);
+            AdmissionSms::sendMessage($this->personal->smobile, $this->student->name, $this->student->id,$roll, '12345678', $this->payment);
 
             return $this->redirect('/student' . '/' . $this->student->id);
         } catch (\Exception $err) {

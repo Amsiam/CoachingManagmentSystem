@@ -14,14 +14,16 @@ class PaymentSMS
         }
 
         $month = "";
+        $title = "";
 
         if($payment->month){
             $month = "\nMonth: ". date("F", strtotime($payment->month));
+            $title = "মাসিক বেতন\n";
         }
 
         self::shoot(
             $number,
-            "Paid: " . $payment->paid . "\nDiscount: " . $payment->discount . "\nDue: ".$due."".$month  . "\n-" . $from
+            $title . "Paid: " . $payment->paid . "\nDiscount: " . $payment->discount . "\nDue: " . $due . "" . $month  . "\n-" . $from
         );
     }
 

@@ -305,6 +305,7 @@
                                             $totalSub = 0;
                                             $totalSubprev = 0;
                                             $gotFail = 0;
+                                            $gtotal = 0;
                                         @endphp
                                         @foreach ($result->resultSubjects as $subject)
                                             @if ($student->subjects->where("code",$subject->code)->count()<1)
@@ -370,6 +371,7 @@
                                                             $total += $subject->has2ndPart->marks
                                                                 ->where('student_id', $student->id)
                                                                 ->first()->mcq;
+                                                            $gtotal += $total;
                                                         }
                                                     @endphp
                                                     {{ $total }}
@@ -378,6 +380,7 @@
                                                     @php
                                                         $grade = getPoint($subject, $student);
 
+
                                                         if (!$gotFail) {
                                                             if (
                                                                 $subject->marks
@@ -385,10 +388,11 @@
                                                                     ->first()->is_optional
                                                             ) {
                                                                 $gradeMark += max(0, $grade - 2);
-                                                                $totalSubprev = $totalSub;
+
                                                             } else {
                                                                 $gradeMark += $grade;
                                                                 $totalSubprev++;
+
 
                                                                 if ($grade == 0) {
                                                                     $gradeMark = 0;
@@ -405,6 +409,10 @@
                                             </tr>
                                         @endforeach
 
+                                        @php
+                                            $totalSubprev = $totalSubprev == 0 ? 1 : $totalSubprev;
+                                        @endphp
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -417,7 +425,7 @@
                                             <td></td>
                                             <td></td>
                                             <td colspan="4">Total Marks</td>
-                                            <td>{{ $totalSub }}</td>
+                                            <td>{{ $gtotal }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
