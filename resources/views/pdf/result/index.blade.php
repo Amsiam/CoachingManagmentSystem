@@ -371,8 +371,9 @@
                                                             $total += $subject->has2ndPart->marks
                                                                 ->where('student_id', $student->id)
                                                                 ->first()->mcq;
-                                                            $gtotal += $total;
+
                                                         }
+                                                        $gtotal += $total;
                                                     @endphp
                                                     {{ $total }}
                                                 </td>
@@ -419,7 +420,7 @@
                                             <td></td>
                                             <td></td>
                                             <td colspan="4">Result</td>
-                                            <td>{{ number_format((float) ($gradeMark / $totalSubprev), 2, '.', '') }}</td>
+                                            <td>{{ number_format((float) max($gradeMark / $totalSubprev,5.00), 2, '.', '') }}</td>
                                         </tr>
                                         <tr>
                                             <td></td>
