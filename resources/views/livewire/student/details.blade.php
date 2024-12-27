@@ -389,7 +389,7 @@ $month = [
                                     <td>{{$student->roll}}</th>
                                 </tr>
                                 <tr>
-                                <th>Roll</th>
+                                <th>Reg</th>
                                 <td>{{ str_pad($student->id, 6, '0', STR_PAD_LEFT) }}</th>
                             </tr>
 
