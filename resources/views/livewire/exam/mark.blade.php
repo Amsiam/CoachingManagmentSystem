@@ -91,15 +91,7 @@ new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {
         unset($this->subjects[$key]);
     }
 
-    public function deleteSubject($key)
-    {
-        ResultMark::where('result_id', $this->resultId)
-            ->where('student_id', $this->subjects[$key]['student_id'])
-            ->where('subject_id', $this->subjects[$key]['subject_id'])
-            ->delete();
 
-        unset($this->subjects[$key]);
-    }
 };
 
 ?>

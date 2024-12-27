@@ -300,6 +300,7 @@
                     </div>
                     <div class="details-right">
                         <h3>Roll No <span>:</span> {{ $payment->student->roll }}</h3>
+                        <h3>Reg No <span>:</span> {{ str_pad($payment->student->id, 6, '0', STR_PAD_LEFT) }}</h3>
                     </div>
 
                 </div>

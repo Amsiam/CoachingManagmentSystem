@@ -189,7 +189,7 @@ Route::prefix("/")->middleware("auth")->group(function () {
 
     Route::get('/print/result_sheet/{id}/{student_id?}', function ($id, $student_id = null) {
         $result = Result::with(["exam", "exam.course", "resultSubjects" => fn($q) => $q->where("first_part_id", null), "resultSubjects.has2ndPart", "resultSubjects.marks", "resultSubjects.has2ndPart.marks"])->findOrFail($id);
-        $resultStudents = Student::with(["personalDetails", "package"])->whereHas("result_marks", function ($q) use ($id) {
+        $resultStudents = Student::with(["personalDetails", "package", "subjects"])->whereHas("result_marks", function ($q) use ($id) {
             return $q->where("result_id", $id);
         })->when($student_id != "all", function ($q) use ($student_id) {
             return $q->where("id", $student_id);

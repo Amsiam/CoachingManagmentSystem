@@ -307,6 +307,9 @@
                                             $gotFail = 0;
                                         @endphp
                                         @foreach ($result->resultSubjects as $subject)
+                                            @if ($student->subjects->where("code",$subject->code)->count()<1)
+                                                @continue
+                                            @endif
                                             <tr>
                                                 <td class="cent-align">
 
