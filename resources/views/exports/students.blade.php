@@ -5,6 +5,7 @@
         </tr>
         <tr></tr>
         <tr>
+            <th>Reg</th>
             <th>Roll</th>
             <th>Name</th>
             <th>Student Number</th>
@@ -21,6 +22,7 @@
         @foreach ($students as $student)
 
         <tr>
+            <td>{{ str_pad($student->id, 6, '0', STR_PAD_LEFT) }}</td>
             <td>{{$student->roll}}</td>
             <td>{{$student->name}}</td>
             <td>{{$student->personalDetails->smobile}}</td>
