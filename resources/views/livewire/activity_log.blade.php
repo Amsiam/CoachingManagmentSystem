@@ -14,7 +14,10 @@ use App\SMS\PaymentSMS;
 use App\Exports\AdmissionExport;
 use Carbon\Carbon;
 
-new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {
+new
+#[Layout('layouts.app')]
+#[Title('Groups')]
+class extends Component {
     use Toast, WithPagination;
 
     public $perPage = 20;
@@ -48,7 +51,7 @@ new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {
 
 
     <div class="flex justify-between">
-        <x-choices label="Per page" wire:model.live="perPage" single :options='[['id' => 10, 'name' => 10], ['id' => 20, 'name' => 20], ['id' => 100, 'name' => 100]]' option-value="name" />
+        <x-choices label="Per page" wire:model.live="perPage" single :options="[['id' => 10, 'name' => 10], ['id' => 20, 'name' => 20], ['id' => 100, 'name' => 100]]" option-value="name" />
 
         <div class="flex justify-end">
             <x-datetime label="From" wire:model.live="from" />
