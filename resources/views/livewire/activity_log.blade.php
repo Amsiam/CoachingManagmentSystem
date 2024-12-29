@@ -55,13 +55,13 @@ new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {
             <x-datetime label="to" wire:model.live="to" />
         </div>
     </div>
-    <x-table :headers='[
+    <x-table :headers="[
         ['key' => 'user.name', 'label' => 'User'],
         ['key' => 'performance', 'label' => 'Performance'],
         ['key' => 'created_at', 'label' => 'Time'],
         ['key' => 'before_data', 'label' => ' আপডেটের পরের তথ্য'],
         ['key' => 'after_data', 'label' => ' পূর্বের ডেটা'],
-    ]' :rows="$this->activityLogs" with-pagination>
+    ]" :rows="$this->activityLogs" with-pagination>
 
     </x-table>
 
