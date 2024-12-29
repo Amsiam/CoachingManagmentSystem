@@ -25,7 +25,6 @@
         }
 
         .form {
-            border: 2px solid var(--border);
         }
 
         .contain {
@@ -174,7 +173,7 @@
         }
 
         .table td,
-        th {
+        .table th {
             border: 1px solid var(--textback);
         }
 
@@ -227,269 +226,260 @@
 
 <body>
 
-    <div class="container">
+    <table width="100%">
+        <thead>
+            <tr style="height: 2in;">
+                <th></th>
+            </tr>
+            <tr>
+                <th>
+                    <span style="border: 1px solid #000;padding: 5px 20px;">INVOICE</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container">
 
-        <div class="form">
+                        <div class="form">
 
-            <div class="contain">
-                <div class="top-header">
-
-
-
-                    <div class="logopart">
-                        @if ($payment->student->package_id == 3)
-                            <img src="{{ asset('assets/pdf/form/images/d.png') }}" width="225" alt="">
-                        @else
-                            <img src="{{ asset('assets/pdf/form/images/l.png') }}" width="225" alt="">
-                        @endif
-                    </div>
-
-                    <div class="right">
-                        <h1>01714-160997</h1>
-                        <h1>01734-500238</h1>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- header end -->
-
-            <div style="margin-top: -15px;" class="horizontal">
-                <hr class="border">
-                <div class="money">
-                    <h1>Money receipt</h1>
-                </div>
-                <hr class="border">
-            </div>
-            <!-- horizontal end -->
-
-            <div class="contain">
-                <div class="details-upper">
+                            <div class="contain">
+                                <div class="details-upper">
 
 
 
-                    <div class="detail-left">
+                                    <div class="detail-left">
 
-                        <h3>Bill NO <span style="padding-left: 33px;">:</span> {{ $payment->id }}</h3>
-                        <h3>Bill Date <span style="padding-left: 24px;">:</span> {{ $payment->created_at }}</h3>
+                                        <h3>Bill NO <span style="padding-left: 33px;">:</span> {{ $payment->id }}</h3>
+                                        <h3>Bill Date <span style="padding-left: 24px;">:</span> {{ $payment->created_at }}</h3>
 
-                    </div>
-                    <div class="detail-right">
-                        {!! $barCode !!}
-                    </div>
-                </div>
+                                    </div>
+                                    <div class="detail-right">
+                                        {!! $barCode !!}
+                                    </div>
+                                </div>
 
 
 
-                <div class="details-lower">
-                    <div class="detail-left">
-                        <h3>Name <span style="padding-left: 39px;">:</span> {{ $payment->student->name }}</h3>
-                        <h3>Address <span style="padding-left: 22px;">:</span>
-                            {{ $payment->student->personalDetails->paddess }}</h3>
-                        <h3>Mobile No <span style="padding-left: 12px;">:</span>
-                            {{ $payment->student->personalDetails->smobile }}</h3>
-                        <h3>Batch No<span style="padding-left: 20px;">:</span>
-                            @foreach ($payment->student->batches as $batch)
-                                @if ($loop->iteration != 1)
-                                    ,
-                                @endif
-                                {{ $batch->name }}
-                            @endforeach
-                        </h3>
-                    </div>
-                    <div class="details-right">
-                        <h3>Roll No <span>:</span> {{ $payment->student->roll }}</h3>
-                        <h3>Reg No <span>:</span> {{ str_pad($payment->student->id, 6, '0', STR_PAD_LEFT) }}</h3>
-                    </div>
+                                <div class="details-lower">
+                                    <div class="detail-left">
+                                        <h3>Name <span style="padding-left: 39px;">:</span> {{ $payment->student->name }}</h3>
+                                        <h3>Address <span style="padding-left: 22px;">:</span>
+                                            {{ $payment->student->personalDetails->paddess }}</h3>
+                                        <h3>Mobile No <span style="padding-left: 12px;">:</span>
+                                            {{ $payment->student->personalDetails->smobile }}</h3>
+                                        <h3>Batch No<span style="padding-left: 20px;">:</span>
+                                            @foreach ($payment->student->batches as $batch)
+                                                @if ($loop->iteration != 1)
+                                                    ,
+                                                @endif
+                                                {{ $batch->name }}
+                                            @endforeach
+                                        </h3>
+                                    </div>
+                                    <div class="details-right">
+                                        <h3>Roll No <span>:</span> {{ $payment->student->roll }}</h3>
+                                        <h3>Reg No <span>:</span> {{ str_pad($payment->student->id, 6, '0', STR_PAD_LEFT) }}</h3>
+                                    </div>
 
-                </div>
-            </div>
+                                </div>
+                            </div>
 
-            <!-- table star -->
+                            <!-- table star -->
 
-            <div class="contain">
-                <table class="table">
-                    <tr>
-                        <th width="10%">SL No</th>
-                        <th width="70%">Description</th>
-                        <th width="20%">Price(TK.)</th>
-                    </tr>
-                    @php
-                        $total = 0;
-                    @endphp
-                    @if ($payment->paymentType == 2)
-
-                        @foreach ($payment->student->courses as $course)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $course->name }}</td>
-                                <td>
-                                    {{ $course->price }}
+                            <div class="contain">
+                                <table class="table">
+                                    <tr>
+                                        <th width="10%">SL No</th>
+                                        <th width="70%">Description</th>
+                                        <th width="20%">Price(TK.)</th>
+                                    </tr>
                                     @php
-                                        $total += $course->price;
+                                        $total = 0;
                                     @endphp
-                                </td>
-                            </tr>
-                        @endforeach
+                                    @if ($payment->paymentType == 2)
 
-                        @if (count($payment->student->courses) >= 2)
-                            @php
-                                $total = $payment->total;
-                            @endphp
-                        @endif
-                    @elseif ($payment->paymentType == 0)
-                        <tr>
-                            <td>1</td>
-                            <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
-                            <td>
-                                {{ $payment->total }}
-                                @php
-                                    $total += $payment->total;
+                                        @foreach ($payment->student->courses as $course)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $course->name }}</td>
+                                                <td>
+                                                    {{ $course->price }}
+                                                    @php
+                                                        $total += $course->price;
+                                                    @endphp
+                                                </td>
+                                            </tr>
+                                        @endforeach
 
-                                @endphp
-                            </td>
-                        </tr>
-                    @else
-                        <tr>
-                            <td>1</td>
-                            <td>আগের বকেয়া</td>
-                            <td>{{ $prevDue }}
-                                @php
-                                    $total += $prevDue;
-                                @endphp
-                            </td>
-                        </tr>
+                                        @if (count($payment->student->courses) >= 2)
+                                            @php
+                                                $total = $payment->total;
+                                            @endphp
+                                        @endif
+                                    @elseif ($payment->paymentType == 0)
+                                        <tr>
+                                            <td>1</td>
+                                            <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
+                                            <td>
+                                                {{ $payment->total }}
+                                                @php
+                                                    $total += $payment->total;
 
-                    @endif
-                </table>
-            </div>
-
-
-            <div class="contain">
-                <div class="details-upper">
-                    <div class="detail">
-                        <h3>Remark: <span>:</span> {{ $payment->remarks }}</h3>
-                        @if ($payment->due_date)
-                            <h3>Due Date: <span>:</span> {{ $payment->due_date }}</h3>
-                        @endif
-
-                        <br>
-                        <h1><strong>
-                                @if ($total - $payment->paid - $payment->discount > 0)
-                                    Partially Paid
-                                @else
-                                    Paid
-                                @endif
-
-                            </strong></h1>
-
-                    </div>
-                    <div class="detail-right">
-
-                        <table class="table2">
-                            <tr>
-                                <td>Sub Total Tk.</td>
-                                <td class="auto">{{ $total }}</td>
-                            </tr>
-                            <tr>
-                                <td>Discount Tk.</td>
-                                <td class="auto">{{ $payment->discount }}</td>
-                            </tr>
-                            <tr>
-                                <td>Payment Tk.</td>
-                                <td class="auto">{{ $payment->paid }}</td>
-                            </tr>
-                            <tr>
-                                <td>Due. Tk.</td>
-                                <td class="auto">
-
-                                    @if ($total - $payment->paid - $payment->discount > 0)
-                                        {{ $total - $payment->paid - $payment->discount }}
+                                                @endphp
+                                            </td>
+                                        </tr>
                                     @else
-                                        0
+                                        <tr>
+                                            <td>1</td>
+                                            <td>আগের বকেয়া</td>
+                                            <td>{{ $prevDue }}
+                                                @php
+                                                    $total += $prevDue;
+                                                @endphp
+                                            </td>
+                                        </tr>
+
                                     @endif
-                                </td>
+                                </table>
+                            </div>
 
-                            </tr>
-                        </table>
+
+                            <div class="contain">
+                                <div class="details-upper">
+                                    <div class="detail">
+                                        <h3>Remark: <span>:</span> {{ $payment->remarks }}</h3>
+                                        @if ($payment->due_date)
+                                            <h3>Due Date: <span>:</span> {{ $payment->due_date }}</h3>
+                                        @endif
+
+                                        <br>
+                                        <h1><strong>
+                                                @if ($total - $payment->paid - $payment->discount > 0)
+                                                    Partially Paid
+                                                @else
+                                                    Paid
+                                                @endif
+
+                                            </strong></h1>
+
+                                    </div>
+                                    <div class="detail-right">
+
+                                        <table class="table2">
+                                            <tr>
+                                                <td>Sub Total Tk.</td>
+                                                <td class="auto">{{ $total }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Discount Tk.</td>
+                                                <td class="auto">{{ $payment->discount }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payment Tk.</td>
+                                                <td class="auto">{{ $payment->paid }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Due. Tk.</td>
+                                                <td class="auto">
+
+                                                    @if ($total - $payment->paid - $payment->discount > 0)
+                                                        {{ $total - $payment->paid - $payment->discount }}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            @if (!$prevPayments->isEmpty())
+                                <div class="contain">
+                                    <table class="table">
+                                        <tr>
+                                            <td colspan="4">Previous Payments</td>
+                                        </tr>
+                                        <tr>
+                                            <th width="10%">SL No</th>
+                                            <th width="40%">Description</th>
+                                            <th width="25%">Date</th>
+                                            <th width="25%">Amount</th>
+                                        </tr>
+                                        @php
+                                            $total = 0;
+                                        @endphp
+
+
+
+
+
+                                        @foreach ($prevPayments as $payment)
+                                            <tr>
+                                                <td>{{ 1 }}</td>
+                                                @if ($payment->paymentType == 2)
+                                                    <td>Admission</td>
+                                                @elseif ($payment->paymentType == 0)
+                                                    <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
+                                                @else
+                                                    <td>আগের বকেয়া</td>
+                                                @endif
+                                                <td>{{ $payment->created_at->format('d-m-Y') }}</td>
+
+                                                <td>
+                                                    {{ $payment->paid }}
+                                                    @php
+                                                        $total += $payment->paid;
+                                                    @endphp
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+
+                                        <tr>
+                                            <td colspan="2"></td>
+                                            <td><strong>Total</strong></td>
+                                            <td><strong>{{ $total }}</strong></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            @endif
+
+                            <!-- alltable end -->
+
+
+
+                        </div>
                     </div>
-                </div>
-            </div>
-
-
-            @if (!$prevPayments->isEmpty())
-                <div class="contain">
-                    <table class="table">
-                        <tr>
-                            <td colspan="4">Previous Payments</td>
-                        </tr>
-                        <tr>
-                            <th width="10%">SL No</th>
-                            <th width="40%">Description</th>
-                            <th width="25%">Date</th>
-                            <th width="25%">Amount</th>
-                        </tr>
-                        @php
-                            $total = 0;
-                        @endphp
-
-
-
-
-
-                        @foreach ($prevPayments as $payment)
-                            <tr>
-                                <td>{{ 1 }}</td>
-                                @if ($payment->paymentType == 2)
-                                    <td>Admission</td>
-                                @elseif ($payment->paymentType == 0)
-                                    <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
-                                @else
-                                    <td>আগের বকেয়া</td>
-                                @endif
-                                <td>{{ $payment->created_at->format('d-m-Y') }}</td>
-
-                                <td>
-                                    {{ $payment->paid }}
-                                    @php
-                                        $total += $payment->paid;
-                                    @endphp
-                                </td>
-                            </tr>
-                        @endforeach
-
-
-                        <tr>
-                            <td colspan="2"></td>
-                            <td><strong>Total</strong></td>
-                            <td><strong>{{ $total }}</strong></td>
-                        </tr>
-                    </table>
-                </div>
-
-            @endif
-
-            <!-- alltable end -->
-
-            <div style="padding-bottom: 0;" class="contain">
-                <div class="sign">
-                    <div class="name">
-                        <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div style="padding-bottom: 0;" class="contain">
+                        <div class="sign">
+                            <div class="name">
+                                <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
+                            </div>
+                            <div class="signature">
+                                <hr class="border">
+                                <h3>Signature of acceptor</h3>
+                            </div>
+                        </div>
                     </div>
-                    <div class="signature">
-                        <hr class="border">
-                        <h3>Signature of acceptor</h3>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="footer">
-                <h3>Transaction related to admission are non-refundable.</h3>
-            </div>
-        </div>
+                </td>
+            </tr>
+            <tr style="height: 0.8in;">
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
 
 
 </body>
