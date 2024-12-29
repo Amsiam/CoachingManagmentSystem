@@ -323,7 +323,7 @@
                                     @elseif ($payment->paymentType == 0)
                                         <tr>
                                             <td>1</td>
-                                            <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
+                                            <td>Monthly Salary ({{ date('F', strtotime($payment->month)) }})</td>
                                             <td>
                                                 {{ $payment->total }}
                                                 @php
@@ -335,7 +335,7 @@
                                     @else
                                         <tr>
                                             <td>1</td>
-                                            <td>আগের বকেয়া</td>
+                                            <td>Previous Due</td>
                                             <td>{{ $prevDue }}
                                                 @php
                                                     $total += $prevDue;
@@ -440,9 +440,9 @@
                                                 @if ($payment->paymentType == 2)
                                                     <td>Admission</td>
                                                 @elseif ($payment->paymentType == 0)
-                                                    <td>মাসিক বেতন ({{ date('F', strtotime($payment->month)) }})</td>
+                                                    <td>Monthly Salary ({{ date('F', strtotime($payment->month)) }})</td>
                                                 @else
-                                                    <td>আগের বকেয়া</td>
+                                                    <td>Previous Due</td>
                                                 @endif
                                                 <td>{{ $payment->created_at->format('d-m-Y') }}</td>
 
