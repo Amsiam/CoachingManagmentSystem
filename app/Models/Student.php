@@ -39,6 +39,7 @@ class Student extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'fixed_salary' => 'boolean',
         ];
     }
 

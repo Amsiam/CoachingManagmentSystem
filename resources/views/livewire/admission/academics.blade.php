@@ -54,6 +54,8 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
             'student.batch_id' => 'required',
             'student.package_id' => 'required',
             'student.bn_name' => '',
+            'student.monthly_salary' => '',
+            'student.fixed_salary' => '',
 
             'personal.student_id' => '',
             'personal.fname' => '',
@@ -430,6 +432,16 @@ $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArr
                         </div>
                     </div>
 
+                    <div class="lg:flex gap-2 items-center">
+                        <div class="lg:w-1/2">
+                            <x-input type="number" min="0" class="input-sm" label="Monthly Salary" wire:model="student.monthly_salary" />
+                        </div>
+                        <div class="lg:w-1/2">
+                            <x-checkbox label="Fixed Salary" wire:model="student.fixed_salary" value="1" />
+                        </div>
+                    </div>
+
+
 
 
                     <div class="w-full">
@@ -445,6 +457,8 @@ $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArr
                             <x-input class="input-sm" label="Mobile" wire:model="personal.ref_mobile" />
                         </div>
                     </div>
+
+
                 </div>
 
             @elseif ($page == 2)
