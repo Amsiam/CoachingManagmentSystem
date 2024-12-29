@@ -20,7 +20,7 @@
         }
 
         .container {
-            background: rgba(246, 247, 248, 0.8);
+            /* background: rgba(246, 247, 248, 0.8); */
             /* min-height: 11.69in; */
         }
 
@@ -200,9 +200,10 @@
 
         .sign {
             font-size: .8rem;
-            margin-top: 30px;
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .signature {
@@ -249,9 +250,10 @@
 
 
 
+
                                     <div class="detail-left">
 
-                                        <h3>Bill NO <span style="padding-left: 33px;">:</span> {{ $payment->id }}</h3>
+                                        <h3>Bill NO <span style="padding-left: 33px;">:</span> TC{{date("Y", strtotime($payment->created_at)).str_pad($payment->id, 4, '0', STR_PAD_LEFT)}}</h3>
                                         <h3>Bill Date <span style="padding-left: 24px;">:</span> {{ $payment->created_at }}</h3>
 
                                     </div>
@@ -397,6 +399,18 @@
                                 </div>
                             </div>
 
+                            <div style="padding-bottom: 0;" class="contain">
+                                <div class="sign">
+                                    <div class="name">
+                                        <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
+                                    </div>
+                                    <div class="signature">
+                                        <hr class="border">
+                                        <h3>Signature of acceptor</h3>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             @if (!$prevPayments->isEmpty())
                                 <div class="contain">
@@ -406,9 +420,11 @@
                                         </tr>
                                         <tr>
                                             <th width="10%">SL No</th>
-                                            <th width="40%">Description</th>
-                                            <th width="25%">Date</th>
-                                            <th width="25%">Amount</th>
+                                            <th width="20%">Description</th>
+                                            <th width="20%">Date</th>
+                                            <th width="15%">Amount</th>
+                                            <th width="15%">Received BY</th>
+                                            <th width="20%">Remarks</th>
                                         </tr>
                                         @php
                                             $total = 0;
@@ -420,7 +436,7 @@
 
                                         @foreach ($prevPayments as $payment)
                                             <tr>
-                                                <td>{{ 1 }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 @if ($payment->paymentType == 2)
                                                     <td>Admission</td>
                                                 @elseif ($payment->paymentType == 0)
@@ -436,6 +452,8 @@
                                                         $total += $payment->paid;
                                                     @endphp
                                                 </td>
+                                                <td>{{ $payment->recievedBy->name }}</td>
+                                                <td>{{ $payment->remarks }}</td>
                                             </tr>
                                         @endforeach
 
@@ -444,11 +462,22 @@
                                             <td colspan="2"></td>
                                             <td><strong>Total</strong></td>
                                             <td><strong>{{ $total }}</strong></td>
+                                            <td colspan="2"></td>
                                         </tr>
                                     </table>
                                 </div>
 
                             @endif
+
+                            <div style="
+                            background: #000000;
+                            color: #fff;
+                            text-align: center;
+                            margin: 0 100px;
+                            text-transform: capitalize;
+                        ">
+                                Transaction Related to admission is not refundable.
+                            </div>
 
                             <!-- alltable end -->
 
@@ -460,21 +489,6 @@
             </tr>
         </tbody>
         <tfoot>
-            <tr>
-                <td>
-                    <div style="padding-bottom: 0;" class="contain">
-                        <div class="sign">
-                            <div class="name">
-                                <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
-                            </div>
-                            <div class="signature">
-                                <hr class="border">
-                                <h3>Signature of acceptor</h3>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
             <tr style="height: 0.8in;">
                 <td></td>
             </tr>

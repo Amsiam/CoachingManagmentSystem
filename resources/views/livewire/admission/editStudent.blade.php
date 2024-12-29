@@ -301,8 +301,6 @@ public function academics_years(){
 
     $subs = Subject::where('group_id', $this->personal->group)
     ->get();
-
-$this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArray();
         return $subs;
     }
 };

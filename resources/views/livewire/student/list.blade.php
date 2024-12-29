@@ -235,7 +235,7 @@ class extends Component {
             $this->paymentYear = date("Y");
 
             if ($this->student->fixed_salary) {
-                $this->payment->paid = $this->student->monthly_salary;
+                $this->payment->paid = (int) $this->student->monthly_salary;
             }
 
         }
@@ -298,7 +298,9 @@ public function academics_years(){
             <x-choices label="Payment Month" :options="$month" single wire:model.live="paymentMonth" option-value="id"  />
 
             @endif
+            @if(auth()->user()->can('reduce_payment'))
             <x-input label="Discount" wire:model="payment.discount" />
+            @endif
             <x-input label="Amount" :readonly="$payment->paymentType==0 && $student?->fixed_salary==1 && !auth()->user()->can('reduce_payment')" wire:model="payment.paid" />
             <x-input label="Remarks" wire:model="payment.remarks" />
 
