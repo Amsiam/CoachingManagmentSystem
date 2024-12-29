@@ -44,6 +44,8 @@ class extends Component {
     public $paymentMonth;
     public $paymentYear;
 
+    public $student;
+
 
     public $type=[];
     public bool $modal = false;
@@ -59,6 +61,7 @@ class extends Component {
             "payment.paid"=>"required",
             "payment.discount"=>"required",
             "payment.month"=>"",
+            "payment.remarks"=>"",
             "payment.student_roll"=>"required",
             "payment.recieved_by"=>"required",
         ];
@@ -215,6 +218,8 @@ class extends Component {
         $this->payment->student_roll = $id;
         $this->payment->payType = "Hand";
 
+        $this->student = Student::find($id);
+
         if($package!=1){
             $this->payment->paymentType = 1;
 
@@ -228,6 +233,10 @@ class extends Component {
             $this->payment->paymentType = 0;
             $this->paymentMonth = date("m");
             $this->paymentYear = date("Y");
+
+            if ($this->student->fixed_salary) {
+                $this->payment->paid = $this->student->monthly_salary;
+            }
 
         }
         $this->payment->discount=0;
@@ -290,7 +299,8 @@ public function academics_years(){
 
             @endif
             <x-input label="Discount" wire:model="payment.discount" />
-            <x-input label="Amount" wire:model="payment.paid" />
+            <x-input label="Amount" :readonly="$payment->paymentType==0 && $student?->fixed_salary==1 && !auth()->user()->can('reduce_payment')" wire:model="payment.paid" />
+            <x-input label="Remarks" wire:model="payment.remarks" />
 
 
             <x-choices label="Pay Type" single wire:model="payment.payType" :options='
