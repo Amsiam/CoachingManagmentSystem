@@ -12,7 +12,7 @@
             margin: 0px;
             padding: 0px;
             box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
             text-decoration: none;
             --textwhite: white;
             --textback: #000000;
@@ -62,13 +62,13 @@
         }
 
         .logopart .text h3 {
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
             font-size: .9rem;
             color: var(--textback);
         }
 
         .logopart .text h1 {
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
             font-size: 1.4rem;
             color: var(--bg-color);
             margin: -5px 0;
@@ -87,7 +87,7 @@
         }
 
         .text h1 {
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
         }
 
         .text h3 {
@@ -121,7 +121,7 @@
 
         .money h1 {
             font-size: 13px;
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
             text-transform: uppercase;
         }
 
@@ -154,7 +154,7 @@
         .details-lower h3 {
             color: var(--textback);
             font-size: .8rem;
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
             font-weight: 600;
         }
 
