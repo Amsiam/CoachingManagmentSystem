@@ -475,6 +475,7 @@
                             text-align: center;
                             margin: 0 100px;
                             text-transform: capitalize;
+                            padding: 5px;
                         ">
                                 Transaction Related to admission is not refundable.
                             </div>
