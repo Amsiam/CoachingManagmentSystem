@@ -62,6 +62,8 @@ class extends Component {
             'student.name' => 'required',
             'student.package_id' => 'required',
             "student.bn_name"=>"",
+            'student.monthly_salary' => '',
+            'student.fixed_salary' => '',
 
 
             "student.batch_id"=>"required",
@@ -142,9 +144,14 @@ class extends Component {
         $this->academics_ssc = AcademicDetail::where("student_id",$id)->where("exam","SSC")->first();
         $this->academics_hsc = AcademicDetail::where("student_id",$id)->where("exam","HSC")->first();
 
-        $this->hsc_sub = HscSub::where("student_id",$id)->first();
+        if ($this->student->package_id == 1){
 
         $this->selected_subjects = $this->student->subjects()->pluck("subjects.id")->toArray();
+        }else{
+            $this->hsc_sub = HscSub::where("student_id",$id)->first();
+        }
+
+
 
     }
 
@@ -242,7 +249,12 @@ class extends Component {
                 $this->academics_ssc->save();
                 $this->academics_hsc->save();
 
-                $this->hsc_sub->save();
+                if ($this->student->package_id!=1){
+                    $this->hsc_sub->save();
+                }else{
+                    $this->student->subjects()->sync($this->selected_subjects);
+                }
+
 
                 $total = Course::whereIn("id",$this->course_ids)->sum("price");
 
@@ -451,8 +463,21 @@ $payTypes=[
 
             @endif
 
+
         </div>
 
+        @if ($student->package_id == 1)
+
+        <div class="lg:flex gap-2 items-center">
+            <div class="lg:w-1/2">
+                <x-input type="number" min="0" class="input-sm" label="Monthly Salary" wire:model="student.monthly_salary" />
+            </div>
+            <div class="lg:w-1/2">
+                <x-checkbox label="Fixed Salary" wire:model="student.fixed_salary" value="1" />
+            </div>
+        </div>
+
+        @endif
 
 
         <div class="w-full">
