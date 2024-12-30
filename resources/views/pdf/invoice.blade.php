@@ -229,7 +229,7 @@
 
     <table width="100%">
         <thead>
-            <tr style="height: 2in;">
+            <tr style="height: 1.7in;">
                 <th></th>
             </tr>
             <tr>
@@ -246,46 +246,62 @@
                         <div class="form">
 
                             <div class="contain">
-                                <div class="details-upper">
 
+                                <table style="width: 100%;font-size: 0.8rem;font-weight: 600;font-family: 'Times New Roman', Times, serif, sans-serif;">
+                                    <tr>
+                                        <td width="5%">Bill NO</td>
+                                        <td>:</td>
+                                        <td>TC{{date("Y", strtotime($payment->created_at)).str_pad($payment->id, 4, '0', STR_PAD_LEFT)}}</td>
 
-
-
-                                    <div class="detail-left">
-
-                                        <h3>Bill NO <span style="padding-left: 33px;">:</span> TC{{date("Y", strtotime($payment->created_at)).str_pad($payment->id, 4, '0', STR_PAD_LEFT)}}</h3>
-                                        <h3>Bill Date <span style="padding-left: 24px;">:</span> {{ $payment->created_at }}</h3>
-
-                                    </div>
-                                    <div class="detail-right">
-                                        {!! $barCode !!}
-                                    </div>
-                                </div>
-
-
-
-                                <div class="details-lower">
-                                    <div class="detail-left">
-                                        <h3>Name <span style="padding-left: 39px;">:</span> {{ $payment->student->name }}</h3>
-                                        <h3>Address <span style="padding-left: 22px;">:</span>
-                                            {{ $payment->student->personalDetails->paddess }}</h3>
-                                        <h3>Mobile No <span style="padding-left: 12px;">:</span>
-                                            {{ $payment->student->personalDetails->smobile }}</h3>
-                                        <h3>Batch No<span style="padding-left: 20px;">:</span>
+                                        <td width="30%"></td>
+                                        <td  colspan="3" rowspan="4">
+                                            {!! $barCode !!}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bill Date</td>
+                                        <td>:</td>
+                                        <td>{{ $payment->created_at }}</td>
+                                        <td width="30%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>:</td>
+                                        <td>{{ $payment->student->name }}</td>
+                                        <td width="30%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>:</td>
+                                        <td>{{ $payment->student->personalDetails->paddess }}</td>
+                                        <td width="30%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mobile No</td>
+                                        <td>:</td>
+                                        <td>{{ $payment->student->personalDetails->smobile }}</td>
+                                        <td width="30%"></td>
+                                        <td width="5%">Roll No</td>
+                                        <td>:</td>
+                                        <td>{{ $payment->student->roll }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Batch No</td>
+                                        <td>:</td>
+                                        <td>
                                             @foreach ($payment->student->batches as $batch)
                                                 @if ($loop->iteration != 1)
                                                     ,
                                                 @endif
                                                 {{ $batch->name }}
                                             @endforeach
-                                        </h3>
-                                    </div>
-                                    <div class="details-right">
-                                        <h3>Roll No <span>:</span> {{ $payment->student->roll }}</h3>
-                                        <h3>Reg No <span>:</span> {{ str_pad($payment->student->id, 6, '0', STR_PAD_LEFT) }}</h3>
-                                    </div>
-
-                                </div>
+                                        </td>
+                                        <td width="30%"></td>
+                                        <td>Reg No</td>
+                                        <td>:</td>
+                                        <td>{{ str_pad($payment->student->id, 6, '0', STR_PAD_LEFT) }}</td>
+                                    </tr>
+                                </table>
                             </div>
 
                             <!-- table star -->
@@ -399,7 +415,7 @@
                                 </div>
                             </div>
 
-                            <div style="padding-bottom: 0;" class="contain">
+                            <div style="padding-bottom: 0; margin-top:10px;" class="contain">
                                 <div class="sign">
                                     <div class="name">
                                         <h3>Prepared By <span>:</span> {{ $payment?->recievedBy?->name }}</h3>
@@ -416,7 +432,7 @@
                                 <div class="contain">
                                     <table class="table">
                                         <tr>
-                                            <td colspan="4">Previous Payments</td>
+                                            <td colspan="6">Previous Payments</td>
                                         </tr>
                                         <tr>
                                             <th width="10%">SL No</th>
@@ -469,17 +485,19 @@
 
                             @endif
 
+                            <div class="contain">
+
+
                             <div style="
                             background: #000000;
                             color: #fff;
                             text-align: center;
-                            margin: 0 100px;
                             text-transform: capitalize;
                             padding: 5px;
                         ">
                                 Transaction Related to admission is not refundable.
                             </div>
-
+                        </div>
                             <!-- alltable end -->
 
 
