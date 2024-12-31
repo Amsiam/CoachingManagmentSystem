@@ -1,18 +1,25 @@
 <?php
 
-use Illuminate\Support\Facades\Session;
-use Livewire\WithPagination;
-
-use Livewire\Attributes\{Layout, Title, Computed, Validate};
-use Livewire\Volt\Component;
-use Mary\Traits\Toast;
-use App\Models\User;
-
+use function Livewire\Volt\{state,layout};
+use App\Models\Student;
 use App\Models\Payment;
+use Illuminate\Support\Facades\DB;
+use App\Models\Expense;
+use App\Models\BookSell;
 
-use App\Exports\IncomeExport;
 
-new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {};
+layout('layouts.app');
+
+state([
+    'total_student' => Student::count(),
+    'total_academics' => Student::where('package_id', 1)->count(),
+    'total_admission' => Student::where('package_id',"!=", 1)->count(),
+    'total_amount_payable' => Payment::sum(DB::raw('total-discount')),
+    'total_collection' => Payment::sum('paid'),
+    'total_book_collection' => BookSell::sum('price'),
+    'total_due' => Payment::sum("due"),
+    'total_cost' => Expense::sum('amount'),
+]);
 
 ?>
 
@@ -21,12 +28,59 @@ new #[Layout('layouts.app')] #[Title('Groups')] class extends Component {};
 <x-card title="Dashboard" separator progress-indicator>
 
     <div
-        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; width: 90%; max-width: 800px;">
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px;">
+
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_student)}}</div>
+                <p style="font-size: 14px;">Total Student</p>
+            </div>
+
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_academics)}}</div>
+                <p style="font-size: 14px;">Acadmics</p>
+            </div>
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_admission)}}</div>
+                <p style="font-size: 14px;">Admission</p>
+            </div>
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_amount_payable)}}</div>
+                <p style="font-size: 14px;">Total Amount Payable</p>
+            </div>
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_collection)}}</div>
+                <p style="font-size: 14px;">Total Collection</p>
+            </div>
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_due)}}</div>
+                <p style="font-size: 14px;">Total DUE</p>
+            </div>
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_book_collection)}}</div>
+                <p style="font-size: 14px;">Total Book Collection</p>
+            </div>
+            <div
+                style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_cost)}}</div>
+                <p style="font-size: 14px;">Total COST</p>
+            </div>
+
+    </div>
+
+    <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; ">
         <a href="/admission/academics">
             <div
                 style="background: #ff6f61; border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
                 <div style="font-size: 40px; margin-bottom: 10px;">👩🏽‍🏫</div>
-                <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Academic</h3>
+                <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Academic</p>
                 <p style="font-size: 14px;">Admission.</p>
             </div>
         </a>
