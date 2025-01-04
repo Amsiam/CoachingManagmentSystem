@@ -22,7 +22,10 @@ use App\SMS\AdmissionSms;
 
 use Illuminate\Support\Facades\DB;
 
-new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
+new
+#[Layout('layouts.app')]
+#[Title('Admission')]
+class extends Component {
     use Toast;
 
     protected $package_id = 1;
@@ -153,17 +156,25 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
     #[Computed]
     public function selectedCourses()
     {
-        return Course::with(['batches' => fn($q) => $q->whereIn('id', $this->other_batchs)])
+        return Course::with(['batches' => fn($q) => $q->whereIn('id', $this->other_batchs),"subCourses"])
             ->whereIn('id', $this->course_ids)
+            ->get();
+    }
 
+    #[Computed]
+    public function selectedSubCoursesParent()
+    {
+        return Course::whereIn('id', $this->course_ids)
+            ->whereNotNull("parent_id")
             ->get();
     }
 
     #[Computed]
     public function courses()
     {
-        return Course::where('package_id', $this->package_id)->get();
+        return Course::where('package_id', $this->package_id)->whereNull("parent_id")->get();
     }
+
 
     #[Computed]
     public function academics_years()
@@ -194,12 +205,13 @@ new #[Layout('layouts.app')] #[Title('Admission')] class extends Component {
             return [];
         }
 
-$subs = Subject::where('group_id', $this->personal->group)
-->get();
+        $subs = Subject::where('group_id', $this->personal->group)
+        ->get();
 
-$this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArray();
+        $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArray();
         return $subs;
     }
+
 
 
 
@@ -329,6 +341,18 @@ $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArr
                                 wire:model.live="course_ids" />
                         @endforeach
                     </div>
+                    @if (count($course_ids) > 0)
+                    <h1>Sub Courses</h1>
+                    <div class="grid grid-cols-4 gap-4 justify-around p-4">
+
+                        @foreach ($this->selectedCourses as $course)
+                            @foreach ($course->subCourses as $subCourse)
+                                <x-checkbox class="checkbox-xs" label="{{ $subCourse->name }}" value="{{ $subCourse->id }}"
+                                    wire:model.live="course_ids" />
+                            @endforeach
+                        @endforeach
+                    </div>
+                    @endif
 
                     <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups"
                         wire:model.live="personal.group" />
@@ -474,8 +498,15 @@ $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArr
                     <tbody>
                         @php
                             $total = 0;
+                            $numCourses = count($this->course_ids);
                         @endphp
                         @foreach ($this->selectedCourses as $course)
+                            @if ($this->selectedSubCoursesParent->contains('parent_id', $course->id))
+                                    @php
+                                        $numCourses--;
+                                    @endphp
+                                @continue
+                            @endif
                             <tr>
                                 <th>{{ $course->name }}</th>
                                 <td>{{ $course->batches->pluck('name')->implode(',') }}</td>
@@ -487,7 +518,7 @@ $this->selected_subjects = $subs->where("auto_selected","1")->pluck('id')->toArr
                         @endforeach
 
                         @php
-                            if (count($this->course_ids) == 2) {
+                            if ($numCourses == 2) {
                                 $total = 25000;
                             }
                         @endphp

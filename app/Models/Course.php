@@ -13,6 +13,11 @@ class Course extends Model
 
     protected $guarded=["id"];
 
+    protected $casts = [
+        'active' => 'boolean',
+        'featured' => 'boolean',
+    ];
+
     public function classs() {
         return $this->belongsTo(Classs::class);
     }
@@ -23,5 +28,22 @@ class Course extends Model
 
     public function package() {
         return $this->belongsTo(Package::class);
+    }
+
+    public function subCourses()
+    {
+        return $this->hasMany(Course::class, "parent_id");
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Course::class, "parent_id");
+    }
+    public function getNameAttribute($value)
+    {
+        if ($this->parent_id) {
+            return $this->parent->name . " - " . $value;
+        }
+        return  $value;
     }
 }

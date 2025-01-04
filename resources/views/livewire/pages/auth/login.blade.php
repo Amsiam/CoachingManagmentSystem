@@ -9,7 +9,7 @@ use Mary\Traits\Toast;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 use Xenon\LaravelBDSms\Facades\SMS;
@@ -59,6 +59,8 @@ class extends Component {
             position: 'toast-top toast-end',       // Optional (any icon)
             css: 'alert-success text-white',
         );
+
+        Log::info("OTP is ".$this->otp);
 
 
 

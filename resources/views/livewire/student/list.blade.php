@@ -385,7 +385,15 @@ public function academics_years(){
     {{$student->batches->pluck("name")->implode(",")}}
     @endscope
     @scope("cell_course",$student)
-    {{$student->courses->pluck("name")->implode(",")}}
+    @php
+        $names = collect([]);
+        foreach($student->courses as $course){
+            if ($student->courses->contains("parent_id",$course->id))
+                continue;
+            $names->push($course->name);
+        }
+    @endphp
+    {{$names->join(",")}}
     @endscope
 
     @scope("cell_image",$student)

@@ -35,7 +35,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['package_id', 'batch_id',"year","roll"]);
+            $table->unique(['package_id', 'batch_id', "year", "roll", "deleted_at"]);
         });
     }
 

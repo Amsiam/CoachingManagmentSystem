@@ -10,6 +10,7 @@ use App\Models\Group;
 use App\Models\Classs;
 use App\Models\Course;
 use App\Models\Package;
+use App\Models\Student;
 
 
 use Livewire\WithFileUploads;
@@ -33,6 +34,8 @@ class extends Component {
 
     public bool $modal = false;
 
+    public $subCourses ;
+
     public function rules()
     {
         return [
@@ -43,7 +46,10 @@ class extends Component {
             'course.longDesc' => '',
             'course.shortDesc' => '',
             'course.featured' => '',
-            "file"=>""
+            "file"=>"",
+            "subCourses.*.name"=>"",
+            "subCourses.*.price"=>"",
+
         ];
     }
 
@@ -51,6 +57,7 @@ class extends Component {
 
         $this->course = new Course();
         $this->course->package_id = 1;
+        $this->subCourses = collect([]);
 
         // dd($this->course);
     }
@@ -61,6 +68,8 @@ class extends Component {
         $this->course->featured = 0;
         $this->file = "";
 
+        $this->subCourses = collect([]);
+
         $this->modal = true;
     }
 
@@ -69,6 +78,7 @@ class extends Component {
     {
         return Classs::all();
     }
+
 
     #[Computed]
     public function packages()
@@ -79,7 +89,7 @@ class extends Component {
     #[Computed]
     public function courses()
     {
-        return Course::with(['classs',"package"])->paginate(20);
+        return Course::with(['classs',"package"])->whereNull("parent_id")->paginate(20);
     }
 
     public function modalClose()
@@ -90,7 +100,7 @@ class extends Component {
 
     public function editModalOpen($id)
     {
-        $course = Course::find($id);
+        $course = Course::with("subCourses")->find($id);
 
         $this->file = "";
 
@@ -103,11 +113,8 @@ class extends Component {
 
         $this->course = $course;
 
-        if($this->course->featured){
-            $this->course->featured=true;
-        }else{
-            $this->course->featured=false;
-        }
+        $this->subCourses = $course->subCourses;
+
         $this->modal = true;
     }
 
@@ -133,6 +140,14 @@ class extends Component {
 
         $course = $this->course->save();
 
+        if($this->subCourses->count()>0){
+            foreach ($this->subCourses as  $subCourse) {
+                $subCourse->parent_id = $this->course->id;
+                $subCourse->package_id = $this->course->package_id;
+                $subCourse->save();
+            }
+        }
+
 
 
         $this->success(title: 'Added successfully');
@@ -143,10 +158,29 @@ class extends Component {
 
     public function delete($id)
     {
+        $studentCount = Student::whereHas("courses",function($q) use ($id) { return $q->where("id",$id); })->count();
+
+        if($studentCount>0){
+            $this->error("Course has student. Can't delete");
+            return;
+        }
+
         Course::find($id)->delete();
 
         $this->success(title: 'Deleted successfully');
     }
+
+    public function addSubCourse($id=null){
+
+        $subCouese = new Course();
+
+        $subCouese->parent_id = $id;
+
+        $this->subCourses->push($subCouese);
+
+    }
+
+
 };
 
 ?>
@@ -185,10 +219,18 @@ class extends Component {
 
                 <x-checkbox label="Featured Course?" wire:model="course.featured" right />
 
+                @foreach ($subCourses as $key => $val)
+                    <div key="{{$key}}" class="flex justify-center items-center">
+                        <x-input label="Name" wire:model="subCourses.{{$key}}.name" />
+                        <x-input label="Price" wire:model="subCourses.{{$key}}.price" />
+                    </div>
+                @endforeach
+
                 <x-slot:actions>
                     {{-- Notice `onclick` is HTML --}}
-                    <x-button label="Cancel" wire:click="modalClose" />
-                    <x-button type="submit" label="Save" class="btn-primary" />
+                    <x-button label="Sub Course" class="btn-secondary btn-sm" wire:click="addSubCourse({{$this->course->id}})" />
+                    <x-button label="Cancel" class="btn-sm" wire:click="modalClose" />
+                    <x-button type="submit" label="Save" class="btn-primary btn-sm" />
                 </x-slot:actions>
             </x-form>
         </x-modal>

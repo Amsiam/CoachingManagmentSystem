@@ -315,12 +315,22 @@
                                     </tr>
                                     @php
                                         $total = 0;
+                                        $numOfCourses = 0;
                                     @endphp
                                     @if ($payment->paymentType == 2)
 
                                         @foreach ($payment->student->courses as $course)
+
+                                        @if ($payment->student->courses->contains('parent_id', $course->id))
+
+                                            @continue
+                                        @endif
+                                            @php
+                                                $numOfCourses++;
+                                            @endphp
+
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $numOfCourses }}</td>
                                                 <td>{{ $course->name }}</td>
                                                 <td>
                                                     {{ $course->price }}
@@ -331,7 +341,7 @@
                                             </tr>
                                         @endforeach
 
-                                        @if (count($payment->student->courses) >= 2)
+                                        @if ($numOfCourses >= 2)
                                             @php
                                                 $total = $payment->total;
                                             @endphp

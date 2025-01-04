@@ -159,7 +159,7 @@ class extends Component {
 
     #[Computed]
     public function courses(){
-        return Course::where("package_id",$this->student->package_id)->get();
+        return Course::where("package_id",$this->student->package_id)->whereNull("parent_id")->get();
     }
 
     #[Computed]
@@ -281,7 +281,7 @@ class extends Component {
 
     #[Computed]
     public function selectedCourses(){
-        return Course::with(["batches"=>fn($q)=>$q->whereIn("id",$this->other_batchs)])
+        return Course::with(["batches"=>fn($q)=>$q->whereIn("id",$this->other_batchs),"subCourses"])
         ->whereIn("id",$this->course_ids)
         ->get();
     }
@@ -346,6 +346,19 @@ $payTypes=[
                     <x-checkbox class="checkbox-xs" label="{{$course->name}}" value="{{$course->id}}" wire:model.live="course_ids" />
                 @endforeach
             </div>
+
+            @if (count($course_ids) > 0)
+                <h1>Sub Courses</h1>
+                <div class="grid grid-cols-4 gap-4 justify-around p-4">
+
+                    @foreach ($this->selectedCourses as $course)
+                        @foreach ($course->subCourses as $subCourse)
+                            <x-checkbox class="checkbox-xs" label="{{ $subCourse->name }}" value="{{ $subCourse->id }}"
+                                wire:model.live="course_ids" />
+                        @endforeach
+                    @endforeach
+                </div>
+            @endif
 
             @if ($this->student->package_id==1)
 
@@ -505,8 +518,15 @@ $payTypes=[
             <tbody>
                 @php
                 $total =0;
+                $numCourse = count($this->selectedCourses);
             @endphp
                 @foreach ($this->selectedCourses as $course)
+                @if ($this->selectedCourses->contains("parent_id",$course->id))
+                    @php
+                        $numCourse--;
+                    @endphp
+                    @continue
+                @endif
                 <tr>
                     <th>{{$course->name}}</th>
                     <td>{{$course->batches->pluck("name")->implode(',')}}</td>
@@ -518,7 +538,7 @@ $payTypes=[
                 @endforeach
 
                 @php
-                    if (count($this->course_ids)==2) {
+                    if ($numCourse==2) {
                         $total = 26000;
                     }
                 @endphp

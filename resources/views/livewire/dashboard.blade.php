@@ -14,10 +14,10 @@ state([
     'total_student' => Student::count(),
     'total_academics' => Student::where('package_id', 1)->count(),
     'total_admission' => Student::where('package_id',"!=", 1)->count(),
-    'total_amount_payable' => Payment::sum(DB::raw('total-discount')),
-    'total_collection' => Payment::sum('paid'),
+    'total_amount_payable' => Payment::whereHas("student")->sum(DB::raw('total-discount')),
+    'total_collection' => Payment::whereHas("student")->sum('paid'),
     'total_book_collection' => BookSell::sum('price'),
-    'total_due' => Payment::sum("due"),
+    'total_due' => Payment::whereHas("student")->sum("due"),
     'total_cost' => Expense::sum('amount'),
 ]);
 
@@ -26,6 +26,8 @@ state([
 
 
 <x-card title="Dashboard" separator progress-indicator>
+
+    @can('reports')
 
     <div
         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px;">
@@ -74,6 +76,7 @@ state([
 
     </div>
 
+    @endcan
     <div
         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; ">
         <a href="/admission/academics">
