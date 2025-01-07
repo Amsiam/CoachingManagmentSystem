@@ -274,14 +274,14 @@
                                         <td>Address</td>
                                         <td>:</td>
                                         <td>{{ $payment->student->personalDetails->paddess }}</td>
-                                        <td width="30%"></td>
+                                        <td width="35%"></td>
                                     </tr>
                                     <tr>
-                                        <td>Mobile No</td>
+                                        <td width="9%">Mobile No</td>
                                         <td>:</td>
                                         <td>{{ $payment->student->personalDetails->smobile }}</td>
-                                        <td width="30%"></td>
-                                        <td width="5%">Roll No</td>
+                                        <td width="40%"></td>
+                                        <td width="7%">Roll No</td>
                                         <td>:</td>
                                         <td>{{ $payment->student->roll }}</td>
                                     </tr>
@@ -445,12 +445,12 @@
                                             <td colspan="6">Previous Payments</td>
                                         </tr>
                                         <tr>
-                                            <th width="10%">SL No</th>
-                                            <th width="20%">Description</th>
-                                            <th width="20%">Date</th>
-                                            <th width="15%">Amount</th>
-                                            <th width="15%">Received BY</th>
-                                            <th width="20%">Remarks</th>
+                                            <th width="8%">SL No</th>
+                                            <th width="22%">Description</th>
+                                            <th width="12%">Date</th>
+                                            <th width="12%">Amount</th>
+                                            <th width="20%">Received BY</th>
+                                            <th width="25%">Remarks</th>
                                         </tr>
                                         @php
                                             $total = 0;
