@@ -144,6 +144,7 @@ class extends Component {
             foreach ($this->subCourses as  $subCourse) {
                 $subCourse->parent_id = $this->course->id;
                 $subCourse->package_id = $this->course->package_id;
+                $subCourse->classs_id = $this->course->classs_id;
                 $subCourse->save();
             }
         }
