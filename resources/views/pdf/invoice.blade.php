@@ -273,7 +273,7 @@
                                     <tr>
                                         <td>Address</td>
                                         <td>:</td>
-                                        <td>{{ $payment->student->personalDetails->paddess }}</td>
+                                        <td>{{ $payment->student->personalDetails->paddress }}</td>
                                         <td width="35%"></td>
                                     </tr>
                                     <tr>

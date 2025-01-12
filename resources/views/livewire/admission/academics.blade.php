@@ -664,7 +664,6 @@ class extends Component {
                     <div class="flex justify-between w-full">
 
                         <x-button label="Prev" @click="$wire.prev()" class="btn-warning" type="button" />
-
                         <x-button label="Save" type="submit" class="btn-primary" />
                     </div>
                 @endif
