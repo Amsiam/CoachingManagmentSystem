@@ -342,7 +342,46 @@ class extends Component {
                         @endforeach
                     </div>
                     @if (count($course_ids) > 0)
-                    <h1>Sub Courses</h1>
+
+         <br>
+
+       <style>
+        .down-arrow {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid red; /* Red down arrow */
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+    </style>
+
+    &nbsp  &nbsp
+    <font face="Hind Siliguri" color="ffeb00" size="5px" >         গ্রুপ /
+
+
+
+    সাব কোর্স সিলেক্ট  করুন </b> </font>  &nbsp
+        <span class="down-arrow"></span>
+
+
+
+       </font>
+    </p>
+
+
+
+
                     <div class="grid grid-cols-4 gap-4 justify-around p-4">
 
                         @foreach ($this->selectedCourses as $course)
@@ -356,7 +395,7 @@ class extends Component {
 
                     <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups"
                         wire:model.live="personal.group" />
-
+<br>
 
                     @if (count($course_ids) > 0)
 
@@ -366,16 +405,18 @@ class extends Component {
                         @endif
 
                     @endif
+<br>
+
+                    <x-input class="input-sm" label="Name (English)" wire:model="student.name" />
 
 
-                    <x-input class="input-sm" label="Name(English)" wire:model="student.name" />
+                    <x-input class="input-sm" label="Name (Bangla)" wire:model="student.bn_name" />
 
-                    <x-input class="input-sm" label="Name(Bangla)" wire:model="student.bn_name" />
 
                     <x-input class="input-sm" label="Father's Name" wire:model="personal.fname" />
 
                     <x-input class="input-sm" label="Mother's Name" wire:model="personal.mname" />
-
+<br>
 
                     <div class="lg:flex gap-2 ">
                         <div class="lg:w-1/2">
@@ -385,6 +426,7 @@ class extends Component {
                             <x-input class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" />
                         </div>
                     </div>
+
 
 
                     <x-input class="input-sm" label="Mailing/Present Address" wire:model="personal.paddress" />
@@ -399,6 +441,20 @@ class extends Component {
                                 option-value="name" single />
                         </div>
                     </div>
+
+                  <br>
+                   <style>
+        .gradient-text-background {
+            background: linear-gradient(to right, #3e7b27, #ff9d23); /* Gradient background */
+            color: white;
+            width:;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+
+    <p class="gradient-text-background"> <font face="Hind Siliguri">  একাডেমিক ইনফরমেশন  </font>  </p>
 
                     <div class="w-full mt-2 overflow-x-scroll">
                         <table class="table table-zebra border">
@@ -444,9 +500,28 @@ class extends Component {
                         </table>
                     </div>
 
-
+<br>
                     <div class="mt-2">
-                        <h1 class="font-bold text-sm">HSC Subject</h1>
+
+                                    <style>
+        .gradient-text-background {
+            background: linear-gradient(to right, #3e7b27, #123524); /* Gradient background */
+            color: white;
+            width:;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+
+    <p class="gradient-text-background"> <font face="Hind Siliguri">
+
+    সাবজেক্ট সিলেক্ট করুন   </font>  </p>
+
+
+
+                        <br>
+
                         <div class="lg:grid lg:grid-cols-3 lg:items-center lg:gap-2">
                             @foreach ($this->subjects as $subject)
                             <div>
@@ -455,24 +530,32 @@ class extends Component {
                             @endforeach
                         </div>
                     </div>
-
+<br>
                     <div class="lg:flex gap-2 items-center">
                         <div class="lg:w-1/2">
+
+
+
+
+
                             <x-input type="number" min="0" class="input-sm" label="Monthly Salary" wire:model="student.monthly_salary" />
-                        </div>
+
+                            </div>
+                            <br>
                         <div class="lg:w-1/2">
                             <x-checkbox label="Fixed Salary" wire:model="student.fixed_salary" value="1" />
                         </div>
                     </div>
 
 
-
+<br>
 
                     <div class="w-full">
                         <x-radio class="w-full bg-red-50 ring-0" label="Quota" :options="$quotas"
                             wire:model="personal.quota" />
                     </div>
 
+<br>
                     <div class="lg:flex gap-2">
                         <div class="lg:w-1/2">
                             <x-input class="input-sm" label="Reference Name" wire:model="personal.ref_name" />
@@ -525,7 +608,7 @@ class extends Component {
 
                         <tr>
                             <th class="text-right" colspan="2">মোট টাকা</th>
-                            <td>{{ $total }}</td>
+                            <td> <b>   {{ $total }} </b>  </td>
                         </tr>
 
                         <tr>
@@ -549,7 +632,11 @@ class extends Component {
 
                         <tr>
                             <th class="text-right" colspan="2">বকেয়া</th>
-                            <td>{{ $total - ($payment->discount == '' ? 0 : $payment->discount) - ($payment->paid == '' ? 0 : $payment->paid) }}
+                            <td>
+
+                              <p style="color: red;">
+
+                                {{ $total - ($payment->discount == '' ? 0 : $payment->discount) - ($payment->paid == '' ? 0 : $payment->paid) }} </p>
                             </td>
                         </tr>
 
