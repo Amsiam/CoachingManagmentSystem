@@ -68,7 +68,7 @@ class extends Component {
             'personal.paddress' => '',
             'personal.dob' => '',
             'personal.blood' => '',
-            'personal.group' => '',
+            'personal.group' => 'required',
             'personal.quota' => '',
             'personal.ref_name' => '',
             'personal.ref_mobile' => '',
@@ -144,6 +144,7 @@ class extends Component {
             'personal.smobile' => 'required',
             'personal.gmobile' => 'required',
             'course_ids' => 'required',
+            'personal.group' => 'required'
         ]);
         array_push($this->other_batchs, $this->student->batch_id);
         $this->page++;
