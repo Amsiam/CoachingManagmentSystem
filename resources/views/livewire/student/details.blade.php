@@ -243,13 +243,15 @@ class extends Component {
         $this->paymodal=true;
     }
 
-    public function updatedPaymentType($value){
+    public function updatedPaymentPaymentType($value){
         if($value==1){
             $due = Payment::where("student_roll",$this->payment->student_roll)->sum("due");
 
             if($due>0){
                 $this->total = $due;
             }
+
+            $this->payment->paid = $this->total;
         }else{
             $this->paymentMonth = date("m");
             $this->paymentYear = date("Y");
