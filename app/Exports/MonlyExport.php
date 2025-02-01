@@ -152,7 +152,7 @@ class MonlyExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyle
         })
             ->withSum(["payments" => function ($q) {
                 return $q->where("paymentType", 2)->limit(1);
-            }], "paid")
+        }], "total")
             ->withSum("payments", "due")
             ->latest()
             ->get();

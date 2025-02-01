@@ -36,7 +36,7 @@
             <td>{{$student->personalDetails->gmobile}}</td>
             <td>{{$student->created_at}}</td>
 
-            <td>{{$student->payments_sum_paid}}</td>
+            <td>{{$student->payments_sum_total}}</td>
             <td>{{$student->payments_sum_due}}</td>
 
             @foreach ($periods as $date)
