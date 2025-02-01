@@ -12,6 +12,7 @@
             <th>Guardian Mobile</th>
             <th>Admission Date</th>
             <th>Admission Amount</th>
+            <th>Admission Paid</th>
             <th>DUE</th>
 
             @foreach ($periods as $date)
@@ -37,6 +38,7 @@
             <td>{{$student->created_at}}</td>
 
             <td>{{$student->payments_sum_total}}</td>
+            <td>{{$student->payments_sum_paid}}</td>
             <td>{{$student->payments_sum_due}}</td>
 
             @foreach ($periods as $date)
