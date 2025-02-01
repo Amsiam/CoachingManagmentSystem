@@ -243,6 +243,24 @@ class extends Component {
         $this->paymodal=true;
     }
 
+    public function updatedPaymentType($value){
+        if($value==1){
+            $due = Payment::where("student_roll",$this->payment->student_roll)->sum("due");
+
+            if($due>0){
+                $this->total = $due;
+            }
+        }else{
+            $this->paymentMonth = date("m");
+            $this->paymentYear = date("Y");
+
+            if ($this->student->fixed_salary) {
+                $this->payment->paid = (int) $this->student->monthly_salary;
+            }
+        }
+
+    }
+
     public function openEditModal($id){
 
         $this->payment = Payment::findOrFail($id);

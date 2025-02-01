@@ -251,7 +251,7 @@ class extends Component {
                 $total = Course::whereIn("id",$this->course_ids)->sum("price");
 
                 if (count($this->course_ids)==2) {
-                        $total = 25000;
+                        $total = 27000;
                     }
                 $this->payment->total = $total;
                 $this->payment->recieved_by = auth()->user()->email;
@@ -463,7 +463,7 @@ $payTypes=[
 
                 @php
                     if (count($this->course_ids)==2) {
-                        $total = 25000;
+                        $total = 27000;
                     }
                 @endphp
 

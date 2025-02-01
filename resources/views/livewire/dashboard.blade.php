@@ -69,17 +69,17 @@ state([
             </div>
             <div
                 style="background: linear-gradient(135deg, #640D5F, #FFB200); border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_amount_payable)}}</div>
+                <div style="font-size: 30px; margin-bottom: 10px;">{{number_format($total_amount_payable)}}</div>
                 <p style="font-size: 14px;">Total Amount Payable</p>
             </div>
             <div
                 style="background: linear-gradient(135deg, #9694ff, #ff8000); border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_collection)}}</div>
+                <div style="font-size: 30px; margin-bottom: 10px;">{{number_format($total_collection)}}</div>
                 <p style="font-size: 14px;">Total Collection</p>
             </div>
             <div
                 style="background: linear-gradient(135deg, #7ed4ad, #ffa24c); border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_due)}}</div>
+                <div style="font-size: 30px; margin-bottom: 10px;">{{number_format($total_due)}}</div>
                 <p style="font-size: 14px;">Total DUE</p>
             </div>
             <div

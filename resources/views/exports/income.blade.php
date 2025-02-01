@@ -2,7 +2,7 @@
     <thead style="text-align: center;">
         <tr>
             <td rowspan="2" colspan="8">
-                 <font face="hind siliguri" size="6"> <b> তুষার’স কেয়ার</b> </font>  <br>   <font face="hind siliguri" size="5"> </font></td>
+                 <font face="hind siliguri" size="6"> <b> তুষার’স কেয়ার</b> </font>  <br>   <font face="hind siliguri" size="5"> </font>
                 </td>
         </tr>
         <tr></tr>

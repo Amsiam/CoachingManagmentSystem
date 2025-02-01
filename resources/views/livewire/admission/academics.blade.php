@@ -282,7 +282,7 @@ class extends Component {
                 $total = Course::whereIn('id', $this->course_ids)->sum('price');
 
                 if (count($this->course_ids) == 2) {
-                    $total = 25000;
+                    $total = 30000;
                 }
 
                 $this->payment->total = $total;
@@ -317,9 +317,11 @@ class extends Component {
         ['name' => 'AB-'],
     ];
     $quotas = [
-        ['name' => 'Freedom Fighter', 'id' => 1],
-        ['name' => 'Tribal', 'id' => 2],
-        ['name' => 'No Quota', 'id' => 0],
+        ['name' => ' Medhabritty ', 'id' => 1],
+        ['name' => ' Academic Olympiad', 'id' => 3],
+         ['name' => ' Accounting Olympiad', 'id' => 4],
+          ['name' => ' Medhagroz ', 'id' => 5],
+        ['name' => ' English Olympiad', 'id' => 2],
     ];
 
     $payTypes = [['name' => 'Bkash'], ['name' => 'Nagad'], ['name' => 'Hand']];
@@ -534,11 +536,6 @@ class extends Component {
 <br>
                     <div class="lg:flex gap-2 items-center">
                         <div class="lg:w-1/2">
-
-
-
-
-
                             <x-input type="number" min="0" class="input-sm" label="Monthly Salary" wire:model="student.monthly_salary" />
 
                             </div>
@@ -552,7 +549,7 @@ class extends Component {
 <br>
 
                     <div class="w-full">
-                        <x-radio class="w-full bg-red-50 ring-0" label="Quota" :options="$quotas"
+                        <x-radio class="w-full bg-red-50 ring-0" label=" Scholarship " :options="$quotas"
                             wire:model="personal.quota" />
                     </div>
 
@@ -561,6 +558,7 @@ class extends Component {
                         <div class="lg:w-1/2">
                             <x-input class="input-sm" label="Reference Name" wire:model="personal.ref_name" />
                         </div>
+                        <br>
                         <div class="lg:w-1/2">
                             <x-input class="input-sm" label="Mobile" wire:model="personal.ref_mobile" />
                         </div>
@@ -603,7 +601,7 @@ class extends Component {
 
                         @php
                             if ($numCourses == 2) {
-                                $total = 25000;
+                                $total = 30000;
                             }
                         @endphp
 

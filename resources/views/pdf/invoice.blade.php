@@ -273,7 +273,7 @@
                                     <tr>
                                         <td>Address</td>
                                         <td>:</td>
-                                        <td>{{ $payment->student->personalDetails->paddress }}</td>
+                                        <td><font face="hind siliguri">{{ $payment->student->personalDetails->paddress }} </font> </td>
                                         <td width="35%"></td>
                                     </tr>
                                     <tr>

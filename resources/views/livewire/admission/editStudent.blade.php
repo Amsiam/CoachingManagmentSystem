@@ -79,7 +79,7 @@ class extends Component {
             "personal.paddress"=>"",
             "personal.dob"=>"",
             "personal.blood"=>"",
-            "personal.group"=>"",
+            "personal.group"=>"required",
             "personal.quota"=>"",
             "personal.ref_name"=>"",
             "personal.ref_mobile"=>"",
@@ -257,8 +257,9 @@ class extends Component {
 
 
                 $total = Course::whereIn("id",$this->course_ids)->sum("price");
+                $subCount = Course::whereIn("id",$this->course_ids)->whereNull("parent_id")->count();
 
-                if (count($this->course_ids)==2) {
+                if ($subCount==2) {
                         $total = 26000;
                     }
                 $this->payment->total = $total;
