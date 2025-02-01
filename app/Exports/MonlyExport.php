@@ -150,7 +150,12 @@ class MonlyExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyle
         })->when($this->filterAcademicYear,function($q) {
             return $q->where("year",$this->filterAcademicYear);
         })
-        ->latest()->get();
+            ->withSum(["payments" => function ($q) {
+                return $q->where("paymentType", 2)->limit(1);
+            }], "paid")
+            ->withSum("payments", "due")
+            ->latest()
+            ->get();
 
         return view('exports.montly', compact("students","periods"));
     }

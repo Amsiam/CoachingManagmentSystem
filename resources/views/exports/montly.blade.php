@@ -1,7 +1,7 @@
 <table>
     <thead style="text-align: center;">
         <tr>
-            <td rowspan="2" colspan="{{iterator_count($periods)+6}}"><h1> <font face="hind siliguri" size="6"> তুষার’স কেয়ার </font>  <br>   <font face="hind siliguri" size="5"> একাডেমিক এন্ড এডমিশন  </font></h1></td>
+            <td rowspan="2" colspan="{{iterator_count($periods)+8}}"><h1> <font face="hind siliguri" size="6"> তুষার’স কেয়ার </font>  <br>   <font face="hind siliguri" size="5"> একাডেমিক এন্ড এডমিশন  </font></h1></td>
         </tr>
         <tr></tr>
         <tr>
@@ -11,6 +11,8 @@
             <th>Student Mobile</th>
             <th>Guardian Mobile</th>
             <th>Admission Date</th>
+            <th>Admission Amount</th>
+            <th>DUE</th>
 
             @foreach ($periods as $date)
                 <th>{{$date->format("F")}}</th>
@@ -33,6 +35,9 @@
             <td>{{$student->personalDetails->smobile}}</td>
             <td>{{$student->personalDetails->gmobile}}</td>
             <td>{{$student->created_at}}</td>
+
+            <td>{{$student->payments_sum_paid}}</td>
+            <td>{{$student->payments_sum_due}}</td>
 
             @foreach ($periods as $date)
 
