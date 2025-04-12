@@ -460,6 +460,19 @@ $payTypes=[
             </table>
         </div>
 
+        @if($student->package_id==1)
+
+        <div class="lg:flex gap-2 items-center">
+            <div class="lg:w-1/2">
+                <x-checkbox label="Montly fee Free?" wire:model="student.free" value="1" />
+            </div>
+            <div class="lg:w-1/2">
+                <x-checkbox label="Post Paid?" wire:model="student.post_paid" value="1" />
+            </div>
+        </div>
+
+        @endif
+
 
         <div class="mt-2">
             <h1 class="font-bold text-sm">HSC Subject</h1>

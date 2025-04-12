@@ -1,7 +1,7 @@
 <table>
     <thead style="text-align: center;">
         <tr>
-            <td rowspan="2" colspan="8">
+            <td rowspan="2" colspan="9">
                 <h1>Tusher's Care</h1></td>
         </tr>
         <tr></tr>
@@ -14,6 +14,7 @@
             <th>Package</th>
             <th>Admitted Date</th>
             <th>Admitted By</th>
+            <th>Status</th>
         </tr>
     </thead>
 
@@ -30,6 +31,7 @@
             <td>{{$student->package->name}} </td>
             <td>{{$student->created_at}}</td>
             <td>{{$student->addedBy ? $student->addedBy->name : ""}}</td>
+            <td>{{$student->active?'Active':$student->deactive_reason}}</td>
         </tr>
         @endforeach
     </tbody>

@@ -41,6 +41,7 @@ class extends Component {
 
     public $paymentMonth;
     public $paymentYear;
+    public $deactive=0;
 
     public function rules(){
         return [
@@ -53,6 +54,8 @@ class extends Component {
             "payment.student_roll"=>"required",
             "payment.recieved_by"=>"",
             "payment.edited_by"=>"",
+            "student.deactive_reason"=>"",
+
 
     ];
     }
@@ -301,7 +304,20 @@ class extends Component {
 public function academics_years(){
         return AcademicYear::where("active",true)->latest()->get();
     }
+
+    public function saveDeactive(){
+    $this->student->active = 0;
+    $this->student->save();
+    $this->success("Student Deactivated");
+    $this->deactive = false;
+}
+
+public function toggleDeactive(){
+    $this->deactive = !$this->deactive;
+}
 };
+
+
 
 ?>
 
@@ -470,14 +486,25 @@ $month = [
                                 <tr>
                                     <th>Status</th>
                                     <td>
-                                        <x-button class="btn-sm" wire:confirm="Are you sure to change status?" wire:click="statusChange">
                                         @if ($student->active)
-                                            <div class="bg-green-500 px-3 py-2 rounded-lg">Active</div>
-                                        @else
 
-                                        <div class="bg-red-500 px-3 py-2 rounded-lg">Deactive</div>
+                                            @if($deactive)
+                                            <x-input label="Deactive Reason" wire:model="student.deactive_reason" />
+                                                    <x-button class="btn-sm" wire:confirm="Are you sure to change status?" wire:click="saveDeactive">
+                                                        <div class="bg-red-500 px-3 py-2 rounded-lg">Deactive</div>
+                                                    </x-button>
+                                        @else
+                                            <x-button class="btn-sm" wire:click="toggleDeactive">
+                                                <div  class="bg-green-500 text-white px-3 py-2 rounded-lg">Active</div>
+                                            </x-button>
+
+                                            @endif
+
+                                        @else
+                                            <x-button class="btn-sm" wire:confirm="Are you sure to change status?" wire:click="statusChange">
+                                                <div class="bg-red-500 px-3 py-2 rounded-lg">Deactive</div>
+                                            </x-button>
                                         @endif
-                                        </x-button>
                                     </th>
                                 </tr>
 

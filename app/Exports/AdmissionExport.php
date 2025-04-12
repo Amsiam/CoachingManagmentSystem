@@ -143,7 +143,8 @@ class AdmissionExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultS
         })->when($this->filterAddedBy!=[],function($q) {
             return $q->whereIn("user_id",$this->filterAddedBy);
         })
-        ->latest()->get();
+            ->latest()
+            ->get();
 
         return view('exports.admission', compact("students"));
     }
