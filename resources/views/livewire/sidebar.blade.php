@@ -202,6 +202,13 @@ state([
                     'permission' => 'academics.course',
                 ],
                 [
+                    'title' => 'Shift',
+                    'icon' => 'o-home',
+                    'link' => '/shifts',
+                    'hasMore' => false,
+                    'permission' => 'academics.course',
+                ],
+                [
                     'title' => 'Batch',
                     'icon' => 'o-home',
                     'link' => '/batches',

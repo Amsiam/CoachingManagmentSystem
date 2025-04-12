@@ -95,6 +95,7 @@ Route::prefix("/")->middleware("auth")->group(function () {
     Volt::route("/groups", "academics.groupTable")->middleware("can:academics.group");
     Volt::route("/classes", "academics.classs")->middleware("can:academics.class");
     Volt::route("/courses", "academics.courses")->middleware("can:academics.course");
+    Volt::route("/shifts", "academics.shifts")->middleware("can:academics.course");
     Volt::route("/batches", "academics.batches")->middleware("can:academics.batch");
     Volt::route("/academic_year", "academics.academic_year")->middleware("can:academics.academic_year");
     Volt::route("/subject", "academics.subject")->middleware("can:academics.academic_year");

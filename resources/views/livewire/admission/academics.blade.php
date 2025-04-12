@@ -9,6 +9,7 @@ use Mary\Traits\Toast;
 
 use App\Models\Group;
 use App\Models\Course;
+use App\Models\Shift;
 use App\Models\Classs;
 use App\Models\Batch;
 use App\Models\Student;
@@ -69,6 +70,7 @@ class extends Component {
             'personal.dob' => '',
             'personal.blood' => '',
             'personal.group' => 'required',
+            'personal.shift' => 'required',
             'personal.quota' => '',
             'personal.ref_name' => '',
             'personal.ref_mobile' => '',
@@ -197,6 +199,13 @@ class extends Component {
     public function groups()
     {
         return Group::all();
+    }
+
+    #[Computed]
+    public function shifts()
+    {
+        return Shift::whereIn('course_id', $this->course_ids)
+            ->get();
     }
 
     #[Computed]
@@ -396,6 +405,10 @@ class extends Component {
 
                     <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups"
                         wire:model.live="personal.group" />
+
+
+                        <x-radio class="w-full bg-red-50 ring-0" label="Shift" :options="$this->shifts"
+                            wire:model.live="personal.shift" />
 <br>
 
                     @if (count($course_ids) > 0)
