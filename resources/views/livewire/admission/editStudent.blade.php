@@ -12,6 +12,7 @@ use App\Models\Course;
 use App\Models\Classs;
 use App\Models\Batch;
 use App\Models\Student;
+use App\Models\Shift;
 use App\Models\AcademicDetail;
 use App\Models\PersonalDetail;
 use App\Models\HscSub;
@@ -80,6 +81,7 @@ class extends Component {
             "personal.dob"=>"",
             "personal.blood"=>"",
             "personal.group"=>"required",
+            "personal.shift"=>"required",
             "personal.quota"=>"",
             "personal.ref_name"=>"",
             "personal.ref_mobile"=>"",
@@ -286,6 +288,12 @@ class extends Component {
         ->whereIn("id",$this->course_ids)
         ->get();
     }
+    #[Computed]
+    public function shifts()
+    {
+        return Shift::whereIn('course_id', $this->course_ids)
+            ->get();
+    }
 
 
 #[Computed]
@@ -364,7 +372,8 @@ $payTypes=[
             @if ($this->student->package_id==1)
 
                 <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups" wire:model.live="personal.group" />
-
+                    <x-radio class="w-full bg-red-50 ring-0" label="Shift" :options="$this->shifts"
+                        wire:model.live="personal.shift" />
             @endif
 
             <x-choices label="Main Batch" wire:model="student.batch_id" :options="$this->batches" single />
