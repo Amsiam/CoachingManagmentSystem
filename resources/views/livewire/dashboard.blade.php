@@ -90,7 +90,7 @@ state([
             @can('reports.all')
                 <div
                 style="background: linear-gradient(135deg, #4535c1, #ff6600); border-radius: 12px; color: #fff; text-align: center; padding: 20px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <div style="font-size: 40px; margin-bottom: 10px;">{{number_format($total_cost)}}</div>
+                <div style="font-size: 30px; margin-bottom: 10px;">{{number_format($total_cost)}}</div>
                 <p style="font-size: 14px;">Total COST</p>
             </div>
             @endcan

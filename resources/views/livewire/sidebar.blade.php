@@ -260,22 +260,29 @@ state([
                 ],
             ],
         ],
-        [
+         
+           [
             'title' => 'Slider',
             'icon' => 'o-home',
             'link' => '/slider',
             'hasMore' => false,
             'permission' => 'slider',
         ],
+        
+        
+        
         [
-            'title' => 'Student Review',
+            'title' => ' কোর্স ইনফরমেশ',
             'icon' => 'o-home',
             'link' => '/student_review',
             'hasMore' => false,
             'permission' => 'student_review',
         ],
+     
     ],
 ]);
+
+
 
 ?>
 

@@ -264,7 +264,7 @@ class extends Component {
 
 
 
-            AdmissionSms::sendMessage($this->personal->smobile,$this->student->name, $this->student->id,$roll,"12345678",$this->payment,"DMC Scholar");
+            AdmissionSms::sendMessage($this->personal->smobile,$this->student->name, $this->student->id,$roll,"12345678",$this->payment,"-Tusher's Care");
 
             return $this->redirect("/student"."/".$this->student->id);
 
@@ -335,7 +335,7 @@ $payTypes=[
         @endif
 
 
-        <x-input class="input-sm" label="Name(English)" wire:model="student.name"  />
+        <x-input class="input-sm" label="Name(English)" wire:model="student.name" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z\s\.\(\)]/g, '')"/>
 
         <x-input class="input-sm" label="Name(Bangla)" wire:model="student.bn_name" />
 
@@ -346,10 +346,46 @@ $payTypes=[
 
         <div class="lg:flex gap-2 ">
             <div class="lg:w-1/2">
-                <x-input  class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" />
+                <x-input  class="input-sm" label="Student's Mobile No" wire:model="personal.smobile"  type="tel" maxlength="11" minlength="11" 
+                 pattern="[0-9]{11}" inputmode="numeric" 
+                 oninput="validateMobile(this)" required />
+        <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small> 
+        <script>
+    function validateMobile(input) {
+        const errorMsg = document.getElementById('error-msg');
+        const value = input.value;
+
+        // শুধুমাত্র সংখ্যা গ্রহণ করবে
+        input.value = value.replace(/\D/g, '');
+
+        if (value.length === 11) {
+            errorMsg.style.display = 'none';
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    }
+</script>
             </div>
             <div class="lg:w-1/2">
-                <x-input  class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" />
+                <x-input  class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" type="tel" maxlength="11" minlength="11" 
+                 pattern="[0-9]{11}" inputmode="numeric" 
+                 oninput="validateMobile(this)" required />
+        <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small> 
+        <script>
+    function validateMobile(input) {
+        const errorMsg = document.getElementById('error-msg');
+        const value = input.value;
+
+        // শুধুমাত্র সংখ্যা গ্রহণ করবে
+        input.value = value.replace(/\D/g, '');
+
+        if (value.length === 11) {
+            errorMsg.style.display = 'none';
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    }
+</script>
             </div>
         </div>
 

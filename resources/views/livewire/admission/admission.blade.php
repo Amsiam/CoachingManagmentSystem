@@ -334,28 +334,64 @@ $payTypes=[
         @endif
 
 
-        <x-input class="input-sm" label="Name(English)" wire:model="student.name"  />
-
+        <x-input class="input-sm" label="Name(English)" wire:model="student.name" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z\s\.\(\)]/g, '')"/>
+<br>
         <x-input class="input-sm" label="Name(Bangla)" wire:model="student.bn_name" />
-
-        <x-input class="input-sm" label="Father's Name" wire:model="personal.fname" />
-
+<br>
+        <x-input class="input-sm" label="Father's Name" wire:model="personal.fname" oninput="this.value = this.value.replace(/[^A-Za-z\s\.\(\)]/g, '')"/>
+<br>
         <x-input class="input-sm" label="Mother's Name" wire:model="personal.mname" />
-
+<br>
 
         <div class="lg:flex gap-2 ">
             <div class="lg:w-1/2">
-                <x-input  class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" />
+                <x-input  class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" type="tel" maxlength="11" minlength="11" 
+                 pattern="[0-9]{11}" inputmode="numeric" 
+                 oninput="validateMobile(this)" required />
+                  <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small>
             </div>
+            <script>
+    function validateMobile(input) {
+        const errorMsg = document.getElementById('error-msg');
+        const value = input.value;
+
+        // শুধুমাত্র সংখ্যা গ্রহণ করবে
+        input.value = value.replace(/\D/g, '');
+
+        if (value.length === 11) {
+            errorMsg.style.display = 'none';
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    }
+</script>
             <div class="lg:w-1/2">
-                <x-input  class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" />
+                <x-input  class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" type="tel" maxlength="11" minlength="11" 
+                 pattern="[0-9]{11}" inputmode="numeric" 
+                 oninput="validateMobile(this)" required />
+                  <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small>
             </div>
         </div>
 
+<script>
+    function validateMobile(input) {
+        const errorMsg = document.getElementById('error-msg');
+        const value = input.value;
 
+        // শুধুমাত্র সংখ্যা গ্রহণ করবে
+        input.value = value.replace(/\D/g, '');
+
+        if (value.length === 11) {
+            errorMsg.style.display = 'none';
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    }
+</script>
+<br>
         <x-input  class="input-sm" label="Mailing/Present Address" wire:model="personal.paddress" />
 
-
+<br>
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
                 <x-datetime label="Date Of Birth" wire:model="personal.dob" />

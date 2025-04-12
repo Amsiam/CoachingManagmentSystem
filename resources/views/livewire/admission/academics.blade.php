@@ -63,8 +63,8 @@ class extends Component {
             'personal.student_id' => '',
             'personal.fname' => '',
             'personal.mname' => '',
-            'personal.smobile' => 'required',
-            'personal.gmobile' => 'required',
+            'personal.smobile' => 'required|digits:11',
+            'personal.gmobile' => 'required|digits:11',
             'personal.paddress' => '',
             'personal.dob' => '',
             'personal.blood' => '',
@@ -280,10 +280,8 @@ class extends Component {
                 $this->payment->student_roll = $this->student->id;
 
                 $total = Course::whereIn('id', $this->course_ids)->sum('price');
+                
 
-                if (count($this->course_ids) == 2) {
-                    $total = 30000;
-                }
 
                 $this->payment->total = $total;
                 $this->payment->recieved_by = auth()->user()->email;
@@ -410,30 +408,35 @@ class extends Component {
                     @endif
 <br>
 
-                    <x-input class="input-sm" label="Name (English)" wire:model="student.name" />
-
+                    <x-input class="input-sm" label="Name (English)" wire:model="student.name"  oninput="this.value = this.value.toUpperCase().replace(/[^A-Z\s\.\(\)]/g, '')"/>
+<br>
 
                     <x-input class="input-sm" label="Name (Bangla)" wire:model="student.bn_name" />
-
+<br>
 
                     <x-input class="input-sm" label="Father's Name" wire:model="personal.fname" />
-
+<br>
                     <x-input class="input-sm" label="Mother's Name" wire:model="personal.mname" />
 <br>
 
                     <div class="lg:flex gap-2 ">
                         <div class="lg:w-1/2">
-                            <x-input class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" />
+                            <x-input class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" type="tel" maxlength="11" minlength="11" 
+                 pattern="[0-9]{11}" inputmode="numeric" 
+                 oninput="validateMobile(this)" required />
+                  <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small>
+                 
                         </div>
                         <div class="lg:w-1/2">
-                            <x-input class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" />
+                            <x-input class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" type="tel" maxlength="11" minlength="11" 
+                 pattern="[0-9]{11}" inputmode="numeric" 
+                 oninput="validateMobile(this)" required />
+                  <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small>
                         </div>
                     </div>
-
-
-
+<br>
                     <x-input class="input-sm" label="Mailing/Present Address" wire:model="personal.paddress" />
-
+<br>
 
                     <div class="lg:flex gap-2">
                         <div class="lg:w-1/2">
@@ -599,11 +602,6 @@ class extends Component {
                             @endphp
                         @endforeach
 
-                        @php
-                            if ($numCourses == 2) {
-                                $total = 30000;
-                            }
-                        @endphp
 
                         <tr>
                             <th class="text-right" colspan="2">মোট টাকা</th>
