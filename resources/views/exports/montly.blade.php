@@ -14,6 +14,7 @@
             <th>Admission Amount</th>
             <th>Admission Paid</th>
             <th>DUE</th>
+            <th>Payment Time</th>
 
             @foreach ($periods as $date)
                 <th>{{$date->format("F")}}</th>
@@ -40,11 +41,13 @@
             <td>{{$student->payments_sum_total}}</td>
             <td>{{$student->payments_sum_paid}}</td>
             <td>{{$student->payments_sum_due}}</td>
+            <td>{{$student->post_paid?'Post Paid':'Prepaid'}}</td>
 
             @foreach ($periods as $date)
 
                 <td>
                     {{
+                        $student->free?"Free":
                    $student->payments
                    ->whereBetween("month",[$date->format("Y-m")."-01",$date->format("Y-m")."-31"])
                    ->sum("paid")

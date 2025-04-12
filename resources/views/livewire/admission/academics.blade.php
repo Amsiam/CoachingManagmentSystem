@@ -60,6 +60,8 @@ class extends Component {
             'student.bn_name' => '',
             'student.monthly_salary' => '',
             'student.fixed_salary' => '',
+            'student.post_paid' => '',
+            'student.free' => '',
 
             'personal.student_id' => '',
             'personal.fname' => '',
@@ -146,7 +148,8 @@ class extends Component {
             'personal.smobile' => 'required',
             'personal.gmobile' => 'required',
             'course_ids' => 'required',
-            'personal.group' => 'required'
+            'personal.group' => 'required',
+            'personal.shift' => 'required'
         ]);
         array_push($this->other_batchs, $this->student->batch_id);
         $this->page++;
@@ -287,10 +290,12 @@ class extends Component {
                 //payments
 
                 $this->payment->student_roll = $this->student->id;
+                $total = 0;
 
-                $total = Course::whereIn('id', $this->course_ids)->sum('price');
-                
 
+                if(!$this->student->free){
+                    $total = Course::whereIn('id', $this->course_ids)->sum('price');
+                }
 
                 $this->payment->total = $total;
                 $this->payment->recieved_by = auth()->user()->email;
@@ -434,15 +439,15 @@ class extends Component {
 
                     <div class="lg:flex gap-2 ">
                         <div class="lg:w-1/2">
-                            <x-input class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" type="tel" maxlength="11" minlength="11" 
-                 pattern="[0-9]{11}" inputmode="numeric" 
+                            <x-input class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" type="tel" maxlength="11" minlength="11"
+                 pattern="[0-9]{11}" inputmode="numeric"
                  oninput="validateMobile(this)" required />
                   <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small>
-                 
+
                         </div>
                         <div class="lg:w-1/2">
-                            <x-input class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" type="tel" maxlength="11" minlength="11" 
-                 pattern="[0-9]{11}" inputmode="numeric" 
+                            <x-input class="input-sm" label="Guardian's Mobile No" wire:model="personal.gmobile" type="tel" maxlength="11" minlength="11"
+                 pattern="[0-9]{11}" inputmode="numeric"
                  oninput="validateMobile(this)" required />
                   <small id="error-msg" style="color: red; display: none;">Mobile number must be exactly 11 digits</small>
                         </div>
@@ -553,11 +558,16 @@ class extends Component {
                     <div class="lg:flex gap-2 items-center">
                         <div class="lg:w-1/2">
                             <x-input type="number" min="0" class="input-sm" label="Monthly Salary" wire:model="student.monthly_salary" />
-
                             </div>
                             <br>
                         <div class="lg:w-1/2">
                             <x-checkbox label="Fixed Salary" wire:model="student.fixed_salary" value="1" />
+                        </div>
+                        <div class="lg:w-1/2">
+                            <x-checkbox label="Montly fee Free?" wire:model="student.free" value="1" />
+                        </div>
+                        <div class="lg:w-1/2">
+                            <x-checkbox label="Post Paid?" wire:model="student.post_paid" value="1" />
                         </div>
                     </div>
 
@@ -598,6 +608,7 @@ class extends Component {
                             $total = 0;
                             $numCourses = count($this->course_ids);
                         @endphp
+
                         @foreach ($this->selectedCourses as $course)
                             @if ($this->selectedSubCoursesParent->contains('parent_id', $course->id))
                                     @php
@@ -611,7 +622,7 @@ class extends Component {
                                 <td>{{ $course->price }}</td>
                             </tr>
                             @php
-                                $total += $course->price;
+                                $total += $student->free ? 0 : $course->price ;
                             @endphp
                         @endforeach
 

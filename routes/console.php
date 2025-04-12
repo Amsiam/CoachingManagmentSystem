@@ -27,6 +27,7 @@ Schedule::call(function () {
             ->whereDoesntHave("payments", function ($query) {
                 $query->whereBetween("month", [now()->firstOfMonth(), now()->lastOfMonth()]);
             })
+            ->where("free", 0)
             ->where("active", 1)
             ->get();
 
