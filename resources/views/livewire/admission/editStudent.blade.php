@@ -65,6 +65,8 @@ class extends Component {
             "student.bn_name"=>"",
             'student.monthly_salary' => '',
             'student.fixed_salary' => '',
+            'student.free' => '',
+            'student.post_paid' => '',
 
 
             "student.batch_id"=>"required",

@@ -42,7 +42,8 @@ class MonlyExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyle
         $filterGroup,
         $filterCourse,
         $filterBatch,
-        $filterAcademicYear
+        $filterAcademicYear,
+        protected $filterShift
     )
     {
         $this->from = $from;
@@ -138,6 +139,11 @@ class MonlyExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyle
                 return $qq->where("group",$this->filterGroup);
             });
         })
+            ->when($this->filterShift, function ($q) {
+                return $q->whereHas("personalDetails", function ($qq) {
+                    return $qq->where("shift", $this->filterShift);
+                });
+            })
         ->when($this->filterBatch,function($q) {
             return $q->whereHas("batches",function($qq) {
                 return $qq->where("id",$this->filterBatch);

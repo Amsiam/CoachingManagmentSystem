@@ -16,4 +16,9 @@ class PersonalDetail extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function shiftD()
+    {
+        return $this->belongsTo(Shift::class, 'shift');
+    }
 }

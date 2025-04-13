@@ -14,14 +14,15 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class AdmissionStudentExport implements FromView,ShouldAutoSize,WithStyles,WithDefaultStyles
+class AdmissionStudentExport implements FromView, ShouldAutoSize, WithStyles, WithDefaultStyles
 {
 
     protected $package_id;
-    protected $filterGroup ;
-    protected $filterCourse ;
-    protected $filterBatch ;
+    protected $filterGroup;
+    protected $filterCourse;
+    protected $filterBatch;
     protected $filterAcademicYear;
+
 
 
     public function __construct(
@@ -29,15 +30,16 @@ class AdmissionStudentExport implements FromView,ShouldAutoSize,WithStyles,WithD
         $filterGroup,
         $filterCourse,
         $filterBatch,
-        $filterAcademicYear
-        )
-    {
-            $this->package_id = $package_id;
+        $filterAcademicYear,
+        protected $filterStatus,
+        protected $filterShift
+    ) {
+        $this->package_id = $package_id;
 
-            $this->filterGroup =$filterGroup;
-            $this->filterCourse =$filterCourse;
-            $this->filterBatch =$filterBatch;
-            $this->filterAcademicYear=$filterAcademicYear;
+        $this->filterGroup = $filterGroup;
+        $this->filterCourse = $filterCourse;
+        $this->filterBatch = $filterBatch;
+        $this->filterAcademicYear = $filterAcademicYear;
     }
 
     public function defaultStyles(Style $defaultStyle)
@@ -60,7 +62,7 @@ class AdmissionStudentExport implements FromView,ShouldAutoSize,WithStyles,WithD
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
-                'font' => ['bold' => true,"size"=>18],
+                'font' => ['bold' => true, "size" => 18],
 
             ],
 
@@ -78,33 +80,41 @@ class AdmissionStudentExport implements FromView,ShouldAutoSize,WithStyles,WithD
     public function view(): View
     {
 
-        $students = Student::with(["personalDetails"])
-        ->where("active",1)
-        ->when($this->package_id,function($q) {
-            return $q->where("package_id",$this->package_id);
+        $students = Student::with(["personalDetails", "personalDetails.shiftD"])
+            ->when($this->package_id, function ($q) {
+                return $q->where("package_id", $this->package_id);
+            })
+            ->when($this->filterGroup, function ($q) {
+                return $q->whereHas("personalDetails", function ($qq) {
+                    return $qq->where("group", $this->filterGroup);
+                });
+            })
+            ->when($this->filterShift, function ($q) {
+                return $q->whereHas("personalDetails", function ($qq) {
+                    return $qq->where("shift", $this->filterShift);
+                });
+            })
+            ->when($this->filterBatch, function ($q) {
+                return $q->whereHas("batches", function ($qq) {
+                    return $qq->where("id", $this->filterBatch);
+                });
         })
-        ->when($this->filterGroup,function($q) {
-            return $q->whereHas("personalDetails",function($qq) {
-                return $qq->where("group",$this->filterGroup);
-            });
-        })
-        ->when($this->filterBatch,function($q) {
-            return $q->whereHas("batches",function($qq) {
-                return $qq->where("id",$this->filterBatch);
-            });
-        })
-        ->when($this->filterCourse,function($q) {
-            return $q->whereHas("courses",function($qq) {
-                return $qq->where("id",$this->filterCourse);
-            });
-        })->when($this->filterAcademicYear,function($q) {
-            return $q->where("year",$this->filterAcademicYear);
-        })
-        ->withSum("payments","total")
-        ->withSum("payments","paid")
-        ->withSum("payments","discount")
-        ->withSum("payments","due")
-        ->get();
+            ->when($this->filterCourse, function ($q) {
+                return $q->whereHas("courses", function ($qq) {
+                    return $qq->where("id", $this->filterCourse);
+                });
+            })->when($this->filterAcademicYear, function ($q) {
+                return $q->where("year", $this->filterAcademicYear);
+            })
+            ->when($this->filterStatus, function ($q) {
+                $status = $this->filterStatus - 1;
+                return $q->where("active", $status);
+            })
+            ->withSum("payments", "total")
+            ->withSum("payments", "paid")
+            ->withSum("payments", "discount")
+            ->withSum("payments", "due")
+            ->get();
 
         return view('exports.students', compact("students"));
     }

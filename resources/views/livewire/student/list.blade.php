@@ -9,6 +9,7 @@ use Mary\Traits\Toast;
 use App\Models\Student;
 use App\Models\Expense;
 use App\Models\Package;
+use App\Models\Shift;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\Batch;
@@ -40,6 +41,8 @@ class extends Component {
     public $filterBatch ;
     public $filterDue;
     public $filterAcademicYear;
+    public $filterShift;
+    public $filterStatus;
 
     public $paymentMonth;
     public $paymentYear;
@@ -130,6 +133,11 @@ class extends Component {
                 return $qq->where("group",$this->filterGroup);
             });
         })
+        ->when($this->filterShift,function($q) {
+            return $q->whereHas("personalDetails",function($qq) {
+                return $qq->where("shift",$this->filterShift);
+            });
+        })
         ->when($this->filterBatch,function($q) {
             return $q->whereHas("batches",function($qq) {
                 return $qq->where("id",$this->filterBatch);
@@ -153,7 +161,10 @@ class extends Component {
         }
         })->when($this->filterAcademicYear,function($q) {
             return $q->where("year",$this->filterAcademicYear);
-        })
+        })->when($this->filterStatus, function ($q) {
+                $status = $this->filterStatus - 1;
+                return $q->where("active", $status);
+            })
         ->latest()
         ->paginate($this->perPage);
 
@@ -165,7 +176,9 @@ class extends Component {
             $this->filterGroup ,
             $this->filterCourse ,
             $this->filterBatch ,
-            $this->filterAcademicYear
+            $this->filterAcademicYear,
+            $this->filterStatus,
+            $this->filterShift
         ),date("Y-m-d H:s a")."-Student-export.xlsx");
     }
 
@@ -271,6 +284,13 @@ class extends Component {
 public function academics_years(){
         return AcademicYear::where("active",true)->latest()->get();
     }
+
+    #[Computed]
+    public function shifts(){
+            return Shift::when($this->filterCourse,function($q) {
+            $q->where("course_id",$this->filterCourse);
+        })->get();
+        }
 };
 
 ?>
@@ -364,6 +384,14 @@ public function academics_years(){
             </div>
             <div class="lg:w-1/2">
                 <x-choices label="Academic Year" :options="$this->academics_years" single wire:model.live="filterAcademicYear" option-value="year" option-label="year"  />
+            </div>
+        </div>
+        <div class="lg:flex gap-2">
+            <div class="lg:w-1/2">
+                <x-choices label="Status" :options="[['name'=>'Active','id'=>2],['name'=>'Deactive','id'=>1]]" single wire:model.live="filterStatus" option-value="id" option-label="name"  />
+            </div>
+            <div class="lg:w-1/2">
+                <x-choices label="Shift" :options="$this->shifts" single wire:model.live="filterShift" option-value="id" option-label="name"  />
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@ use Livewire\Volt\Component;
 
 use App\Models\Package;
 use App\Models\Group;
-use App\Models\Course;
+use App\Models\{Course, Shift};
 use App\Models\Batch;
 use App\Models\AcademicYear;
 
@@ -31,6 +31,7 @@ class extends Component {
     public $filterCourse ;
     public $filterBatch ;
     public $filterAcademicYear;
+    public $filterShift;
     public $filterAddedBy=[];
 
 
@@ -75,7 +76,7 @@ class extends Component {
             $this->filterCourse ,
             $this->filterBatch ,
             $this->filterAcademicYear,
-            $this->filterAddedBy
+            $this->filterShift,
         ),date("Y-m-d H:s a")."-monthly-export.xlsx");
     }
 
@@ -88,13 +89,20 @@ class extends Component {
             $this->filterCourse ,
             $this->filterBatch ,
             $this->filterAcademicYear,
-            $this->filterAddedBy
+            $this->filterShift,
         ),date("Y-m-d H:s a")."-monthly-export.pdf",\Maatwebsite\Excel\Excel::MPDF);
     }
 
     #[Computed]
     public function academics_years(){
             return AcademicYear::where("active",true)->latest()->get();
+        }
+
+    #[Computed]
+    public function shifts(){
+            return Shift::when($this->filterCourse,function($q){
+                return $q->where("course_id",$this->filterCourse);
+            })->latest()->get();
         }
 
 
@@ -123,6 +131,11 @@ class extends Component {
             </div>
             <div class="lg:w-1/2">
                 <x-choices label="Batch" :options="$this->batches" single searchable wire:model.live="filterBatch"  />
+            </div>
+        </div>
+        <div class="lg:flex gap-2">
+            <div class="lg:w-1/2">
+                <x-choices label="Shift" :options="$this->shifts" single searchable wire:model.live="filterShift"  />
             </div>
         </div>
 
