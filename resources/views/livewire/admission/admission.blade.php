@@ -325,14 +325,14 @@ $payTypes=[
         </div>
 
         @if (count($course_ids)>0)
-
+<br>
         <x-choices label="Main Batch" wire:model="student.batch_id" :options="$this->batches" single />
-            @if (count($course_ids)>1)
+            @if (count($course_ids)>1) <br>
                 <x-choices label="Other's Batch" wire:model="other_batchs" :options="$this->batches" />
             @endif
 
         @endif
-
+<br>
 
         <x-input class="input-sm" label="Name(English)" wire:model="student.name" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z\s\.\(\)]/g, '')"/>
 <br>

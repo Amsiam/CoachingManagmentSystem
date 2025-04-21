@@ -40,6 +40,8 @@ class Student extends Authenticatable
         return [
             'password' => 'hashed',
             'fixed_salary' => 'boolean',
+            'free' => 'boolean',
+            'post_paid' => 'boolean',
         ];
     }
 

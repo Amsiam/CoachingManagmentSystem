@@ -32,6 +32,7 @@ class extends Component {
     public $filterBatch ;
     public $filterAcademicYear;
     public $filterShift;
+    public $filterActive=1;
     public $filterAddedBy=[];
 
 
@@ -77,6 +78,7 @@ class extends Component {
             $this->filterBatch ,
             $this->filterAcademicYear,
             $this->filterShift,
+            $this->filterActive,
         ),date("Y-m-d H:s a")."-monthly-export.xlsx");
     }
 
@@ -90,6 +92,7 @@ class extends Component {
             $this->filterBatch ,
             $this->filterAcademicYear,
             $this->filterShift,
+            $this->filterActive,
         ),date("Y-m-d H:s a")."-monthly-export.pdf",\Maatwebsite\Excel\Excel::MPDF);
     }
 
@@ -136,6 +139,9 @@ class extends Component {
         <div class="lg:flex gap-2">
             <div class="lg:w-1/2">
                 <x-choices label="Shift" :options="$this->shifts" single searchable wire:model.live="filterShift"  />
+            </div>
+                        <div class="lg:w-1/2">
+                <x-choices label="Shift" :options="[['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']]" single searchable wire:model.live="filterActive"  />
             </div>
         </div>
 

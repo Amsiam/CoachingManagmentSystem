@@ -204,7 +204,7 @@ class extends Component {
         return Group::all();
     }
 
-    #[Computed]
+    #[Computed] 
     public function shifts()
     {
         return Shift::whereIn('course_id', $this->course_ids)
@@ -410,9 +410,9 @@ class extends Component {
 
                     <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups"
                         wire:model.live="personal.group" />
+<br>
 
-
-                        <x-radio class="w-full bg-red-50 ring-0" label="Shift" :options="$this->shifts"
+                        <x-radio class="w-100px bg-red-60 ring-0" label="Shift" :options="$this->shifts"
                             wire:model.live="personal.shift" />
 <br>
 

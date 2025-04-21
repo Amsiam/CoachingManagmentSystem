@@ -82,8 +82,8 @@ class extends Component {
             "personal.paddress"=>"",
             "personal.dob"=>"",
             "personal.blood"=>"",
-            "personal.group"=>"required",
-            "personal.shift"=>"required",
+            "personal.group"=>"required_if:student.package_id,1",
+            "personal.shift"=>"required_if:student.package_id,1",
             "personal.quota"=>"",
             "personal.ref_name"=>"",
             "personal.ref_mobile"=>"",
@@ -357,7 +357,7 @@ $payTypes=[
                     <x-checkbox class="checkbox-xs" label="{{$course->name}}" value="{{$course->id}}" wire:model.live="course_ids" />
                 @endforeach
             </div>
-
+<br>
             @if (count($course_ids) > 0)
                 <h1>Sub Courses</h1>
                 <div class="grid grid-cols-4 gap-4 justify-around p-4">
@@ -374,17 +374,17 @@ $payTypes=[
             @if ($this->student->package_id==1)
 
                 <x-radio class="w-full bg-red-50 ring-0" label="Group" :options="$this->groups" wire:model.live="personal.group" />
-                    <x-radio class="w-full bg-red-50 ring-0" label="Shift" :options="$this->shifts"
+                    <x-radio class="w-100px bg-red-60 ring-0" label="Shift" :options="$this->shifts"
                         wire:model.live="personal.shift" />
             @endif
-
+<br>
             <x-choices label="Main Batch" wire:model="student.batch_id" :options="$this->batches" single />
 
 
         @if (count($other_batchs)>1 || count($course_ids)>1)
                 <x-choices label="Other's Batch" wire:model="other_batchs" :options="$this->batches" />
         @endif
-
+<br>
 
 
         <x-input class="input-sm" label="Name(English)" wire:model="student.name"  />
@@ -395,7 +395,7 @@ $payTypes=[
 
         <x-input class="input-sm" label="Mother's Name" wire:model="personal.mname" />
 
-
+<br>
         <div class="lg:flex gap-2 ">
             <div class="lg:w-1/2">
                 <x-input  class="input-sm" label="Student's Mobile No" wire:model="personal.smobile" />
@@ -463,7 +463,7 @@ $payTypes=[
         </div>
 
         @if($student->package_id==1)
-
+<br>
         <div class="lg:flex gap-2 items-center">
             <div class="lg:w-1/2">
                 <x-checkbox label="Montly fee Free?" wire:model="student.free" value="1" />
@@ -501,7 +501,7 @@ $payTypes=[
 
 
         </div>
-
+<br>
         @if ($student->package_id == 1)
 
         <div class="lg:flex gap-2 items-center">
