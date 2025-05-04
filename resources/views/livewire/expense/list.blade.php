@@ -32,12 +32,13 @@ class extends Component {
             'category.desc' => 'required',
             'category.amount' => 'required',
             'category.date' => 'required',
+            'category.user_id' => '',
         ];
     }
 
     public function mount() {
         $this->category = new Expense();
-
+        $this->category->user_id = auth()->user()->id;
         $this->from = date("Y-m-d");
         $this->to = date("Y-m-d");
 
@@ -77,6 +78,7 @@ class extends Component {
     public function modalOpen(){
 
         $this->category = new Expense();
+        $this->category->user_id = auth()->user()->id;
 
         $this->category->date=date("Y-m-d");
         $this->modal=true;

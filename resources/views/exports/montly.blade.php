@@ -49,12 +49,21 @@
             @foreach ($periods as $date)
 
                 <td>
-                    {{
-                        $student->free?"Free":
-                   $student->payments
-                   ->whereBetween("month",[$date->format("Y-m")."-01",$date->format("Y-m")."-31"])
-                   ->sum("paid")
-                    }}</td>
+                    
+                    @if($student->free)
+                    Free
+                    @else
+                    
+                    @if($student->created_at->format('Y-m') > $date->format("Y-m"))
+                        Not Admited Yet
+                    @else
+                    
+                        {{$student->payments
+                       ->whereBetween("month",[$date->format("Y-m")."-01",$date->format("Y-m")."-31"])
+                       ->sum("paid")}}
+                   @endif
+                    @endif
+                    </td>
             @endforeach
         </tr>
 

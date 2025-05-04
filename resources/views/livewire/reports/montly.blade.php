@@ -156,7 +156,7 @@ class extends Component {
     </div>
 <div class="mt-1"></div>
 @can("report.excel")
-    <x-button class="btn-primary btn-sm" wire:click="export" >Export</x-button>
+    <x-button class="btn-primary btn-sm" wire:click="export" >Excel</x-button>
    @endcan
     <x-button class="btn-accent btn-sm" wire:click="exportPdf" >PDF</x-button>
 
